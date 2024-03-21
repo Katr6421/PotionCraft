@@ -15,7 +15,7 @@ public class LevelMenu : MonoBehaviour
     [SerializeField]
     private TextMeshProUGUI levelNumber;
 
-    ILevelManager levelManager;
+    private ILevelManager levelManager;
     
     public Button[] levelButtons;
 
@@ -35,9 +35,8 @@ public class LevelMenu : MonoBehaviour
     public void OpenLevel(int levelIndex)
     {
         // Make the level ready to play
-        LevelData levelData = levelManager.LoadLevel(levelIndex);
         potionNameText.text = levelManager.GetPotionName(levelIndex);
-        
+    
 
 
 
