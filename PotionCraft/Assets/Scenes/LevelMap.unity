@@ -492,8 +492,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 115334731}
-        m_TargetAssemblyTypeName: LevelMenu, Assembly-CSharp
-        m_MethodName: OpenLevel
+        m_TargetAssemblyTypeName: LevelSelector, View
+        m_MethodName: OpenScene
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -625,8 +625,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 115334731}
-        m_TargetAssemblyTypeName: LevelMenu, Assembly-CSharp
-        m_MethodName: OpenLevel
+        m_TargetAssemblyTypeName: LevelSelector, View
+        m_MethodName: OpenScene
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

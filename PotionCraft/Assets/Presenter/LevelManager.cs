@@ -21,7 +21,9 @@ public class LevelManager : MonoBehaviour, ILevelManager
             DontDestroyOnLoad(gameObject);
         }
 
+        Debug.Log("Awake i LevelManager. Iam initializing levels now.");
         InitializeLevels();
+         Debug.Log("LevelManager. I have initialized levels now.");
     }
 
     public void InitializeLevels()
@@ -64,7 +66,7 @@ public class LevelManager : MonoBehaviour, ILevelManager
 
         // Add levels to the list of levels. Hardcoded for each level
         Levels.Add(new LevelData("Dummy", null, 1, nodesLevel1));
-        Levels.Add(new LevelData("1", null, 1, nodesLevel1));
+        Levels.Add(new LevelData("Potion 1", null, 1, nodesLevel1));
         Levels.Add(new LevelData("Potion 2", null, 2, new List<Node>()));
         Levels.Add(new LevelData("Potion 3", null, 3, new List<Node>()));
         Levels.Add(new LevelData("Potion 4", null, 4, new List<Node>()));
