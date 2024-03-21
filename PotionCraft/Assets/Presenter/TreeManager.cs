@@ -1,6 +1,23 @@
-public class TreeManager : ITreeManager
+using UnityEngine;
+
+public class TreeManager : MonoBehaviour, ITreeManager
 {
     public IRedBlackBST RedBlackTree { get; set; }
+    public static TreeManager instance { get; private set; }
+
+    private void Awake()
+    {
+        // Singleton pattern
+        if (instance != null && instance != this)
+        {
+            Destroy(this);
+        }
+        else
+        {
+            instance = this;
+            DontDestroyOnLoad(this);
+        }
+    }
 
     public TreeManager(IRedBlackBST redBlackTree)
     {

@@ -1,8 +1,24 @@
 using System.Collections.Generic;
+using UnityEngine;
 
-public class AvatarHintManager : IAvatarHintManager
+public class AvatarHintManager : MonoBehaviour, IAvatarHintManager
 {
   public Dictionary<AvatarHint, string> HintsDict { get; set; } = new Dictionary<AvatarHint, string>();
+  public static AvatarHintManager instance { get; private set; }
+
+    private void Awake()
+    {
+        // Singleton pattern
+        if (instance != null && instance != this)
+        {
+            Destroy(this);
+        }
+        else
+        {
+            instance = this;
+            DontDestroyOnLoad(this);
+        }
+    }
   
   public AvatarHintManager()
   {

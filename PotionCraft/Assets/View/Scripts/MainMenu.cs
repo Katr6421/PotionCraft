@@ -6,10 +6,7 @@ using UnityEngine.SceneManagement;
 public class MainMenu : MonoBehaviour
 {
 
-    public void Start()
-    {
-        SceneManager.LoadScene("StartScene");
-    }
+    //HUSK AT ÆNDRE NAVN PÅ FIL
     
     public void PlayGame()
     {

@@ -3,11 +3,28 @@ using System.Collections.Generic;
 using System.Collections;
 using UnityEngine;
 
-public class LevelManager : ILevelManager
+public class LevelManager : MonoBehaviour, ILevelManager
 {
     public List<LevelData> Levels { get; set; } = new List<LevelData>();
+    public static LevelManager Instance { get; private set; }
 
-    public LevelManager()
+    private void Awake()
+    {
+        // Singleton pattern
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+        }
+        else
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+
+        InitializeLevels();
+    }
+
+    public void InitializeLevels()
     {
 
         //Make nodes for each level
@@ -46,7 +63,8 @@ public class LevelManager : ILevelManager
         nodesLevel1.Add(node3);
 
         // Add levels to the list of levels. Hardcoded for each level
-        Levels.Add(new LevelData("Potion 1", null, 1, nodesLevel1));
+        Levels.Add(new LevelData("Dummy", null, 1, nodesLevel1));
+        Levels.Add(new LevelData("1", null, 1, nodesLevel1));
         Levels.Add(new LevelData("Potion 2", null, 2, new List<Node>()));
         Levels.Add(new LevelData("Potion 3", null, 3, new List<Node>()));
         Levels.Add(new LevelData("Potion 4", null, 4, new List<Node>()));
@@ -60,6 +78,7 @@ public class LevelManager : ILevelManager
 
     public string GetPotionName(int levelIndex)
     {
+        Debug.Log(Levels[levelIndex].PotionName);
         return Levels[levelIndex].PotionName;
     }
 
