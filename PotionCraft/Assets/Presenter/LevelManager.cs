@@ -65,17 +65,17 @@ public class LevelManager : MonoBehaviour, ILevelManager
         nodesLevel1.Add(node3);
 
         // Add levels to the list of levels. Hardcoded for each level
-        Levels.Add(new LevelData("Dummy", null, 1, nodesLevel1));
-        Levels.Add(new LevelData("Potion 1", null, 1, nodesLevel1));
-        Levels.Add(new LevelData("Potion 2", null, 2, new List<Node>()));
-        Levels.Add(new LevelData("Potion 3", null, 3, new List<Node>()));
-        Levels.Add(new LevelData("Potion 4", null, 4, new List<Node>()));
-        Levels.Add(new LevelData("Potion 5", null, 5, new List<Node>()));
-        Levels.Add(new LevelData("Potion 6", null, 6, new List<Node>()));
-        Levels.Add(new LevelData("Potion 7", null, 7, new List<Node>()));
-        Levels.Add(new LevelData("Potion 8", null, 8, new List<Node>()));
-        Levels.Add(new LevelData("Potion 9", null, 9, new List<Node>()));
-        Levels.Add(new LevelData("Potion 10", null, 10, new List<Node>()));
+        Levels.Add(new LevelData("Dummy", 1, nodesLevel1));
+        Levels.Add(new LevelData("Crystal Elixir", 1, nodesLevel1));
+        Levels.Add(new LevelData("Potion 2", 2, new List<Node>()));
+        Levels.Add(new LevelData("Potion 3", 3, new List<Node>()));
+        Levels.Add(new LevelData("Potion 4", 4, new List<Node>()));
+        Levels.Add(new LevelData("Potion 5", 5, new List<Node>()));
+        Levels.Add(new LevelData("Potion 6", 6, new List<Node>()));
+        Levels.Add(new LevelData("Potion 7", 7, new List<Node>()));
+        Levels.Add(new LevelData("Potion 8", 8, new List<Node>()));
+        Levels.Add(new LevelData("Potion 9", 9, new List<Node>()));
+        Levels.Add(new LevelData("Potion 10", 10, new List<Node>()));
     }
 
     public string GetPotionName(int levelIndex)
@@ -84,10 +84,7 @@ public class LevelManager : MonoBehaviour, ILevelManager
         return Levels[levelIndex].PotionName;
     }
 
-    public Sprite GetPotionImage(int levelIndex)
-    {
-        return Levels[levelIndex].PotionImage;
-    }
+   
 
     public int GetLevelIndex(int levelIndex)
     {

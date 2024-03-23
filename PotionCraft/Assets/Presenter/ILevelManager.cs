@@ -8,7 +8,7 @@ public interface ILevelManager
     public void LoadProgress();
     public void SaveProgress();
     public string GetPotionName(int levelIndex);
-    public Sprite GetPotionImage(int levelIndex);
+
     public int GetLevelIndex(int levelIndex);
     public List<Node> GetIngredients(int levelIndex);
 
