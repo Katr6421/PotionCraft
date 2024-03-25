@@ -10,12 +10,14 @@ public class NewBehaviourScript : MonoBehaviour
     [SerializeField] private Canvas uiCanvas;
     // Assign the prefab in the inspector
     [SerializeField] private GameObject KatnissPrefab; 
+    [SerializeField] private GameObject NullCirclePrefab; 
     [SerializeField] private GameObject MushroomPrefab;
     [SerializeField] private GameObject PinkFlowerPrefab;
     [SerializeField] private GameObject RadishPrefab;
     [SerializeField] private GameObject WaterFlowerPrefab;
 
     private Dictionary<int, GameObject> nodeValueToPrefabDictionary = new Dictionary<int, GameObject>();
+    private Vector3 StartNullCirclePosition = new Vector3(578, 239, 0);
 
     void Awake() {
         nodeValueToPrefabDictionary.Add(1, RadishPrefab);
@@ -65,6 +67,7 @@ public class NewBehaviourScript : MonoBehaviour
             Vector3 newNodePosition = CalculatePosition(nodeIndex);
             //Instantiate a new GameObject from the prefab
             GameObject nodeObject = Instantiate(GetPrefabForNode(node), newNodePosition, Quaternion.identity);
+
             // Parent the instantiated UI element to a canvas or a panel within the canvas, if needed
             nodeObject.transform.SetParent(uiCanvas.transform, false);
 
@@ -72,7 +75,7 @@ public class NewBehaviourScript : MonoBehaviour
 
             // ikke sikker på at vi skal bruge det, men det lyder smart
             // Set the Node data to the GameObject for later reference
-            nodeObject.AddComponent<NodeData>().Data = node;
+            nodeObject.AddComponent<NodeData>().Node = node;
 
         }
     }
@@ -107,6 +110,11 @@ public class NewBehaviourScript : MonoBehaviour
 // This component will store the reference to the Node data
 public class NodeData : MonoBehaviour
 {
-    public Node Data { get; set; }
+    public Node Node { get; set; }
+
+    public void MoveTo(Vector3 newPosition)
+    {
+        transform.position = newPosition;
+    }
 
 }
