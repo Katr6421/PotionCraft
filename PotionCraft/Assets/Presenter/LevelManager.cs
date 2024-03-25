@@ -64,10 +64,15 @@ public class LevelManager : MonoBehaviour, ILevelManager
         nodesLevel1.Add(node2);
         nodesLevel1.Add(node3);
 
+         List<Node> nodesLevel2 = new List<Node>();
+        nodesLevel2.Add(node4);
+        nodesLevel2.Add(node5);
+        nodesLevel2.Add(node6);
+
         // Add levels to the list of levels. Hardcoded for each level
         Levels.Add(new LevelData("Dummy", 1, nodesLevel1));
         Levels.Add(new LevelData("Crystal Elixir", 1, nodesLevel1));
-        Levels.Add(new LevelData("Potion 2", 2, new List<Node>()));
+        Levels.Add(new LevelData("Potion 2", 2, nodesLevel2));
         Levels.Add(new LevelData("Potion 3", 3, new List<Node>()));
         Levels.Add(new LevelData("Potion 4", 4, new List<Node>()));
         Levels.Add(new LevelData("Potion 5", 5, new List<Node>()));
@@ -77,6 +82,8 @@ public class LevelManager : MonoBehaviour, ILevelManager
         Levels.Add(new LevelData("Potion 9", 9, new List<Node>()));
         Levels.Add(new LevelData("Potion 10", 10, new List<Node>()));
     }
+
+    //Get the value of the node based on a index
 
     public string GetPotionName(int levelIndex)
     {

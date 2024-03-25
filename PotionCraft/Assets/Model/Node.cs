@@ -1,4 +1,5 @@
 using System;
+using PlasticPipe.PlasticProtocol.Messages;
 
 
 
@@ -28,4 +29,5 @@ public class Node
         N = 1;
         Color = color;
     }
+
 }

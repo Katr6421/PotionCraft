@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 36bbaf594eb18412a9f2f2c8f86aa80a
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - KatnissPrefab: {fileID: 1123061262649736700, guid: 7c8e370af62a54876bc5078e313fe4cc, type: 3}
+  - MushroomPrefab: {fileID: 5520475656494687982, guid: 217274dec4aef4167b1431917787648e, type: 3}
+  - PinkFlowerPrefab: {fileID: 3833749180137690964, guid: bf53e571872f145a59499c213b74579a, type: 3}
+  - RadishPrefab: {fileID: 1063391715542368879, guid: 117db5b3e526b4a589d4d282d97e599f, type: 3}
+  - WaterFlowerPrefab: {fileID: 4593815546154278474, guid: a0314163056854d148b2bb88aa4b12db, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
