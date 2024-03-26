@@ -13,6 +13,8 @@ public class NullCircleClickHandler : MonoBehaviour
     private GameObject currentNodeGameObject; // Reference to the current Ingredient that the user must insert in the RedBlackTree
     private int currectNodeIndex = 0;     // Index of the current node in the list of node GameObjects. 
 
+  
+
 
     private void setCurrentIngredients()
     {
@@ -38,19 +40,13 @@ public class NullCircleClickHandler : MonoBehaviour
         if (currentNodeGameObject != null)
         {
         // Move the current ingredient to this NullCircle's position
-        currentNodeGameObject.transform.position = transform.position;
-            
-
-
-
-       
-    
-        Debug.Log("Første node er nu flyttet");
+        //currentNodeGameObject.transform.position = transform.position;
+        Vector3 NullCirclePos = transform.position;
+        StartCoroutine(MoveAndDestroy(currentNodeGameObject, NullCirclePos, 0.5f));
+      
         }
          else{Debug.LogError("Ingen nodes at flytte");}
 
-        // Remove the current NullCircle
-        Destroy(gameObject);
 
 
         // Instantiate the two new NullCircles
@@ -63,6 +59,7 @@ public class NullCircleClickHandler : MonoBehaviour
 
         
     }
+  
     
 
  
@@ -86,4 +83,27 @@ public class NullCircleClickHandler : MonoBehaviour
         //lineRenderer.SetPosition(0, start);
         //lineRenderer.SetPosition(1, end);
     }
+
+/*********************************************
+    METHOD: MoveAndDestroy                          
+    DESCRIPTION: This method moves a GameObject to a destination position over a specified duration.
+    *********************************************/
+
+      IEnumerator MoveAndDestroy(GameObject objectToMove, Vector3 destination, float duration)
+    {
+    float elapsedTime = 0;
+    Vector3 startingPos = objectToMove.transform.position;
+
+    while (elapsedTime < duration)
+    {
+        objectToMove.transform.position = Vector3.Lerp(startingPos, destination, (elapsedTime / duration));
+        elapsedTime += Time.deltaTime;
+        yield return null; // Wait for the next frame
+    }
+
+    objectToMove.transform.position = destination; // Ensure it reaches the destination
+
+    // Now that the movement is complete, destroy the NullCircle GameObject
+    Destroy(gameObject); // Assuming gameObject is the NullCircle you want to destroy
+}
 }
