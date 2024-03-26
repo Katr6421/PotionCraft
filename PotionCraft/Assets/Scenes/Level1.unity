@@ -5390,6 +5390,8 @@ MonoBehaviour:
   SelectedLevelText: {fileID: 928122708}
   SelectedLevelPotionName: {fileID: 189113979}
   NullCirclePrefab: {fileID: 9033406132478758472, guid: 01c4774bbde6f40588961cbedf116ada, type: 3}
+  CurrentIngredientMarkerPrefab: {fileID: 0}
+  circlePrefab: {fileID: 697791225501844510, guid: 86931742e79424ab8965be319fc5265c, type: 3}
 --- !u!1 &651872099
 GameObject:
   m_ObjectHideFlags: 0
