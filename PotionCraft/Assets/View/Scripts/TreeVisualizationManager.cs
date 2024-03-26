@@ -3,17 +3,25 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class NullCircleClickHandler : MonoBehaviour
+/*********************************************
+CLASS: TreeVisualizationManager
+DESCRIPTION: This class is responsible for managing the visualization of the RedBlackTree, when clicking on a nullCircle.
+It is responsible for moving the current ingredient to the NullCircle's position, deleting the clicked NullCircle, moving the CircleMarker to a new position, and instantiating two new NullCircles.
+Summary: Everyting that happens when a NullCircle is clicked.
+*********************************************/
+
+
+public class TreeVisualizationManager : MonoBehaviour
 {
     
-    [SerializeField] private GameObject nullCirclePrefab; // Assigned the prefab in the inspector. Used to spawn new NullCircles
+    [SerializeField] private GameObject nullCirclePrefab;
+    [SerializeField] private GameObject circleMarkerPrefab;
   
-    private NodeSpawner NodeSpawner;
+    private NodeSpawner NodeSpawner; // Need this to access the list of node GameObjects
 
     private GameObject currentNodeGameObject; // Reference to the current Ingredient that the user must insert in the RedBlackTree
     private int currectNodeIndex = 0;     // Index of the current node in the list of node GameObjects. 
-
-    [SerializeField] private GameObject circleMarkerPrefab;
+    
     private GameObject CircleMarker; // Reference to the instantiated circle
     private Vector3 circleStartPosition = new Vector3(2.12f, 3.79f, 0); // Position of the circle
 
@@ -23,8 +31,6 @@ public class NullCircleClickHandler : MonoBehaviour
         CircleMarker = Instantiate(circleMarkerPrefab, circleStartPosition, Quaternion.identity);
     }
 
-  
-  
 
     private void setCurrentIngredientsGameObject()
     {
@@ -38,50 +44,43 @@ public class NullCircleClickHandler : MonoBehaviour
     /*********************************************
     METHOD: OnClickedNullCirkle                          
     DESCRIPTION: This method is called when the NullCircle GameObject is clicked.
+    Part 1: Move the current ingredient to the NullCircle's position
+    Part 2: Moves the CircleMarker to a new position. The CircleMarker is used to indicate the current ingredient that the user must insert in the RedBlackTree.
+    Part 3: Instantiate two new NullCircles
     *********************************************/
 
      public void OnClickedNullCirkle()
     {
-         Debug.Log("Jeg har klikket på en NullCircle");
+        /*********************************************
+        PART 1
+        *********************************************/
+
         // Get the current ingredient that the user must insert in the RedBlackTree
         setCurrentIngredientsGameObject();
-
         // Check if there are any node GameObjects in the list
         if (currentNodeGameObject != null)
         {
             // Move the current ingredient to this NullCircle's position
-            //currentNodeGameObject.transform.position = transform.position;
             Vector3 NullCirclePos = transform.position;
             StartCoroutine(MoveAndDestroy(currentNodeGameObject, NullCirclePos, 0.5f));
 
         }
         else
         {
-            Debug.LogError("Ingen nodes at flytte");
+            Debug.Log("Ingen flere ingredienser at indsætte");
         }
 
-        
-        if (CircleMarker == null)
-    {
-        // Instantiate the circle here if it only should appear upon clicking
-        CircleMarker = Instantiate(circleMarkerPrefab, circleStartPosition, Quaternion.identity);
-    }
-    else
-    {
+        /*********************************************
+        PART 2
+        *********************************************/
         // Move the existing circle to a new position
         StartCoroutine(MoveCircle(CircleMarker, CalculatePosition(currectNodeIndex), 0.5f));
-    }
+
+        /*********************************************
+        PART 3
+        *********************************************/
+    
   
-
-
-        
-
-       
-
-
-
-
-
         // Instantiate the two new NullCircles
         //GameObject leftChildNullCircle = Instantiate(nullCirclePrefab, CalculateLeftChildPosition(), Quaternion.identity);
         //GameObject rightChildNullCircle = Instantiate(nullCirclePrefab, CalculateRightChildPosition(), Quaternion.identity);
@@ -138,6 +137,7 @@ public class NullCircleClickHandler : MonoBehaviour
 
     // Now that the movement is complete, destroy the NullCircle GameObject
     Destroy(gameObject); // Assuming gameObject is the NullCircle you want to destroy
+    
 }
 
 IEnumerator MoveCircle(GameObject objectToMove, Vector3 destination, float duration)

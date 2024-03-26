@@ -8,8 +8,13 @@ using UnityEngine.UI;
 using System;
 using System.Linq;
 
+/*********************************************
+CLASS: LevelUIController
+DESCRIPTION: This class is responsible for controlling the UI elements in the Level scene.
+             Also, it is responsible for instantiating the NullCircle aka. the root
+*********************************************/
 
-public class UniversalLevelManager : MonoBehaviour
+public class LevelUIController : MonoBehaviour
 {
 
     [SerializeField] private Canvas uiCanvas;
@@ -18,13 +23,7 @@ public class UniversalLevelManager : MonoBehaviour
     [SerializeField] public TextMeshProUGUI SelectedLevelPotionName;
     [SerializeField] private GameObject NullCirclePrefab;
     private Vector3 StartNullCirclePosition = new Vector3(578, 239, 0);
-    private NodeSpawner NodeSpawner;
-    private List<GameObject> nodeGameObjects = new List<GameObject>();
-    public GameObject CurrentIngredientMarkerPrefab;
-    public GameObject circlePrefab; // Assign this in the Inspector
-    
-
-
+ 
     
     public void Start()
     {
