@@ -116,7 +116,7 @@ public class TreeVisualizationManager : MonoBehaviour
         rightChildNullCircle.transform.SetParent(uiCanvas.transform, false);
 
         //Draw line from parent to leftchild, and from parent to rightchild
-        DrawLinesToChildren(NullCircleTransform, leftChildNullCircle, rightChildNullCircle);
+        DrawLinesToChildren(currentNodeGameObject, leftChildNullCircle, rightChildNullCircle);
         //DrawLinesToChildren(NullCirclePos, leftChildNullCircle, rightChildNullCircle);
 
 
@@ -159,20 +159,21 @@ public class TreeVisualizationManager : MonoBehaviour
    
 
     // Assuming this method is inside TreeVisualizationManager class
-    private void DrawLinesToChildren(Transform parent, GameObject leftChild, GameObject rightChild)
+    private void DrawLinesToChildren(GameObject parent, GameObject leftChild, GameObject rightChild)
 {
     // Create a line renderer for the connection from parent to left child
-    GameObject lineRendererLeft = CreateLineRenderer(parent.transform.position, leftChild.transform.position);
+    GameObject lineRendererLeft = CreateLineRenderer(parent.transform, leftChild.transform);
     // Store the line renderer GameObject in the list
     lineRenderers.Add(lineRendererLeft);
 
     // Create a line renderer for the connection from parent to right child
-    GameObject lineRendererRight = CreateLineRenderer(parent.transform.position, rightChild.transform.position);
+    GameObject lineRendererRight = CreateLineRenderer(parent.transform, rightChild.transform);
     // Store the line renderer GameObject in the list
+    
     lineRenderers.Add(lineRendererRight);
 }
 
-private GameObject CreateLineRenderer(Vector3 startPosition, Vector3 endPosition)
+private GameObject CreateLineRenderer(Transform startPosition, Transform endPosition)
 {
     // Create a new GameObject with a name indicating it's a line renderer
     GameObject lineGameObject = new GameObject("LineRendererObject");
@@ -186,9 +187,27 @@ private GameObject CreateLineRenderer(Vector3 startPosition, Vector3 endPosition
     lineRenderer.startWidth = 0.1f; // Assuming lineWidth is set elsewhere in your script
     lineRenderer.endWidth = 0.1f;
 
+    // Add your LineController script to the new GameObject
+    LineController lineController = lineGameObject.AddComponent<LineController>();
+
+    // Create a list of points for the line
+    List<Transform> linePoints = new List<Transform>();
+    linePoints.Add(startPosition); // Start point
+    linePoints.Add(endPosition); // End point for the first line
+
+    // Set up the line using the LineController script
+    lineController.SetUpLine(linePoints);
+
+   
+
+    
+
+
+
+
     // Set the positions
-    lineRenderer.positionCount = 2;
-    lineRenderer.SetPositions(new Vector3[] { startPosition, endPosition });
+    //lineRenderer.positionCount = 2;
+    //lineRenderer.SetPositions(new Vector3[] { startPosition, endPosition });
 
     return lineGameObject;
 }
