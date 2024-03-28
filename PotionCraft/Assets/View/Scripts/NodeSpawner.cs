@@ -4,6 +4,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 
+//This is a gameobject on the scene. It is responsible for spawning the nodes as GameObjects and positioning them on the screen.
 
 public class NodeSpawner : MonoBehaviour
 {
@@ -19,12 +20,15 @@ public class NodeSpawner : MonoBehaviour
 
     // Dictionary to map node values to prefabs. This makes it easy to instantiate the correct prefab based on the node's value
     private Dictionary<int, GameObject> nodeValueToPrefabDictionary = new Dictionary<int, GameObject>();
+    
     // Holds references to the instantiated GameObjects. We need this list to move the nodes and to check thir values to see if they are inserted correctly in the RedBlackTree
+    // FUCKING VIGTIG LISTE!!!!!!
     public static List<GameObject> nodeObjects = new List<GameObject>();
     
 
     void Awake() {
         // Fill the dictionary. Maps the node value to the prefab
+        // This makes it easy to create a new ingredient based on the nodes value. 
         nodeValueToPrefabDictionary.Add(1, RadishPrefab);
         nodeValueToPrefabDictionary.Add(2, MushroomPrefab);
         nodeValueToPrefabDictionary.Add(3, PinkFlowerPrefab);

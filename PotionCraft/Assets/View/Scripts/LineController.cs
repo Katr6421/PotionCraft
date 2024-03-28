@@ -22,14 +22,12 @@ public class LineController : MonoBehaviour
 
     public void SetUpLine(List<Transform> points)
     {
-        Debug.Log("Setting up line!!!!!");
         lineRenderer.positionCount = points.Count;
         this.points = points;
            
     }
 
     public void Update(){
-        Debug.Log("Updating line!!!!!");
         for (int i = 0; i < points.Count; i++)
         {
             lineRenderer.SetPosition(i, points[i].position);

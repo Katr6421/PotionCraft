@@ -35,6 +35,7 @@ public class LevelUIController : MonoBehaviour
         SelectedLevelPotionName.text = LevelSelector.potionName;
         //When the scene starts, we instantiate the first NullCircle aka. the root of the RedBlackTree
         SpawnRoot();
+        // When the scene starts, we instantiate the CircleMarker
         SpawnCircleMarker();
 
     }
@@ -53,13 +54,14 @@ public class LevelUIController : MonoBehaviour
 
     }
 
+    // Moves the circle marker to the new position
+
     public void MoveCircleMarker(Vector3 newPosition, float duration)
     {
         StartCoroutine(MoveCircleRoutine(CircleMarker, newPosition, duration));
     }
 
-
-
+    // ANIMATION: Coroutine to move the circle marker to the new position. 
     IEnumerator MoveCircleRoutine(GameObject objectToMove, Vector3 destination, float duration)
     {
     float elapsedTime = 0;
