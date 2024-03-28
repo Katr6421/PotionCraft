@@ -113,7 +113,10 @@ public class NodeSpawner : MonoBehaviour
         float xPosition = leftBound + spaceBetweenNodes;
         // Return the calculated position
         return new Vector3(xPosition, yPosition, 0);
-    
+}
+
+public List<GameObject> GetNodeObjects(){
+    return nodeObjects;
 }
 
 }

@@ -6,6 +6,7 @@ MonoImporter:
   defaultReferences:
   - nullCirclePrefab: {fileID: 9033406132478758472, guid: 01c4774bbde6f40588961cbedf116ada, type: 3}
   - circleMarkerPrefab: {fileID: 7789355497186854038, guid: 46d8d98cac71c41788d223457de20bfb, type: 3}
+  - lineMaterial: {fileID: 2100000, guid: 749b9069dc4742c5bfa5c74644049926, type: 2}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

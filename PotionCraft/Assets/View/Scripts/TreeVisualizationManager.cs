@@ -20,13 +20,18 @@ public class TreeVisualizationManager : MonoBehaviour
     private Canvas uiCanvas; // Reference to the Canvas where the nodes will be parented
   
     private NodeSpawner NodeSpawner; // Need this to access the list of node GameObjects
-    private LineController LineController; // Need this to draw lines between nodes
 
     private GameObject currentNodeGameObject; // Reference to the current Ingredient that the user must insert in the RedBlackTree
-    private int currectNodeIndex = 0;     // Index of the current node in the list of node GameObjects. 
+    private static int currectNodeIndex = 0;     // Index of the current node in the list of node GameObjects.
+    private LineController LineController; // Need this to draw lines between nodes 
     
     
     private LevelUIController LevelUIController; // Need this to access the CircleMarker
+   
+    public Material lineMaterial;
+    public float lineWidth = 0.1f;
+
+    private List<GameObject> lineRenderers = new List<GameObject>();
 
     void Start()
     {
@@ -44,8 +49,17 @@ public class TreeVisualizationManager : MonoBehaviour
     private void setCurrentIngredientsGameObject()
     {
         // If there are more ingredients to insert, get the next ingredient
-        if (currectNodeIndex < NodeSpawner.nodeObjects.Count){currentNodeGameObject = NodeSpawner.nodeObjects[currectNodeIndex];}
-        else{Debug.Log("Ingen flere ingredienser at indsætte");}
+        Debug.Log("currectNodeIndex" + currectNodeIndex);
+        Debug.Log("Hvor mange ingredienser der er i listen" + NodeSpawner.GetNodeObjects().Count);
+        //(currectNodeIndex < NodeSpawner.nodeObjects.Count)
+
+        if (currectNodeIndex < NodeSpawner.GetNodeObjects().Count)
+        {
+            currentNodeGameObject = NodeSpawner.GetNodeObjects()[currectNodeIndex];
+        }
+        else{
+            Debug.Log("Ingen flere ingredienser at indsætte");
+        }
         currectNodeIndex++;
     }
 
@@ -68,6 +82,7 @@ public class TreeVisualizationManager : MonoBehaviour
         setCurrentIngredientsGameObject();
         Debug.Log("Clokation for nullcircle først" + transform.position);
         Vector3 NullCirclePos = transform.position;
+        Transform NullCircleTransform = transform;
         // Check if there are any node GameObjects in the list
         if (currentNodeGameObject != null)
         {
@@ -101,7 +116,8 @@ public class TreeVisualizationManager : MonoBehaviour
         rightChildNullCircle.transform.SetParent(uiCanvas.transform, false);
 
         //Draw line from parent to leftchild, and from parent to rightchild
-        DrawLinesToChildren(currentNodeGameObject, leftChildNullCircle, rightChildNullCircle);
+        DrawLinesToChildren(NullCircleTransform, leftChildNullCircle, rightChildNullCircle);
+        //DrawLinesToChildren(NullCirclePos, leftChildNullCircle, rightChildNullCircle);
 
 
         //Move nodes to new positions, based on deepth of the tree. Makes room for the nodes
@@ -143,24 +159,40 @@ public class TreeVisualizationManager : MonoBehaviour
    
 
     // Assuming this method is inside TreeVisualizationManager class
-    private void DrawLinesToChildren(GameObject parent, GameObject leftChild, GameObject rightChild)
-    {
-    List<Transform> linePoints = new List<Transform>();
+    private void DrawLinesToChildren(Transform parent, GameObject leftChild, GameObject rightChild)
+{
+    // Create a line renderer for the connection from parent to left child
+    GameObject lineRendererLeft = CreateLineRenderer(parent.transform.position, leftChild.transform.position);
+    // Store the line renderer GameObject in the list
+    lineRenderers.Add(lineRendererLeft);
 
-    // Add the parent (current node), left child, and right child to the list
-    linePoints.Add(parent.transform); // Start point
-    linePoints.Add(leftChild.transform); // End point for the first line
+    // Create a line renderer for the connection from parent to right child
+    GameObject lineRendererRight = CreateLineRenderer(parent.transform.position, rightChild.transform.position);
+    // Store the line renderer GameObject in the list
+    lineRenderers.Add(lineRendererRight);
+}
 
-    // Since LineController.DrawLine expects a continuous list of points for drawing,
-    // you need to add the parent node again to draw from it to the right child
-    linePoints.Add(parent.transform); // Start point for the second line
-    linePoints.Add(rightChild.transform); // End point for the second line
+private GameObject CreateLineRenderer(Vector3 startPosition, Vector3 endPosition)
+{
+    // Create a new GameObject with a name indicating it's a line renderer
+    GameObject lineGameObject = new GameObject("LineRendererObject");
 
-    // Update the LineController with the new points
-    LineController.SetUpLine(linePoints);
-    // Since LineController already updates line positions in its Update method,
-    // the lines should now properly connect the parent with its children.
-    }
+    // Add a LineRenderer component to the GameObject
+    LineRenderer lineRenderer = lineGameObject.AddComponent<LineRenderer>();
+
+    // Set up the LineRenderer
+    //lineRenderer.material = lineMaterial; // Assuming lineMaterial is assigned elsewhere in your script
+    lineRenderer.material = new Material(Shader.Find("Legacy Shaders/Particles/Alpha Blended Premultiply"));
+    lineRenderer.startWidth = 0.1f; // Assuming lineWidth is set elsewhere in your script
+    lineRenderer.endWidth = 0.1f;
+
+    // Set the positions
+    lineRenderer.positionCount = 2;
+    lineRenderer.SetPositions(new Vector3[] { startPosition, endPosition });
+
+    return lineGameObject;
+}
+
 
 
 /*********************************************
