@@ -16,6 +16,7 @@ public class TreeVisualizationManager : MonoBehaviour
     
     [SerializeField] private GameObject nullCirclePrefab;
     [SerializeField] private GameObject circleMarkerPrefab;
+    
     private Canvas uiCanvas; // Reference to the Canvas where the nodes will be parented
   
     private NodeSpawner NodeSpawner; // Need this to access the list of node GameObjects
@@ -90,10 +91,10 @@ public class TreeVisualizationManager : MonoBehaviour
     
         Debug.Log("Clokation for nullcircle først" + transform.position);
         // Instantiate the two new NullCircles
-        GameObject leftChildNullCircle = Instantiate(nullCirclePrefab, CalculateLeftChildPosition(NullCirclePos), Quaternion.identity);
-        GameObject rightChildNullCircle = Instantiate(nullCirclePrefab, CalculateRightChildPosition(NullCirclePos), Quaternion.identity);
-        leftChildNullCircle.transform.SetParent(uiCanvas.transform, true);
-        rightChildNullCircle.transform.SetParent(uiCanvas.transform, true);
+        GameObject leftChildNullCircle = Instantiate(nullCirclePrefab, CalculateLeftChildPosition(WorldToCanvasPosition(uiCanvas,NullCirclePos)), Quaternion.identity);
+        GameObject rightChildNullCircle = Instantiate(nullCirclePrefab, CalculateRightChildPosition(WorldToCanvasPosition(uiCanvas,NullCirclePos)), Quaternion.identity);
+        leftChildNullCircle.transform.SetParent(uiCanvas.transform, false);
+        rightChildNullCircle.transform.SetParent(uiCanvas.transform, false);
 
         //Draw line from parent to leftchild, and from parent to rightchild
         DrawLinesToChildren(currentNodeGameObject, leftChildNullCircle, rightChildNullCircle);
@@ -123,6 +124,18 @@ public class TreeVisualizationManager : MonoBehaviour
         float yPosition = ParentNodePosition.y - 122;
         return new Vector3(xPosition, yPosition, 0);
     }
+
+    public Vector2 WorldToCanvasPosition(Canvas canvas, Vector3 worldPosition)
+{
+    // Calculate the position of the world position on the canvas
+    Vector2 viewportPosition = Camera.main.WorldToViewportPoint(worldPosition);
+    Vector2 canvasSize = canvas.GetComponent<RectTransform>().sizeDelta;
+
+    // Convert the viewport position to be relative to the canvas
+    return new Vector2((viewportPosition.x * canvasSize.x) - (canvasSize.x * 0.5f),
+                       (viewportPosition.y * canvasSize.y) - (canvasSize.y * 0.5f));
+}
+
    
 
     // Assuming this method is inside TreeVisualizationManager class

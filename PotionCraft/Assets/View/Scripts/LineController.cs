@@ -20,6 +20,7 @@ public class LineController : MonoBehaviour
     {
         lineRenderer.positionCount = points.Count;
         this.points = points;
+        
     }
 
     public void Update(){
