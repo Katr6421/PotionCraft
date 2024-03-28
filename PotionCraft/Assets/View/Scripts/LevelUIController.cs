@@ -22,7 +22,10 @@ public class LevelUIController : MonoBehaviour
 
     [SerializeField] public TextMeshProUGUI SelectedLevelPotionName;
     [SerializeField] private GameObject NullCirclePrefab;
+    [SerializeField] private GameObject CircleMarkerPrefab;
+    private GameObject CircleMarker;
     private Vector3 StartNullCirclePosition = new Vector3(578, 239, 0);
+     private Vector3 circleStartPosition = new Vector3(2.12f, 3.79f, 0);
  
     
     public void Start()
@@ -32,6 +35,7 @@ public class LevelUIController : MonoBehaviour
         SelectedLevelPotionName.text = LevelSelector.potionName;
         //When the scene starts, we instantiate the first NullCircle aka. the root of the RedBlackTree
         SpawnRoot();
+        SpawnCircleMarker();
 
     }
     public void SpawnRoot(){
@@ -39,9 +43,36 @@ public class LevelUIController : MonoBehaviour
         nullCircle.transform.SetParent(uiCanvas.transform, false);
     }
 
+    public void SpawnCircleMarker(){
+        CircleMarker = Instantiate(CircleMarkerPrefab, circleStartPosition, Quaternion.identity);
+        //CircleMarker.transform.SetParent(uiCanvas.transform, false);
+    }
+
     public Canvas getUiCanvas(){
         return uiCanvas;
 
+    }
+
+    public void MoveCircleMarker(Vector3 newPosition, float duration)
+    {
+        StartCoroutine(MoveCircleRoutine(CircleMarker, newPosition, duration));
+    }
+
+
+
+    IEnumerator MoveCircleRoutine(GameObject objectToMove, Vector3 destination, float duration)
+    {
+    float elapsedTime = 0;
+    Vector3 startingPos = objectToMove.transform.position;
+
+    while (elapsedTime < duration)
+    {
+        objectToMove.transform.position = Vector3.Lerp(startingPos, destination, (elapsedTime / duration));
+        elapsedTime += Time.deltaTime;
+        yield return null; // Wait for the next frame
+    }
+
+    objectToMove.transform.position = destination; // Ensure it reaches the destination
     }
 }
 

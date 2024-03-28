@@ -25,14 +25,16 @@ public class TreeVisualizationManager : MonoBehaviour
     private GameObject currentNodeGameObject; // Reference to the current Ingredient that the user must insert in the RedBlackTree
     private int currectNodeIndex = 0;     // Index of the current node in the list of node GameObjects. 
     
-    private GameObject CircleMarker; // Reference to the instantiated circle
-    private Vector3 circleStartPosition = new Vector3(2.12f, 3.79f, 0); // Position of the circle
+    
+    private LevelUIController LevelUIController; // Need this to access the CircleMarker
 
     void Start()
     {
         // Instantiate the circle from start
-        CircleMarker = Instantiate(circleMarkerPrefab, circleStartPosition, Quaternion.identity);
+       // CircleMarker = Instantiate(circleMarkerPrefab, circleStartPosition, Quaternion.identity);
         LineController = FindObjectOfType<LineController>();
+        LevelUIController = FindObjectOfType<LevelUIController>();
+        NodeSpawner = FindObjectOfType<NodeSpawner>();
         uiCanvas = FindObjectOfType<Canvas>();
        
 
@@ -82,8 +84,10 @@ public class TreeVisualizationManager : MonoBehaviour
         /*********************************************
         PART 2
         *********************************************/
-        // Move the existing circle to a new position
-        StartCoroutine(MoveCircle(CircleMarker, CalculatePosition(currectNodeIndex), 0.5f));
+        // Move the circlemarker to a new position
+        LevelUIController.MoveCircleMarker(CalculatePosition(currectNodeIndex), 0.5f);
+
+
 
         /*********************************************
         PART 3
@@ -183,20 +187,7 @@ public class TreeVisualizationManager : MonoBehaviour
     
 }
 
-IEnumerator MoveCircle(GameObject objectToMove, Vector3 destination, float duration)
-{
-    float elapsedTime = 0;
-    Vector3 startingPos = objectToMove.transform.position;
 
-    while (elapsedTime < duration)
-    {
-        objectToMove.transform.position = Vector3.Lerp(startingPos, destination, (elapsedTime / duration));
-        elapsedTime += Time.deltaTime;
-        yield return null; // Wait for the next frame
-    }
-
-    objectToMove.transform.position = destination; // Ensure it reaches the destination
-}
 
  public Vector3 CalculatePosition(int nodeIndex)
 {
