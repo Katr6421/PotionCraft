@@ -17,7 +17,7 @@ DESCRIPTION: This class is responsible for controlling the UI elements in the Le
 public class LevelUIController : MonoBehaviour
 {
 
-    [SerializeField] private Canvas uiCanvas;
+    [SerializeField] public Canvas uiCanvas;
     [SerializeField] public TextMeshProUGUI SelectedLevelText;
 
     [SerializeField] public TextMeshProUGUI SelectedLevelPotionName;
@@ -39,12 +39,9 @@ public class LevelUIController : MonoBehaviour
         nullCircle.transform.SetParent(uiCanvas.transform, false);
     }
 
-  
-
-
-
-
+    public Canvas getUiCanvas(){
+        return uiCanvas;
 
     }
-
+}
 

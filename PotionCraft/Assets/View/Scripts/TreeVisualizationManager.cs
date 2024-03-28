@@ -16,8 +16,10 @@ public class TreeVisualizationManager : MonoBehaviour
     
     [SerializeField] private GameObject nullCirclePrefab;
     [SerializeField] private GameObject circleMarkerPrefab;
+    private Canvas uiCanvas; // Reference to the Canvas where the nodes will be parented
   
     private NodeSpawner NodeSpawner; // Need this to access the list of node GameObjects
+    private LineController LineController; // Need this to draw lines between nodes
 
     private GameObject currentNodeGameObject; // Reference to the current Ingredient that the user must insert in the RedBlackTree
     private int currectNodeIndex = 0;     // Index of the current node in the list of node GameObjects. 
@@ -29,6 +31,10 @@ public class TreeVisualizationManager : MonoBehaviour
     {
         // Instantiate the circle from start
         CircleMarker = Instantiate(circleMarkerPrefab, circleStartPosition, Quaternion.identity);
+        LineController = FindObjectOfType<LineController>();
+        uiCanvas = FindObjectOfType<Canvas>();
+       
+
     }
 
 
@@ -57,11 +63,13 @@ public class TreeVisualizationManager : MonoBehaviour
 
         // Get the current ingredient that the user must insert in the RedBlackTree
         setCurrentIngredientsGameObject();
+        Debug.Log("Clokation for nullcircle først" + transform.position);
+        Vector3 NullCirclePos = transform.position;
         // Check if there are any node GameObjects in the list
         if (currentNodeGameObject != null)
         {
             // Move the current ingredient to this NullCircle's position
-            Vector3 NullCirclePos = transform.position;
+            
             StartCoroutine(MoveAndDestroy(currentNodeGameObject, NullCirclePos, 0.5f));
 
         }
@@ -80,14 +88,18 @@ public class TreeVisualizationManager : MonoBehaviour
         PART 3
         *********************************************/
     
-  
+        Debug.Log("Clokation for nullcircle først" + transform.position);
         // Instantiate the two new NullCircles
-        //GameObject leftChildNullCircle = Instantiate(nullCirclePrefab, CalculateLeftChildPosition(), Quaternion.identity);
-        //GameObject rightChildNullCircle = Instantiate(nullCirclePrefab, CalculateRightChildPosition(), Quaternion.identity);
+        GameObject leftChildNullCircle = Instantiate(nullCirclePrefab, CalculateLeftChildPosition(NullCirclePos), Quaternion.identity);
+        GameObject rightChildNullCircle = Instantiate(nullCirclePrefab, CalculateRightChildPosition(NullCirclePos), Quaternion.identity);
+        leftChildNullCircle.transform.SetParent(uiCanvas.transform, true);
+        rightChildNullCircle.transform.SetParent(uiCanvas.transform, true);
 
-        // Instantiate and set up lines
-        //DrawLine(nodeObject.transform.position, leftChildNullCircle.transform.position);
-        //DrawLine(nodeObject.transform.position, rightChildNullCircle.transform.position);
+        //Draw line from parent to leftchild, and from parent to rightchild
+        DrawLinesToChildren(currentNodeGameObject, leftChildNullCircle, rightChildNullCircle);
+
+
+        //Move nodes to new positions, based on deepth of the tree. Makes room for the nodes
 
         
     }
@@ -98,23 +110,41 @@ public class TreeVisualizationManager : MonoBehaviour
 
     
 
-    Vector3 CalculateLeftChildPosition()
+    Vector3 CalculateLeftChildPosition(Vector3 ParentNodePosition)
     {
-        throw new System.NotImplementedException();
+        float xPosition = ParentNodePosition.x - 85;
+        float yPosition = ParentNodePosition.y - 122;
+        return new Vector3(xPosition, yPosition, 0);
     }
 
-    Vector3 CalculateRightChildPosition()
+    Vector3 CalculateRightChildPosition(Vector3 ParentNodePosition)
     {
-        throw new System.NotImplementedException();
+        float xPosition = ParentNodePosition.x + 85;
+        float yPosition = ParentNodePosition.y - 122;
+        return new Vector3(xPosition, yPosition, 0);
+    }
+   
+
+    // Assuming this method is inside TreeVisualizationManager class
+    private void DrawLinesToChildren(GameObject parent, GameObject leftChild, GameObject rightChild)
+    {
+    List<Transform> linePoints = new List<Transform>();
+
+    // Add the parent (current node), left child, and right child to the list
+    linePoints.Add(parent.transform); // Start point
+    linePoints.Add(leftChild.transform); // End point for the first line
+
+    // Since LineController.DrawLine expects a continuous list of points for drawing,
+    // you need to add the parent node again to draw from it to the right child
+    linePoints.Add(parent.transform); // Start point for the second line
+    linePoints.Add(rightChild.transform); // End point for the second line
+
+    // Update the LineController with the new points
+    LineController.SetUpLine(linePoints);
+    // Since LineController already updates line positions in its Update method,
+    // the lines should now properly connect the parent with its children.
     }
 
-    void DrawLine(Vector3 start, Vector3 end)
-    {
-        //GameObject line = Instantiate(linePrefab);
-        //LineRenderer lineRenderer = line.GetComponent<LineRenderer>();
-        //lineRenderer.SetPosition(0, start);
-        //lineRenderer.SetPosition(1, end);
-    }
 
 /*********************************************
     METHOD: MoveAndDestroy                          
