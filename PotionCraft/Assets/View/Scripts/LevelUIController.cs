@@ -25,7 +25,6 @@ public class LevelUIController : MonoBehaviour
     [SerializeField] private GameObject Frame;
     private GameObject CircleMarker;
     private Vector3 circleStartPosition = new Vector3(2.12f, 3.79f, 0);
-    private FrameController frameController;
  
     
     public void Start()
@@ -33,7 +32,6 @@ public class LevelUIController : MonoBehaviour
         //When the scene starts, we update the recipe text.
         SelectedLevelText.text = "Level " + LevelSelector.selectedLevel;
         SelectedLevelPotionName.text = LevelSelector.potionName;
-        frameController = FindObjectOfType<FrameController>();
     
         // When the scene starts, we instantiate the CircleMarker
         SpawnCircleMarker();

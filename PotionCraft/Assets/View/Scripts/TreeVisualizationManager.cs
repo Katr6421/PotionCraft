@@ -27,8 +27,6 @@ public class TreeVisualizationManager : MonoBehaviour
     private int _currectIngredientIndex = 0;     // Index of the current ingredient in the list of ingredients.
     private LevelUIController _levelUIController; // Need this to access the CircleMarker
     private List<GameObject> _lineRenderers = new List<GameObject>();
-    private FrameController _frameController;
-    private bool _isRunning = false;
     private NullCircleSpawner _nullCircleSpawner;
 
     void Start()
@@ -36,7 +34,6 @@ public class TreeVisualizationManager : MonoBehaviour
         _levelUIController = FindObjectOfType<LevelUIController>();
         _nodeSpawner = FindObjectOfType<NodeSpawner>();
         _uiCanvas = FindObjectOfType<Canvas>();
-        _frameController = FindObjectOfType<FrameController>();
         _nullCircleSpawner = FindObjectOfType<NullCircleSpawner>();
 
         
@@ -47,14 +44,8 @@ public class TreeVisualizationManager : MonoBehaviour
 
     private void SpawnRoot()
     {
+        // Viser den første nullCircle
         _nullCircleSpawner.nullCircles[0].SetActive(true);
-
-        /*
-        //Spawner første nullCircle
-        Vector3 vector = _frameController.PlaceRoot(_uiCanvas);
-        _currentNullCircle = Instantiate(_nullCirclePrefab, vector, Quaternion.identity);
-        //_currentNullCircle.transform.SetParent(_uiCanvas.transform, false);
-        _frameController.FindNewPos(_uiCanvas, _currentNullCircle, true);*/
     }
 
     /*********************************************
@@ -109,12 +100,6 @@ public class TreeVisualizationManager : MonoBehaviour
         var rightChildNullCircle = _currentNullCircle.GetComponent<NullCircle>().RightChild;
         rightChildNullCircle.SetActive(true);
 
-        //GameObject leftChildNullCircle = Instantiate(_nullCirclePrefab, CalcLeftChildPos(_currentIngredientInTree), Quaternion.identity);
-        //GameObject rightChildNullCircle = Instantiate(_nullCirclePrefab, CalcRightChildPos(_currentIngredientInTree), Quaternion.identity);
-        // Just needs this, not sure why
-        //leftChildNullCircle.transform.SetParent(_uiCanvas.transform, false);
-        //rightChildNullCircle.transform.SetParent(_uiCanvas.transform, false);
-
 
         /*********************************************
         PART 4
@@ -150,19 +135,6 @@ public class TreeVisualizationManager : MonoBehaviour
         }
         _currectIngredientIndex++;
     }
-  
-
-
-    private Vector3 CalcLeftChildPos(GameObject ParentNodePos)
-    {
-        return _frameController.FindNewPos(_uiCanvas, ParentNodePos, true);
-    }
-
-    private Vector3 CalcRightChildPos(GameObject ParentNodePos)
-    {
-        return _frameController.FindNewPos(_uiCanvas, ParentNodePos, false);
-    }
-
 
    
     // these two method should maybe have its own class
@@ -234,8 +206,7 @@ public class TreeVisualizationManager : MonoBehaviour
         objectToMove.transform.position = destination; // Ensure it reaches the destination
 
         // Now that the movement is complete, destroy the NullCircle GameObject
-        Destroy(_currentNullCircle); // Assuming gameObject is the NullCircle you want to destroy
-        //_currentNullCircle.SetActive(false);
+        _currentNullCircle.SetActive(false);
     }
 
 
