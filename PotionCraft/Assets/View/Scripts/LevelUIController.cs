@@ -25,7 +25,8 @@ public class LevelUIController : MonoBehaviour
     [SerializeField] private GameObject CircleMarkerPrefab;
     [SerializeField] private GameObject Frame;
     private GameObject CircleMarker;
-     private Vector3 circleStartPosition = new Vector3(2.12f, 3.79f, 0);
+    private Vector3 circleStartPosition = new Vector3(2.12f, 3.79f, 0);
+    private FrameController frameController;
  
     
     public void Start()
@@ -33,6 +34,7 @@ public class LevelUIController : MonoBehaviour
         //When the scene starts, we update the recipe text.
         SelectedLevelText.text = "Level " + LevelSelector.selectedLevel;
         SelectedLevelPotionName.text = LevelSelector.potionName;
+        frameController = FindObjectOfType<FrameController>();
         //When the scene starts, we instantiate the first NullCircle aka. the root of the RedBlackTree
         SpawnRoot();
         // When the scene starts, we instantiate the CircleMarker
@@ -40,7 +42,7 @@ public class LevelUIController : MonoBehaviour
 
     }
     public void SpawnRoot(){
-        var x = FindMiddleX(Frame);
+        var x = frameController.PlaceRoot(uiCanvas);
         GameObject nullCircle = Instantiate(NullCirclePrefab, new Vector3(x, 239, 0), Quaternion.identity);
         nullCircle.transform.SetParent(uiCanvas.transform, false);
     }
@@ -78,15 +80,6 @@ public class LevelUIController : MonoBehaviour
     objectToMove.transform.position = destination; // Ensure it reaches the destination
     }
 
-    public float FindMiddleX(GameObject frame){
-        var trans = frame.transform;
-        Vector3 min = frame.transform.TransformPoint(frame.GetComponent<RectTransform>().rect.min); // bottom left
-        Vector3 max = frame.transform.TransformPoint(frame.GetComponent<RectTransform>().rect.max); // top right
-  
-        // Find middle value of x
-        var x = (max.x + min.x) / 2;
-        return Utilities.WorldToCanvasPosition(uiCanvas, new Vector3(x, 0, 0)).x;
-
-    }
+    
 }
 

@@ -124,6 +124,11 @@ public class TreeVisualizationManager : MonoBehaviour
         return new Vector3(xPosition, yPosition, 0);
     }
 
+    //private Vector3 CalcLeftChildPos(Vector3 ParentNodePos)
+    //{
+
+    //}
+
     Vector3 CalculateRightChildPosition(Vector3 ParentNodePosition)
     {
         float xPosition = ParentNodePosition.x + 85;
