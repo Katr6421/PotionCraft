@@ -23,8 +23,8 @@ public class LevelUIController : MonoBehaviour
     [SerializeField] public TextMeshProUGUI SelectedLevelPotionName;
     [SerializeField] private GameObject NullCirclePrefab;
     [SerializeField] private GameObject CircleMarkerPrefab;
+    [SerializeField] private GameObject Frame;
     private GameObject CircleMarker;
-    private Vector3 StartNullCirclePosition = new Vector3(578, 239, 0);
      private Vector3 circleStartPosition = new Vector3(2.12f, 3.79f, 0);
  
     
@@ -40,7 +40,8 @@ public class LevelUIController : MonoBehaviour
 
     }
     public void SpawnRoot(){
-        GameObject nullCircle = Instantiate(NullCirclePrefab, StartNullCirclePosition, Quaternion.identity);
+        var x = FindMiddleX(Frame);
+        GameObject nullCircle = Instantiate(NullCirclePrefab, new Vector3(x, 239, 0), Quaternion.identity);
         nullCircle.transform.SetParent(uiCanvas.transform, false);
     }
 
@@ -75,6 +76,17 @@ public class LevelUIController : MonoBehaviour
     }
 
     objectToMove.transform.position = destination; // Ensure it reaches the destination
+    }
+
+    public float FindMiddleX(GameObject frame){
+        var trans = frame.transform;
+        Vector3 min = frame.transform.TransformPoint(frame.GetComponent<RectTransform>().rect.min); // bottom left
+        Vector3 max = frame.transform.TransformPoint(frame.GetComponent<RectTransform>().rect.max); // top right
+  
+        // Find middle value of x
+        var x = (max.x + min.x) / 2;
+        return Utilities.WorldToCanvasPosition(uiCanvas, new Vector3(x, 0, 0)).x;
+
     }
 }
 

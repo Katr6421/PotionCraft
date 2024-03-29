@@ -79,8 +79,8 @@ public class TreeVisualizationManager : MonoBehaviour
         *********************************************/
     
         // Instantiate the two new NullCircles. When instantiating the new NullCircles, we need to calculate the position based on canvas. We need to translate the world position to a canvas position.
-        GameObject leftChildNullCircle = Instantiate(nullCirclePrefab, CalculateLeftChildPosition(WorldToCanvasPosition(uiCanvas,CurrentNullCircleStartPosistion)), Quaternion.identity);
-        GameObject rightChildNullCircle = Instantiate(nullCirclePrefab, CalculateRightChildPosition(WorldToCanvasPosition(uiCanvas,CurrentNullCircleStartPosistion)), Quaternion.identity);
+        GameObject leftChildNullCircle = Instantiate(nullCirclePrefab, CalculateLeftChildPosition(Utilities.WorldToCanvasPosition(uiCanvas,CurrentNullCircleStartPosistion)), Quaternion.identity);
+        GameObject rightChildNullCircle = Instantiate(nullCirclePrefab, CalculateRightChildPosition(Utilities.WorldToCanvasPosition(uiCanvas,CurrentNullCircleStartPosistion)), Quaternion.identity);
         // Just needs this, not sure why
         leftChildNullCircle.transform.SetParent(uiCanvas.transform, false);
         rightChildNullCircle.transform.SetParent(uiCanvas.transform, false);
@@ -131,19 +131,7 @@ public class TreeVisualizationManager : MonoBehaviour
         return new Vector3(xPosition, yPosition, 0);
     }
 
-    public Vector2 WorldToCanvasPosition(Canvas canvas, Vector3 worldPosition)
-    {
-    // Calculate the position of the world position on the canvas
-    Vector2 viewportPosition = Camera.main.WorldToViewportPoint(worldPosition);
-    Vector2 canvasSize = canvas.GetComponent<RectTransform>().sizeDelta;
-
-    // Convert the viewport position to be relative to the canvas
-    return new Vector2((viewportPosition.x * canvasSize.x) - (canvasSize.x * 0.5f),
-                       (viewportPosition.y * canvasSize.y) - (canvasSize.y * 0.5f));
-    }
-
    
-
     // these two method should maybe have its own class
     private void DrawLinesToChildren(GameObject parent, GameObject leftChild, GameObject rightChild)
     {
