@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.UIElements;
 
 /*********************************************
@@ -39,7 +40,7 @@ public class TreeVisualizationManager : MonoBehaviour
         
     }
 
-    public void SpawnRoot(){
+    private void SpawnRoot(){
         Vector3 vector = _frameController.PlaceRoot(_uiCanvas);
         GameObject nullCircle = Instantiate(_nullCirclePrefab, vector, Quaternion.identity);
         nullCircle.transform.SetParent(_uiCanvas.transform, false);
@@ -55,8 +56,9 @@ public class TreeVisualizationManager : MonoBehaviour
     Part 5: Should only move the nodes so there are room for the new nodes. Not implemented yet. Should NOT do the rotation. 
     *********************************************/
 
-     public void OnClickedNullCirkle()
+     public void OnClickedNullCircle()
     {
+        Debug.Log("inde i OnClickedNullCircle");
         /*********************************************
         PART 1
         *********************************************/
@@ -218,7 +220,7 @@ public class TreeVisualizationManager : MonoBehaviour
 
 
 // Used to calculate the posistion of the current ingredient marker circle
- public Vector3 CalculatePosition(int nodeIndex)
+ private Vector3 CalculatePosition(int nodeIndex)
 {
         float leftBound = 2.12f; // x position of the leftmost point in the red circle, HARD CODED
         float yPosition = 3.79f; // y position where the nodes should be placed, HARD CODED
