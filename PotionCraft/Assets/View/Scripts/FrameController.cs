@@ -13,22 +13,26 @@ public class FrameController : MonoBehaviour
         maxX = transform.TransformPoint(GetComponent<RectTransform>().rect.max).x;
     }
 
-    public float PlaceRoot(Canvas canvas)
+    public Vector3 PlaceRoot(Canvas canvas)
     {
-        return FindMiddleX(canvas, maxX, true);
+        var x = (minX + maxX) / 2;
+        Vector3 v = Utilities.WorldToCanvasPosition(canvas, new Vector3(x, 0, 0));
+        return new Vector3(v.x, 239, 0);
     }
     
-    public float FindMiddleX(Canvas canvas, float parentNodePosX, bool isLeft)
+    public Vector3 FindMiddleX(Canvas canvas, GameObject parentNodePos, bool isLeft)
     {
         if (isLeft)
         {
-            var x = (parentNodePosX + minX) / 2;
-            return Utilities.WorldToCanvasPosition(canvas, new Vector3(x, 0, 0)).x;
+            var x = (parentNodePos.transform.position.x + minX) / 2;
+            var y = parentNodePos.transform.position.y - 122;
+            return Utilities.WorldToCanvasPosition(canvas, new Vector3(x, y, 0));
         }
         else
         {
-            var x = (parentNodePosX + maxX) / 2;
-            return Utilities.WorldToCanvasPosition(canvas, new Vector3(x, 0, 0)).x;
+            var x = (parentNodePos.transform.position.x + maxX) / 2;
+            var y = parentNodePos.transform.position.y - 122;
+            return Utilities.WorldToCanvasPosition(canvas, new Vector3(x, y, 0));
         }
     }
 }

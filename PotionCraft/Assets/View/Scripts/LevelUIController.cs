@@ -21,7 +21,6 @@ public class LevelUIController : MonoBehaviour
     [SerializeField] public TextMeshProUGUI SelectedLevelText;
 
     [SerializeField] public TextMeshProUGUI SelectedLevelPotionName;
-    [SerializeField] private GameObject NullCirclePrefab;
     [SerializeField] private GameObject CircleMarkerPrefab;
     [SerializeField] private GameObject Frame;
     private GameObject CircleMarker;
@@ -35,17 +34,12 @@ public class LevelUIController : MonoBehaviour
         SelectedLevelText.text = "Level " + LevelSelector.selectedLevel;
         SelectedLevelPotionName.text = LevelSelector.potionName;
         frameController = FindObjectOfType<FrameController>();
-        //When the scene starts, we instantiate the first NullCircle aka. the root of the RedBlackTree
-        SpawnRoot();
+    
         // When the scene starts, we instantiate the CircleMarker
         SpawnCircleMarker();
 
     }
-    public void SpawnRoot(){
-        var x = frameController.PlaceRoot(uiCanvas);
-        GameObject nullCircle = Instantiate(NullCirclePrefab, new Vector3(x, 239, 0), Quaternion.identity);
-        nullCircle.transform.SetParent(uiCanvas.transform, false);
-    }
+   
 
     public void SpawnCircleMarker(){
         CircleMarker = Instantiate(CircleMarkerPrefab, circleStartPosition, Quaternion.identity);

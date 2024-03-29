@@ -15,26 +15,34 @@ Summary: Everyting that happens when a NullCircle is clicked.
 public class TreeVisualizationManager : MonoBehaviour
 {
     
-    [SerializeField] private GameObject nullCirclePrefab;
-    
-    private Canvas uiCanvas; // Reference to the Canvas where the nodes will be parented
+    [SerializeField] private GameObject _nullCirclePrefab;
+    private Canvas _uiCanvas; // Reference to the Canvas where the nodes will be parented
   
-    private NodeSpawner NodeSpawner; // Need this to access the list of node GameObjects
+    private NodeSpawner _nodeSpawner; // Need this to access the list of node GameObjects
 
-    private GameObject currentNodeGameObject; // Reference to the current Ingredient that the user must insert in the RedBlackTree
-    private static int currectNodeIndex = 0;     // Index of the current node in the list of node GameObjects.
+    private GameObject _currentNodeGameObject; // Reference to the current Ingredient that the user must insert in the RedBlackTree
+    private static int _currectNodeIndex = 0;     // Index of the current node in the list of node GameObjects.
     
-    private LevelUIController LevelUIController; // Need this to access the CircleMarker
-   
-
-    private List<GameObject> lineRenderers = new List<GameObject>();
+    private LevelUIController _levelUIController; // Need this to access the CircleMarker
+    private List<GameObject> _lineRenderers = new List<GameObject>();
+    private FrameController _frameController;
 
     void Start()
     {
-        LevelUIController = FindObjectOfType<LevelUIController>();
-        NodeSpawner = FindObjectOfType<NodeSpawner>();
-        uiCanvas = FindObjectOfType<Canvas>();
-       
+        _levelUIController = FindObjectOfType<LevelUIController>();
+        _nodeSpawner = FindObjectOfType<NodeSpawner>();
+        _uiCanvas = FindObjectOfType<Canvas>();
+        _frameController = FindObjectOfType<FrameController>();
+        
+        //When the scene starts, we instantiate the first NullCircle aka. the root of the RedBlackTree
+        SpawnRoot();
+        
+    }
+
+    public void SpawnRoot(){
+        Vector3 vector = _frameController.PlaceRoot(_uiCanvas);
+        GameObject nullCircle = Instantiate(_nullCirclePrefab, vector, Quaternion.identity);
+        nullCircle.transform.SetParent(_uiCanvas.transform, false);
     }
 
     /*********************************************
@@ -59,11 +67,11 @@ public class TreeVisualizationManager : MonoBehaviour
         // Needs to store this position, to be able to move the current ingredient to this position and to calculate the position of the new NullCircles
         Vector3 CurrentNullCircleStartPosistion = transform.position;
         // Check if the current ingredient is not null
-        if (currentNodeGameObject != null)
+        if (_currentNodeGameObject != null)
         {
             // Move the current ingredient to this NullCircle Start position.
             // Needs to be a coroutine to be able to wait for the movement to finish before destroying the NullCircle
-            StartCoroutine(MoveAndDestroy(currentNodeGameObject, CurrentNullCircleStartPosistion, 0.5f));
+            StartCoroutine(MoveAndDestroy(_currentNodeGameObject, CurrentNullCircleStartPosistion, 0.5f));
 
         }
 
@@ -71,7 +79,7 @@ public class TreeVisualizationManager : MonoBehaviour
         PART 2
         *********************************************/
         // Move the circlemarker to a new position
-        LevelUIController.MoveCircleMarker(CalculatePosition(currectNodeIndex), 0.5f);
+        _levelUIController.MoveCircleMarker(CalculatePosition(_currectNodeIndex), 0.5f);
 
 
         /*********************************************
@@ -79,18 +87,19 @@ public class TreeVisualizationManager : MonoBehaviour
         *********************************************/
     
         // Instantiate the two new NullCircles. When instantiating the new NullCircles, we need to calculate the position based on canvas. We need to translate the world position to a canvas position.
-        GameObject leftChildNullCircle = Instantiate(nullCirclePrefab, CalculateLeftChildPosition(Utilities.WorldToCanvasPosition(uiCanvas,CurrentNullCircleStartPosistion)), Quaternion.identity);
-        GameObject rightChildNullCircle = Instantiate(nullCirclePrefab, CalculateRightChildPosition(Utilities.WorldToCanvasPosition(uiCanvas,CurrentNullCircleStartPosistion)), Quaternion.identity);
+        //GameObject leftChildNullCircle = Instantiate(nullCirclePrefab, CalculateLeftChildPosition(Utilities.WorldToCanvasPosition(uiCanvas,CurrentNullCircleStartPosistion)), Quaternion.identity);
+        GameObject leftChildNullCircle = Instantiate(_nullCirclePrefab, CalcLeftChildPos(_currentNodeGameObject), Quaternion.identity);
+        GameObject rightChildNullCircle = Instantiate(_nullCirclePrefab, CalculateRightChildPosition(Utilities.WorldToCanvasPosition(_uiCanvas,CurrentNullCircleStartPosistion)), Quaternion.identity);
         // Just needs this, not sure why
-        leftChildNullCircle.transform.SetParent(uiCanvas.transform, false);
-        rightChildNullCircle.transform.SetParent(uiCanvas.transform, false);
+        leftChildNullCircle.transform.SetParent(_uiCanvas.transform, false);
+        rightChildNullCircle.transform.SetParent(_uiCanvas.transform, false);
 
         /*********************************************
         PART 4
         *********************************************/
 
         //Draw line from parent to leftchild, and from parent to rightchild
-        DrawLinesToChildren(currentNodeGameObject, leftChildNullCircle, rightChildNullCircle);
+        DrawLinesToChildren(_currentNodeGameObject, leftChildNullCircle, rightChildNullCircle);
         //DrawLinesToChildren(NullCirclePos, leftChildNullCircle, rightChildNullCircle);
 
         /*********************************************
@@ -106,14 +115,14 @@ public class TreeVisualizationManager : MonoBehaviour
     {
         // If there are more ingredients to insert, get the next ingredient
 
-        if (currectNodeIndex < NodeSpawner.GetNodeObjects().Count)
+        if (_currectNodeIndex < _nodeSpawner.GetNodeObjects().Count)
         {
-            currentNodeGameObject = NodeSpawner.GetNodeObjects()[currectNodeIndex];
+            _currentNodeGameObject = _nodeSpawner.GetNodeObjects()[_currectNodeIndex];
         }
         else{
             Debug.Log("Ingen flere ingredienser at indsætte");
         }
-        currectNodeIndex++;
+        _currectNodeIndex++;
     }
   
 
@@ -124,10 +133,10 @@ public class TreeVisualizationManager : MonoBehaviour
         return new Vector3(xPosition, yPosition, 0);
     }
 
-    //private Vector3 CalcLeftChildPos(Vector3 ParentNodePos)
-    //{
-
-    //}
+    private Vector3 CalcLeftChildPos(GameObject ParentNodePos)
+    {
+        return _frameController.FindMiddleX(_uiCanvas, ParentNodePos, true);
+    }
 
     Vector3 CalculateRightChildPosition(Vector3 ParentNodePosition)
     {
@@ -143,13 +152,13 @@ public class TreeVisualizationManager : MonoBehaviour
     // Create a line renderer for the connection from parent to left child
     GameObject lineRendererLeft = CreateLineRenderer(parent.transform, leftChild.transform);
     // Store the line renderer GameObject in the list
-    lineRenderers.Add(lineRendererLeft);
+    _lineRenderers.Add(lineRendererLeft);
 
     // Create a line renderer for the connection from parent to right child
     GameObject lineRendererRight = CreateLineRenderer(parent.transform, rightChild.transform);
     // Store the line renderer GameObject in the list
     
-    lineRenderers.Add(lineRendererRight);
+    _lineRenderers.Add(lineRendererRight);
     }
 
     // these two method should maybe have its own class
