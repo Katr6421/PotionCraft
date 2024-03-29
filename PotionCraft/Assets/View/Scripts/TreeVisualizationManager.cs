@@ -21,12 +21,15 @@ public class TreeVisualizationManager : MonoBehaviour
   
     private NodeSpawner _nodeSpawner; // Need this to access the list of node GameObjects
 
-    private GameObject _currentNodeGameObject; // Reference to the current Ingredient that the user must insert in the RedBlackTree
-    private static int _currectNodeIndex = 0;     // Index of the current node in the list of node GameObjects.
-    
+    private GameObject _currentIngredient; // Reference to the current Ingredient that the user must insert in the RedBlackTree
+    private GameObject _currentNullCircle; // Reference to the current NullCircle that the user has clicked on
+    private GameObject _currentIngredientInTree; // Reference to the current Ingredient that has been inserted in the RedBlackTree
+    private int _currectIngredientIndex = 0;     // Index of the current ingredient in the list of ingredients.
     private LevelUIController _levelUIController; // Need this to access the CircleMarker
     private List<GameObject> _lineRenderers = new List<GameObject>();
     private FrameController _frameController;
+    private bool _isRunning = false;
+    private NullCircleSpawner _nullCircleSpawner;
 
     void Start()
     {
@@ -34,16 +37,24 @@ public class TreeVisualizationManager : MonoBehaviour
         _nodeSpawner = FindObjectOfType<NodeSpawner>();
         _uiCanvas = FindObjectOfType<Canvas>();
         _frameController = FindObjectOfType<FrameController>();
+        _nullCircleSpawner = FindObjectOfType<NullCircleSpawner>();
+
         
         //When the scene starts, we instantiate the first NullCircle aka. the root of the RedBlackTree
         SpawnRoot();
         
     }
 
-    private void SpawnRoot(){
+    private void SpawnRoot()
+    {
+        _nullCircleSpawner.nullCircles[0].SetActive(true);
+
+        /*
+        //Spawner første nullCircle
         Vector3 vector = _frameController.PlaceRoot(_uiCanvas);
-        GameObject nullCircle = Instantiate(_nullCirclePrefab, vector, Quaternion.identity);
-        nullCircle.transform.SetParent(_uiCanvas.transform, false);
+        _currentNullCircle = Instantiate(_nullCirclePrefab, vector, Quaternion.identity);
+        //_currentNullCircle.transform.SetParent(_uiCanvas.transform, false);
+        _frameController.FindNewPos(_uiCanvas, _currentNullCircle, true);*/
     }
 
     /*********************************************
@@ -56,8 +67,10 @@ public class TreeVisualizationManager : MonoBehaviour
     Part 5: Should only move the nodes so there are room for the new nodes. Not implemented yet. Should NOT do the rotation. 
     *********************************************/
 
-     public void OnClickedNullCircle()
+
+    public void OnClickedNullCircle()
     {
+        _currentNullCircle = UnityEngine.EventSystems.EventSystem.current.currentSelectedGameObject;
         Debug.Log("inde i OnClickedNullCircle");
         /*********************************************
         PART 1
@@ -65,23 +78,23 @@ public class TreeVisualizationManager : MonoBehaviour
 
         // Get the current ingredient that the user must insert in the RedBlackTree
         setCurrentIngredientsGameObject();
-
-        // Needs to store this position, to be able to move the current ingredient to this position and to calculate the position of the new NullCircles
-        Vector3 CurrentNullCircleStartPosistion = transform.position;
+        
         // Check if the current ingredient is not null
-        if (_currentNodeGameObject != null)
+        if (_currentIngredient != null)
         {
             // Move the current ingredient to this NullCircle Start position.
             // Needs to be a coroutine to be able to wait for the movement to finish before destroying the NullCircle
-            StartCoroutine(MoveAndDestroy(_currentNodeGameObject, CurrentNullCircleStartPosistion, 0.5f));
 
+            _currentIngredientInTree.transform.position = _currentNullCircle.transform.position;
+            StartCoroutine(MoveAndDestroy(_currentIngredient, _currentNullCircle.transform.position, 0.5f));
         }
 
+        
         /*********************************************
         PART 2
         *********************************************/
         // Move the circlemarker to a new position
-        _levelUIController.MoveCircleMarker(CalculatePosition(_currectNodeIndex), 0.5f);
+       _levelUIController.MoveCircleMarker(CalculatePosition(_currectIngredientIndex), 0.5f);
 
 
         /*********************************************
@@ -89,19 +102,26 @@ public class TreeVisualizationManager : MonoBehaviour
         *********************************************/
     
         // Instantiate the two new NullCircles. When instantiating the new NullCircles, we need to calculate the position based on canvas. We need to translate the world position to a canvas position.
-        //GameObject leftChildNullCircle = Instantiate(nullCirclePrefab, CalculateLeftChildPosition(Utilities.WorldToCanvasPosition(uiCanvas,CurrentNullCircleStartPosistion)), Quaternion.identity);
-        GameObject leftChildNullCircle = Instantiate(_nullCirclePrefab, CalcLeftChildPos(_currentNodeGameObject), Quaternion.identity);
-        GameObject rightChildNullCircle = Instantiate(_nullCirclePrefab, CalculateRightChildPosition(Utilities.WorldToCanvasPosition(_uiCanvas,CurrentNullCircleStartPosistion)), Quaternion.identity);
+        Debug.Log("current ingredient in tree " + _currentIngredientInTree.transform.position);
+        var leftChildNullCircle = _currentNullCircle.GetComponent<NullCircle>().LeftChild;
+        leftChildNullCircle.SetActive(true);
+
+        var rightChildNullCircle = _currentNullCircle.GetComponent<NullCircle>().RightChild;
+        rightChildNullCircle.SetActive(true);
+
+        //GameObject leftChildNullCircle = Instantiate(_nullCirclePrefab, CalcLeftChildPos(_currentIngredientInTree), Quaternion.identity);
+        //GameObject rightChildNullCircle = Instantiate(_nullCirclePrefab, CalcRightChildPos(_currentIngredientInTree), Quaternion.identity);
         // Just needs this, not sure why
-        leftChildNullCircle.transform.SetParent(_uiCanvas.transform, false);
-        rightChildNullCircle.transform.SetParent(_uiCanvas.transform, false);
+        //leftChildNullCircle.transform.SetParent(_uiCanvas.transform, false);
+        //rightChildNullCircle.transform.SetParent(_uiCanvas.transform, false);
+
 
         /*********************************************
         PART 4
         *********************************************/
 
         //Draw line from parent to leftchild, and from parent to rightchild
-        DrawLinesToChildren(_currentNodeGameObject, leftChildNullCircle, rightChildNullCircle);
+        DrawLinesToChildren(_currentIngredientInTree, leftChildNullCircle, rightChildNullCircle);
         //DrawLinesToChildren(NullCirclePos, leftChildNullCircle, rightChildNullCircle);
 
         /*********************************************
@@ -115,53 +135,53 @@ public class TreeVisualizationManager : MonoBehaviour
 
      private void setCurrentIngredientsGameObject()
     {
+        
+        
         // If there are more ingredients to insert, get the next ingredient
-
-        if (_currectNodeIndex < _nodeSpawner.GetNodeObjects().Count)
+        if (_currectIngredientIndex < _nodeSpawner.GetNodeObjects().Count)
         {
-            _currentNodeGameObject = _nodeSpawner.GetNodeObjects()[_currectNodeIndex];
+            _currentIngredient = _nodeSpawner.GetNodeObjects()[_currectIngredientIndex];
+            // To be able to move the current ingredient to the position of the current NullCircle, we need to store the current ingredient in a variable
+            _currentIngredientInTree = _nodeSpawner.GetNodeObjects()[_currectIngredientIndex];
         }
         else{
+            // Fjern alle nullCircles
             Debug.Log("Ingen flere ingredienser at indsætte");
         }
-        _currectNodeIndex++;
+        _currectIngredientIndex++;
     }
   
 
-    Vector3 CalculateLeftChildPosition(Vector3 ParentNodePosition)
-    {
-        float xPosition = ParentNodePosition.x - 85;
-        float yPosition = ParentNodePosition.y - 122;
-        return new Vector3(xPosition, yPosition, 0);
-    }
 
     private Vector3 CalcLeftChildPos(GameObject ParentNodePos)
     {
-        return _frameController.FindMiddleX(_uiCanvas, ParentNodePos, true);
+        return _frameController.FindNewPos(_uiCanvas, ParentNodePos, true);
     }
 
-    Vector3 CalculateRightChildPosition(Vector3 ParentNodePosition)
+    private Vector3 CalcRightChildPos(GameObject ParentNodePos)
     {
-        float xPosition = ParentNodePosition.x + 85;
-        float yPosition = ParentNodePosition.y - 122;
-        return new Vector3(xPosition, yPosition, 0);
+        return _frameController.FindNewPos(_uiCanvas, ParentNodePos, false);
     }
+
 
    
     // these two method should maybe have its own class
     private void DrawLinesToChildren(GameObject parent, GameObject leftChild, GameObject rightChild)
     {
-    // Create a line renderer for the connection from parent to left child
-    GameObject lineRendererLeft = CreateLineRenderer(parent.transform, leftChild.transform);
-    // Store the line renderer GameObject in the list
-    _lineRenderers.Add(lineRendererLeft);
+        Debug.Log("inde i DrawLinesToChildren");
+        Debug.Log("parent pos " + parent.transform.position);
+        // Create a line renderer for the connection from parent to left child
+        GameObject lineRendererLeft = CreateLineRenderer(parent.transform, leftChild.transform);
+        // Store the line renderer GameObject in the list
+        _lineRenderers.Add(lineRendererLeft);
 
-    // Create a line renderer for the connection from parent to right child
-    GameObject lineRendererRight = CreateLineRenderer(parent.transform, rightChild.transform);
-    // Store the line renderer GameObject in the list
-    
-    _lineRenderers.Add(lineRendererRight);
+        // Create a line renderer for the connection from parent to right child
+        GameObject lineRendererRight = CreateLineRenderer(parent.transform, rightChild.transform);
+        // Store the line renderer GameObject in the list
+        
+        _lineRenderers.Add(lineRendererRight);
     }
+
 
     // these two method should maybe have its own class
     private GameObject CreateLineRenderer(Transform startPosition, Transform endPosition)
@@ -199,24 +219,24 @@ public class TreeVisualizationManager : MonoBehaviour
     DESCRIPTION: This method moves a GameObject to a destination position over a specified duration.
     *********************************************/
 
-      IEnumerator MoveAndDestroy(GameObject objectToMove, Vector3 destination, float duration)
+    IEnumerator MoveAndDestroy(GameObject objectToMove, Vector3 destination, float duration)
     {
-    float elapsedTime = 0;
-    Vector3 startingPos = objectToMove.transform.position;
+        float elapsedTime = 0;
+        Vector3 startingPos = objectToMove.transform.position;
 
-    while (elapsedTime < duration)
-    {
-        objectToMove.transform.position = Vector3.Lerp(startingPos, destination, (elapsedTime / duration));
-        elapsedTime += Time.deltaTime;
-        yield return null; // Wait for the next frame
+        while (elapsedTime < duration)
+        {
+            objectToMove.transform.position = Vector3.Lerp(startingPos, destination, (elapsedTime / duration));
+            elapsedTime += Time.deltaTime;
+            yield return null; // Wait for the next frame
+        }
+
+        objectToMove.transform.position = destination; // Ensure it reaches the destination
+
+        // Now that the movement is complete, destroy the NullCircle GameObject
+        Destroy(_currentNullCircle); // Assuming gameObject is the NullCircle you want to destroy
+        //_currentNullCircle.SetActive(false);
     }
-
-    objectToMove.transform.position = destination; // Ensure it reaches the destination
-
-    // Now that the movement is complete, destroy the NullCircle GameObject
-    Destroy(gameObject); // Assuming gameObject is the NullCircle you want to destroy
-    
-}
 
 
 // Used to calculate the posistion of the current ingredient marker circle

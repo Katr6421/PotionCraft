@@ -20,18 +20,22 @@ public class FrameController : MonoBehaviour
         return new Vector3(v.x, 239, 0);
     }
     
-    public Vector3 FindMiddleX(Canvas canvas, GameObject parentNodePos, bool isLeft)
+    public Vector3 FindNewPos(Canvas canvas, GameObject parentNodePos, bool isLeft)
     {
+        //Debug.Log("frame coord " + transform.position);
+        //Debug.Log("parent coord " +parentNodePos.transform.position);
+        //Debug.Log("minX og maxX " + minX + " " + maxX);
         if (isLeft)
         {
             var x = (parentNodePos.transform.position.x + minX) / 2;
-            var y = parentNodePos.transform.position.y - 122;
+            var y = parentNodePos.transform.position.y - 1;
+            //Debug.Log("nye coord " + x + " " + y);
             return Utilities.WorldToCanvasPosition(canvas, new Vector3(x, y, 0));
         }
         else
         {
             var x = (parentNodePos.transform.position.x + maxX) / 2;
-            var y = parentNodePos.transform.position.y - 122;
+            var y = parentNodePos.transform.position.y - 1;
             return Utilities.WorldToCanvasPosition(canvas, new Vector3(x, y, 0));
         }
     }
