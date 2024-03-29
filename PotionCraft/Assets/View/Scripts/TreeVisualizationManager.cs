@@ -16,7 +16,6 @@ public class TreeVisualizationManager : MonoBehaviour
 {
     
     [SerializeField] private GameObject nullCirclePrefab;
-    [SerializeField] private GameObject circleMarkerPrefab;
     
     private Canvas uiCanvas; // Reference to the Canvas where the nodes will be parented
   
