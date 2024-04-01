@@ -25,7 +25,7 @@ using UnityEngine.TestTools;
 }*/
 public class RedBlackBSTTest
 {
-    private IRedBlackBST tree;
+    private RedBlackBST tree;
 
     [SetUp]
     public void SetUp()
@@ -34,7 +34,7 @@ public class RedBlackBSTTest
         tree = new RedBlackBST();
 
         // Insert nodes into the RedBlackBST
-        tree.Put(1, 1);
+        tree.Put(1,1);
         tree.Put(2,2);
         tree.Put(3,3);
     }
@@ -52,5 +52,19 @@ public class RedBlackBSTTest
 
         // Assert
         Assert.AreEqual(initialSize + 1, tree.Size());
+    }
+
+    // Test if parent is assigned correctly
+    [Test]
+    public void IsCorrectParent()
+    {
+        // Arrange
+        var node = tree.Get(2);
+
+        // Act
+        var parent = node.Parent;
+
+        // Assert
+        Assert.AreEqual(1, parent.Key);
     }
 }

@@ -168,6 +168,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _nullCirclePrefab: {fileID: 9033406132478758472, guid: 01c4774bbde6f40588961cbedf116ada, type: 3}
+  _treeManager: {fileID: 1750167745}
+  _uiCanvas: {fileID: 620487765}
+  _nodeSpawner: {fileID: 1513720697}
+  _levelUIController: {fileID: 1654093617}
+  _nullCircleSpawner: {fileID: 769144078}
 --- !u!1 &189113977
 GameObject:
   m_ObjectHideFlags: 0
@@ -10898,6 +10903,50 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1750167744
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1750167746}
+  - component: {fileID: 1750167745}
+  m_Layer: 0
+  m_Name: TreeManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1750167745
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1750167744}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 073c6a2c5bc3d450cb0d42bc32d91e23, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &1750167746
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1750167744}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.3131792, y: 0.19343093, z: -3.4564705}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1813598175
 GameObject:
   m_ObjectHideFlags: 0
@@ -10947,7 +10996,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a45936ee876b46b2aba4b73e1dd9613, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  canvas: {fileID: 620487765}
 --- !u!212 &1813598178
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -16141,3 +16189,4 @@ SceneRoots:
   - {fileID: 1654093618}
   - {fileID: 432656819}
   - {fileID: 769144079}
+  - {fileID: 1750167746}

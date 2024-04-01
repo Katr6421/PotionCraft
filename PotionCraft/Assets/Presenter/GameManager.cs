@@ -31,24 +31,6 @@ public class GameManager : MonoBehaviour, IGameManager
         
     }
 
-       
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    public GameManager(){}
-
     public Node GetCurrentIngredient()
     {
         throw new NotImplementedException();

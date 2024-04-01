@@ -43,7 +43,7 @@ public class LevelManagerTests
     [Test]
     public void LevelManager_ReturnsCorrectPotionName()
     {
-        string expectedPotionName = "1";
+        string expectedPotionName = "Crystal Elixir";
         int levelIndex = 1; // Assuming index 1 corresponds to "Potion 1"
 
         // You need to set up your levels here before calling the method

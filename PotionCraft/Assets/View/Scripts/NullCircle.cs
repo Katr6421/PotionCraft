@@ -7,9 +7,10 @@ public class NullCircle : MonoBehaviour
 {
     [SerializeField] private Button _prefab; // Assign this in the inspector or find it at runtime
     private TreeVisualizationManager _treeVisualizationManager;
-    
+    public int Value { get; set; }
     public GameObject LeftChild { get; set; }
     public GameObject RightChild { get; set; }
+    public GameObject Parent { get; set; }
     public bool IsActive { get; set; } = false;
     
     

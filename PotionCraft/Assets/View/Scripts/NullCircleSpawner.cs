@@ -98,6 +98,41 @@ public class NullCircleSpawner : MonoBehaviour
         nullCircle14.GetComponent<NullCircle>().LeftChild = nullCircle29;
         nullCircle14.GetComponent<NullCircle>().RightChild = nullCircle30;
 
+
+        // Set the parent of each nullCircle
+        nullCircle0.GetComponent<NullCircle>().Parent = null;
+        nullCircle1.GetComponent<NullCircle>().Parent = nullCircle0;
+        nullCircle2.GetComponent<NullCircle>().Parent = nullCircle0;
+        nullCircle3.GetComponent<NullCircle>().Parent = nullCircle1;
+        nullCircle4.GetComponent<NullCircle>().Parent = nullCircle1;
+        nullCircle5.GetComponent<NullCircle>().Parent = nullCircle2;
+        nullCircle6.GetComponent<NullCircle>().Parent = nullCircle2;
+        nullCircle7.GetComponent<NullCircle>().Parent = nullCircle3;
+        nullCircle8.GetComponent<NullCircle>().Parent = nullCircle3;
+        nullCircle9.GetComponent<NullCircle>().Parent = nullCircle4;
+        nullCircle10.GetComponent<NullCircle>().Parent = nullCircle4;
+        nullCircle11.GetComponent<NullCircle>().Parent = nullCircle5;
+        nullCircle12.GetComponent<NullCircle>().Parent = nullCircle5;
+        nullCircle13.GetComponent<NullCircle>().Parent = nullCircle6;
+        nullCircle14.GetComponent<NullCircle>().Parent = nullCircle6;
+        nullCircle15.GetComponent<NullCircle>().Parent = nullCircle7;
+        nullCircle16.GetComponent<NullCircle>().Parent = nullCircle7;
+        nullCircle17.GetComponent<NullCircle>().Parent = nullCircle8;
+        nullCircle18.GetComponent<NullCircle>().Parent = nullCircle8;
+        nullCircle19.GetComponent<NullCircle>().Parent = nullCircle9;
+        nullCircle20.GetComponent<NullCircle>().Parent = nullCircle9;
+        nullCircle21.GetComponent<NullCircle>().Parent = nullCircle10;
+        nullCircle22.GetComponent<NullCircle>().Parent = nullCircle10;
+        nullCircle23.GetComponent<NullCircle>().Parent = nullCircle11;
+        nullCircle24.GetComponent<NullCircle>().Parent = nullCircle11;
+        nullCircle25.GetComponent<NullCircle>().Parent = nullCircle12;
+        nullCircle26.GetComponent<NullCircle>().Parent = nullCircle12;
+        nullCircle27.GetComponent<NullCircle>().Parent = nullCircle13;
+        nullCircle28.GetComponent<NullCircle>().Parent = nullCircle13;
+        nullCircle29.GetComponent<NullCircle>().Parent = nullCircle14;
+        nullCircle30.GetComponent<NullCircle>().Parent = nullCircle14;
+
+
         // Add the nullCircles to the dictionary
         nullCircles.Add(0, nullCircle0);
         nullCircles.Add(1, nullCircle1);
