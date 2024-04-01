@@ -110,7 +110,7 @@ public class NodeSpawner : MonoBehaviour
     **********************************************/
     public Vector3 CalculatePosition(int nodeIndex)
     {
-            float leftBound = 230; // x position of the leftmost point in the red circle, HARD CODED
+            float leftBound = -56; // x position of the leftmost point in the red circle, HARD CODED
             float yPosition = 401; // y position where the nodes should be placed, HARD CODED
             float spaceBetweenNodes = 100 * nodeIndex; // Space between nodes, HARD CODED
             // Calculate the x position for the current node

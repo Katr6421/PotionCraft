@@ -153,8 +153,8 @@ public class TreeVisualizationManager : MonoBehaviour
     // these two method should maybe have its own class
     private void DrawLinesToChildren(GameObject parent, GameObject leftChild, GameObject rightChild)
     {
-        Debug.Log("inde i DrawLinesToChildren");
-        Debug.Log("parent pos " + parent.transform.position);
+        //Debug.Log("inde i DrawLinesToChildren");
+        //Debug.Log("parent pos " + parent.transform.position);
         // Create a line renderer for the connection from parent to left child
         GameObject lineRendererLeft = CreateLineRenderer(parent.transform, leftChild.transform);
         // Store the line renderer GameObject in the list
@@ -232,7 +232,7 @@ public class TreeVisualizationManager : MonoBehaviour
     // Used to calculate the posistion of the current ingredient marker circle
     private Vector3 CalculatePosition(int nodeIndex)
     {
-        float leftBound = 2.12f; // x position of the leftmost point in the red circle, HARD CODED
+        float leftBound = -0.57f; // x position of the leftmost point in the red circle, HARD CODED
         float yPosition = 3.79f; // y position where the nodes should be placed, HARD CODED
         float spaceBetweenNodes = 0.95f * nodeIndex; // Space between nodes, HARD CODED
         // Calculate the x position for the current node

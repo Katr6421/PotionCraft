@@ -34,9 +34,9 @@ public class RedBlackBSTTest
         tree = new RedBlackBST();
 
         // Insert nodes into the RedBlackBST
-        tree.Put(1,1);
         tree.Put(2,2);
-        tree.Put(3,3);
+        tree.Put(1,1);
+        
     }
 
 
@@ -59,12 +59,25 @@ public class RedBlackBSTTest
     public void IsCorrectParent()
     {
         // Arrange
-        var node = tree.Get(2);
+        var node = tree.Get(1);
 
         // Act
         var parent = node.Parent;
 
         // Assert
-        Assert.AreEqual(1, parent.Key);
+        Assert.AreEqual(2, parent.Key);
+    }
+
+    [Test]
+    public void isCorrectParentLeftValue()
+    {
+        // Arrange
+        var node = tree.Get(1);
+
+        // Act
+        var parent = node.Parent;
+
+        // Assert
+        Assert.AreEqual(1, parent.Left.Value);
     }
 }

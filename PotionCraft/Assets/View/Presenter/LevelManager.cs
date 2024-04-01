@@ -60,9 +60,16 @@ public class LevelManager : MonoBehaviour, ILevelManager
 
         // Make a list of nodes for each level
         List<Node> nodesLevel1 = new List<Node>();
+        nodesLevel1.Add(node19);
+        nodesLevel1.Add(node5);
         nodesLevel1.Add(node1);
-        nodesLevel1.Add(node2);
+        nodesLevel1.Add(node18);
         nodesLevel1.Add(node3);
+        nodesLevel1.Add(node8);
+        nodesLevel1.Add(node24);
+        nodesLevel1.Add(node13);
+        nodesLevel1.Add(node16);
+        nodesLevel1.Add(node12);
 
          List<Node> nodesLevel2 = new List<Node>();
         nodesLevel2.Add(node4);

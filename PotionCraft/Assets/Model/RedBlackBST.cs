@@ -33,8 +33,10 @@ public class RedBlackBST : IRedBlackBST
 
    private Node Put(Node h, int key, int val, Node parent)
    {
+      
       // Reached bottom of tree. Insert new node here with red link to parent.
       if (h == null) return new Node(key, val, 1, RED, parent);
+     
 
       // Binary search tree insertion
       int cmp = key.CompareTo(h.Key);
@@ -43,14 +45,17 @@ public class RedBlackBST : IRedBlackBST
       else h.Value = val;
 
       // Verify and maintain the red-black tree properties
+      // WE SHOULD WAIT TO CALL THESE METHODS UNTIL THE USER SELECTES THE NODES THAT SHOULD BE ROATED, SUCH THAT OUR RED BLACK TREE IS SHOWING THE ACUTALE STATE OF THE TREE
       if (IsRed(h.Right) && !IsRed(h.Left)) h = RotateLeft(h);
       if (IsRed(h.Left) && IsRed(h.Left.Left)) h = RotateRight(h);
       if (IsRed(h.Left) && IsRed(h.Right)) FlipColors(h);
 
       h.N = Size(h.Left) + Size(h.Right) + 1;
 
+      
       // Return the inserted node
       return h;
+     
    }
 
    private bool IsRed(Node x)
@@ -59,7 +64,7 @@ public class RedBlackBST : IRedBlackBST
       return x.Color == RED;
    }
 
-   /*
+   
    private Node RotateLeft(Node h)
 {
     Node x = h.Right;
@@ -71,8 +76,8 @@ public class RedBlackBST : IRedBlackBST
     // ... update colors and sizes, etc.
     return x;
 }
-   */
-
+   
+/*
 // Tpodo: Implement the parent reference in the RotateLeft method
    private Node RotateLeft(Node h)
    {
@@ -84,9 +89,9 @@ public class RedBlackBST : IRedBlackBST
       x.N = h.N;
       h.N = 1 + Size(h.Left) + Size(h.Right);
       return x;
-   }
+   }*/
 
-   /*
+   
    private Node RotateRight(Node h)
 {
     Node x = h.Left;
@@ -98,10 +103,10 @@ public class RedBlackBST : IRedBlackBST
     // ... update colors and sizes, etc.
     return x;
 }
-   */
+   
 
 // Tpodo: Implement the parent reference in the RotateLeft method
-   private Node RotateRight(Node h)
+ /*  private Node RotateRight(Node h)
    {
       Node x = h.Left;
       h.Left = x.Right;
@@ -112,6 +117,7 @@ public class RedBlackBST : IRedBlackBST
       h.N = 1 + Size(h.Left) + Size(h.Right);
       return x;
    }
+   */
 
    private void FlipColors(Node h)
    {
@@ -144,7 +150,15 @@ public class RedBlackBST : IRedBlackBST
          string parentValueString = node.Parent != null ? node.Parent.Value.ToString() : "No parent";
 
         // Print the current node
-        UnityEngine.Debug.Log(new String(' ', depth * 4) + "Key: " + node.Key + " | Value: " + node.Value + " | Color: " + (node.Color ? "RED" : "BLACK"));
+        UnityEngine.Debug.Log(new String(' ', depth * 4) + "Key: " + node.Key + " | Value: " + node.Value + " | Color: " + (node.Color ? "RED" : "BLACK" ));
+        if (node.Parent != null)
+        {
+            UnityEngine.Debug.Log("Parent: " + node.Parent.Value);
+        }
+        else{
+            UnityEngine.Debug.Log("Parent: Null");
+        
+        }
 
         // Print the left subtree
         PrintTree(node.Left, depth + 1);
