@@ -1,4 +1,6 @@
 using System;
+using System.Diagnostics;
+using UnityEngine;
 
 public class RedBlackBST : IRedBlackBST
 {
@@ -125,4 +127,31 @@ public class RedBlackBST : IRedBlackBST
    }
 
    public int Size() => Size(Root);
+
+   public void PrintTree()
+    {
+        PrintTree(Root, 0);
+    }
+
+    private void PrintTree(Node node, int depth)
+    {
+        if (node == null)
+        {
+            UnityEngine.Debug.Log(new String(' ', depth * 4) + "null");
+            return;
+        }
+        // Retrieve the parent value, if it exists.
+         string parentValueString = node.Parent != null ? node.Parent.Value.ToString() : "No parent";
+
+        // Print the current node
+        UnityEngine.Debug.Log(new String(' ', depth * 4) + "Key: " + node.Key + " | Value: " + node.Value + " | Color: " + (node.Color ? "RED" : "BLACK"));
+
+        // Print the left subtree
+        PrintTree(node.Left, depth + 1);
+
+        // Print the right subtree
+        PrintTree(node.Right, depth + 1);
+    }
 }
+
+   
