@@ -78,7 +78,7 @@ public class TreeVisualizationManager : MonoBehaviour
         /*********************************************
         Validate if the ingredient is placed right, by checking the parent, and if it's left or right child
         *********************************************/
-        _treeManager.ValidateNodePlacement(_currentNullCircle);
+        bool isRightPlacement = _treeManager.ValidateNodePlacement(_currentNullCircle);
 
 
         // check parent

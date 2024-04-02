@@ -145,27 +145,27 @@ public class TreeManager : MonoBehaviour, ITreeManager
     if (isLeftChild)
     {
         // If it's supposed to be a left child, but the parent's left in the tree is not null or doesn't match expected value
-        if (parentInTree.Left != null && parentInTree.Left.Value != clickedNullCircleObject.Value)
+        if (parentInTree.Left != null && parentInTree.Left.Value == clickedNullCircleObject.Value)
         {
-            Debug.Log("Incorrect placement: The clicked null circle should be the left child but the parent's left child does not match.");
-            Debug.Log("I return false.");
-            return false;
+            Debug.Log("Correct placement of the left child");
+            Debug.Log("I return true.");
+            return true;
         }
     }
     else
     {
         // If it's supposed to be a right child, but the parent's right in the tree is not null or doesn't match expected value
-        if (parentInTree.Right != null && parentInTree.Right.Value != clickedNullCircleObject.Value)
+        if (parentInTree.Right != null && parentInTree.Right.Value == clickedNullCircleObject.Value)
         {
-            Debug.Log("Incorrect placement: The clicked null circle should be the right child but the parent's right child does not match.");
-            Debug.Log("I return false.");
-            return false;
+            Debug.Log("Correct placement of the right child");
+            Debug.Log("I return true.");
+            return true;
         }
     }
 
-    Debug.Log("Correct placement: The clicked null circle is correctly identified as a " + (isLeftChild ? "left" : "right") + " child of its parent.");
-    Debug.Log("I return true.");
-    return true;
+    Debug.Log("Incorrect placement: The clicked null circle is incorrect identified as a " + (isLeftChild ? "left" : "right") + " child of its parent.");
+    Debug.Log("I return false.");
+    return false;
 }
 
 public void RunDebugPrints(NullCircle clickedNullCircleObject){
