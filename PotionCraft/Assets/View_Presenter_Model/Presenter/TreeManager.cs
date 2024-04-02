@@ -196,8 +196,6 @@ public class TreeManager : MonoBehaviour, ITreeManager
             _treeVisualizerManager.VisualizeRotation(operationType, CurrentSelectedIngredients);
             CurrentSelectedIngredients.Clear();
 
-
-
             // Kalde en metode der håndtere næste operation i køen
             if (RedBlackTree.Operations.Count > 0)
             {
@@ -206,8 +204,13 @@ public class TreeManager : MonoBehaviour, ITreeManager
             else
             {
                 Debug.Log("No more operations in the queue");
-                // Tilbage og indsæt næste ingredient
+                // The tree is balanced!! Ready to insert the next ingredient
+
+                // Activate null circles again
+                _treeVisualizerManager.ShowNullCircles();
+
                 // Circlemarker skal rykkes 
+
                 // hint skal opdateres
             }
         }
@@ -219,7 +222,11 @@ public class TreeManager : MonoBehaviour, ITreeManager
         }
     }
 
-
+    public bool ShouldDrawNullCircles()
+    {
+        // If the queue is empty, the tree is balanced and the null circles should be drawn
+        return RedBlackTree.Operations.Count == 0;
+    }
 
     public void WaitForRotateRight(Node currentNode)
     {

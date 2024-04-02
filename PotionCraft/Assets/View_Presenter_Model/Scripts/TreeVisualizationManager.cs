@@ -33,6 +33,7 @@ public class TreeVisualizationManager : MonoBehaviour
     private int _currectIngredientIndex = 0;     // Index of the current ingredient in the list of ingredients.
     private List<GameObject> _lineRenderers = new List<GameObject>();
     private int _currentNullCircleValue; // Holds the value of the current NullCircle
+    private List<GameObject> _currentInstantiatedNullCircles = new List<GameObject>();
 
 
 
@@ -98,6 +99,31 @@ public class TreeVisualizationManager : MonoBehaviour
                 // Move the circleMarker to a new position
                 _levelUIController.MoveCircleMarker(CalculatePosition(_currectIngredientIndex), 0.5f);
 
+                /*********************************************
+                PART 2.1. Should we draw nullCircles? Or should we deactive them all?
+                *********************************************/
+                bool shouldDrawNullCircles = _treeManager.ShouldDrawNullCircles();
+
+               
+                var leftChildNullCircle = _currentNullCircle.GetComponent<NullCircle>().LeftChild;
+                var rightChildNullCircle = _currentNullCircle.GetComponent<NullCircle>().RightChild;
+                //Draw line from parent to leftchild, and from parent to rightchild
+                DrawLinesToChildren(_currentNullCircle, leftChildNullCircle, rightChildNullCircle);
+                leftChildNullCircle.GetComponent<NullCircle>().IsActive = true;
+                rightChildNullCircle.GetComponent<NullCircle>().IsActive = true;
+
+
+                //Maybe slet this
+                if (shouldDrawNullCircles){
+                    
+                    ShowNullCircles();
+    
+                }
+                else {
+                    // Deactivate all nullCircles
+                    HideNullCircles();
+                }
+                
 
                 /*********************************************
                 PART 3
@@ -105,19 +131,7 @@ public class TreeVisualizationManager : MonoBehaviour
 
                 // Set the current NullCircles children to active
 
-                var leftChildNullCircle = _currentNullCircle.GetComponent<NullCircle>().LeftChild;
-                leftChildNullCircle.SetActive(true);
-
-                var rightChildNullCircle = _currentNullCircle.GetComponent<NullCircle>().RightChild;
-                rightChildNullCircle.SetActive(true);
-
-
-                /*********************************************
-                PART 4
-                *********************************************/
-
-                //Draw line from parent to leftchild, and from parent to rightchild
-                DrawLinesToChildren(_currentNullCircle, leftChildNullCircle, rightChildNullCircle);
+                
 
                 /*********************************************
                 PART 5: Validate that all red black tree rules are followed
@@ -228,6 +242,7 @@ public class TreeVisualizationManager : MonoBehaviour
 
                 }
                 else {
+
                     StartCoroutine(RotateLeftAnimation(parent, rightChild, rightChildNullCircle));
                     //kun rotate animation
                 }
@@ -258,6 +273,7 @@ public class TreeVisualizationManager : MonoBehaviour
         // move rightchild to parent null circle posistion
         // update the nullcircle index for the parent and rightchild
         // update nullcircle value 
+        // rightchild nullcircles børn skal deaktiveres
 
         // Assume positions are Vector3. If they are not, you will need to adjust.
         Vector3 parentOriginalPosition = parent.transform.position;
@@ -294,7 +310,26 @@ public class TreeVisualizationManager : MonoBehaviour
         // Update the logical structure of your tree if not already done
         // This might involve updating parent/child references, colors, etc.
         // Tree.UpdateStructureAfterLeftRotation(parent, rightChild); // Example method call
+        
+        // Update which null circles are active
+        // Dectivate rightChildNullCircle's parent's leftChild
+        rightChildNullCircle.GetComponent<NullCircle>().Parent.GetComponent<NullCircle>().LeftChild.GetComponent<NullCircle>().IsActive = false;
+        rightChildNullCircle.GetComponent<NullCircle>().Parent.GetComponent<NullCircle>().LeftChild.SetActive(false);
+        // Deactive rightChildNullCircle's children
+        rightChildNullCircle.GetComponent<NullCircle>().LeftChild.GetComponent<NullCircle>().IsActive = false;
+        rightChildNullCircle.GetComponent<NullCircle>().RightChild.GetComponent<NullCircle>().IsActive = false;
+        rightChildNullCircle.GetComponent<NullCircle>().LeftChild.SetActive(false);
+        rightChildNullCircle.GetComponent<NullCircle>().RightChild.SetActive(false);
+        
+        // Activate parent's leftChild's children
+        rightChildNullCircle.GetComponent<NullCircle>().Parent.GetComponent<NullCircle>().LeftChild.GetComponent<NullCircle>().LeftChild.GetComponent<NullCircle>().IsActive = true;
+        rightChildNullCircle.GetComponent<NullCircle>().Parent.GetComponent<NullCircle>().LeftChild.GetComponent<NullCircle>().RightChild.GetComponent<NullCircle>().IsActive = true;
+        rightChildNullCircle.GetComponent<NullCircle>().Parent.GetComponent<NullCircle>().LeftChild.GetComponent<NullCircle>().LeftChild.SetActive(true);
+        rightChildNullCircle.GetComponent<NullCircle>().Parent.GetComponent<NullCircle>().LeftChild.GetComponent<NullCircle>().RightChild.SetActive(true);
 
+        // Activate rightChildNullCircle
+        rightChildNullCircle.GetComponent<NullCircle>().IsActive = true;
+        rightChildNullCircle.SetActive(true);
     }
     
     void UpdateLinesAfterRotation(GameObject parent, GameObject rightChild)
@@ -320,6 +355,7 @@ public class TreeVisualizationManager : MonoBehaviour
 
         // Now that the movement is complete, destroy the NullCircle GameObject
         _currentNullCircle.SetActive(false);
+        _currentNullCircle.GetComponent<NullCircle>().IsActive = false;
         // Invoke the callback to continue with the rest of the method's logic
         onComplete?.Invoke();
     }
@@ -369,4 +405,35 @@ public class TreeVisualizationManager : MonoBehaviour
         return new Vector3(xPosition, yPosition, 0);
 
     }
+    public void ShowNullCircles()
+    {
+        foreach (KeyValuePair<int, GameObject> nullCirclePair in _nullCircleSpawner.NullCircles)
+        {
+            NullCircle nullCircle = nullCirclePair.Value.GetComponent<NullCircle>();
+            
+            if (nullCircle != null && nullCircle.IsActive) // Checking if component is not null and IsActive is true
+            {
+                nullCirclePair.Value.SetActive(true); // Activate the GameObject
+            }
+
+        }
+
+    }
+
+    public void HideNullCircles()
+    {
+        foreach (KeyValuePair<int, GameObject> nullCirclePair in _nullCircleSpawner.NullCircles)
+        {
+            NullCircle nullCircle = nullCirclePair.Value.GetComponent<NullCircle>();
+
+            // If the NullCircle component is found and IsActive is false, deactivate the GameObject
+            if (nullCircle != null && nullCircle.IsActive) // Checking if component is not null and IsActive is false
+            {
+                nullCirclePair.Value.SetActive(false); // Deactivate the GameObject
+            }
+        }
+
+    }
+
+   
 }
