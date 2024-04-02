@@ -5,12 +5,15 @@ using PlasticPipe.PlasticProtocol.Messages;
 
 public class Node
 {
-    private const bool RED = true; // Assuming you intended this to be a constant
+    private const bool RED = true;
     private const bool BLACK = false;
   
     public int Key { get; set; }
 
     public int Value { get; set; } // When inserting numbers, letters etc. both key and value have the same value (the number)
+
+    // Parent
+    public Node Parent { get; set; }
 
     // Children 
     public Node Left { get; set; }
@@ -22,12 +25,13 @@ public class Node
     // Color of the link from the parent to this node
     public bool Color { get; set; }
 
-    public Node(int key, int val, int n, bool color)
+    public Node(int key, int val, int n, bool color, Node parent)
     {
         Key = key;
         Value = val;
         N = 1;
         Color = color;
+        Parent = parent;
     }
 
 }

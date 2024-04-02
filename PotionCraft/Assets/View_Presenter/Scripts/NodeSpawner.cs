@@ -102,26 +102,26 @@ public class NodeSpawner : MonoBehaviour
         return nodeValueToPrefabDictionary[node.Value];
     }
 
-   /**********************************************
+    /**********************************************
     METHOD: CalculatePosition
     DESCRIPTION: This method calculates the position of the node based on the index of the node in the list of nodes.
     The method takes an integer as a parameter, which represents the index of the node in the list.
     The method calculates the x position based on the index and returns a Vector3 with the calculated position.
     **********************************************/
-   public Vector3 CalculatePosition(int nodeIndex)
-{
-        float leftBound = 230; // x position of the leftmost point in the red circle, HARD CODED
-        float yPosition = 401; // y position where the nodes should be placed, HARD CODED
-        float spaceBetweenNodes = 100 * nodeIndex; // Space between nodes, HARD CODED
-        // Calculate the x position for the current node
-        float xPosition = leftBound + spaceBetweenNodes;
-        // Return the calculated position
-        return new Vector3(xPosition, yPosition, 0);
-}
+    public Vector3 CalculatePosition(int nodeIndex)
+    {
+            float leftBound = -56; // x position of the leftmost point in the red circle, HARD CODED
+            float yPosition = 401; // y position where the nodes should be placed, HARD CODED
+            float spaceBetweenNodes = 100 * nodeIndex; // Space between nodes, HARD CODED
+            // Calculate the x position for the current node
+            float xPosition = leftBound + spaceBetweenNodes;
+            // Return the calculated position
+            return new Vector3(xPosition, yPosition, 0);
+    }
 
-public List<GameObject> GetNodeObjects(){
-    return nodeObjects;
-}
+    public List<GameObject> GetNodeObjects(){
+        return nodeObjects;
+    }
 
 }
 
