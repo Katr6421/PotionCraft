@@ -1,7 +1,7 @@
 public interface ITreeManager
 {
-    public void WaitForRotateRight();
-    public void WaitForRotateLeft();
+    public void WaitForRotateRight(Node currentNode);
+    public void WaitForRotateLeft(Node currentNode);
     public void WaitForFliColour();
     public void SetCurrentHint();
     

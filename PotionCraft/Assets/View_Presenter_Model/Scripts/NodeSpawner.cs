@@ -86,6 +86,7 @@ public class NodeSpawner : MonoBehaviour
             nodeObject.transform.SetParent(uiCanvas.transform, false);
             // Set the text value of the GameObject to the node's value
             nodeObject.GetComponentInChildren<TextMeshProUGUI>().text = node.Value.ToString();
+            
             // Store the reference to the GameObject in a list
             nodeObjects.Add(nodeObject);
         }

@@ -34,15 +34,15 @@ public class LevelSelector : MonoBehaviour
     }
 
     public void OpenScene(int levelIndex)
-{
-    //Store the selected level index in a static variable
-    selectedLevel = levelIndex;
-    // Retrieve the potion name and level index using the singleton instance, which is safer
-    potionName = LevelManager.Instance.GetPotionName(levelIndex);
+    {
+        //Store the selected level index in a static variable
+        selectedLevel = levelIndex;
+        // Retrieve the potion name and level index using the singleton instance, which is safer
+        potionName = LevelManager.Instance.GetPotionName(levelIndex);
 
-    // Now that the UI is set, you can load the new scene
-    string levelName = "Level" + levelIndex;
-    SceneManager.LoadScene(levelName);
-}
+        // Now that the UI is set, you can load the new scene
+        string levelName = "Level" + levelIndex;
+        SceneManager.LoadScene(levelName);
+    }
 
 }

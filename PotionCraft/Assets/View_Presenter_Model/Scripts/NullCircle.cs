@@ -12,6 +12,7 @@ public class NullCircle : MonoBehaviour
     public GameObject RightChild { get; set; }
     public GameObject Parent { get; set; }
     public bool IsActive { get; set; } = false;
+    public int Index { get; set; }
     
     
     void Start()

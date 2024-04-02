@@ -2,13 +2,13 @@ using System;
 using System.Diagnostics;
 using UnityEngine;
 
-public class RedBlackBST : IRedBlackBST
+public class RedBlackBSTCOPY : IRedBlackBST
 {
    private const bool RED = true;
    private const bool BLACK = false;
    public Node Root { get; set; }
 
-   public RedBlackBST()
+   public RedBlackBSTCOPY()
    {
       Root = null;
    }

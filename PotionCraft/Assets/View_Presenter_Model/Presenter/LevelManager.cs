@@ -76,9 +76,14 @@ public class LevelManager : MonoBehaviour, ILevelManager
         nodesLevel2.Add(node5);
         nodesLevel2.Add(node6);
 
+          List<Node> testLeftRotation = new List<Node>();
+          testLeftRotation.Add(node1);
+          testLeftRotation.Add(node2);
+
+
         // Add levels to the list of levels. Hardcoded for each level
         Levels.Add(new LevelData("Dummy", 1, nodesLevel1));
-        Levels.Add(new LevelData("Crystal Elixir", 1, nodesLevel1));
+        Levels.Add(new LevelData("Crystal Elixir", 1, testLeftRotation));
         Levels.Add(new LevelData("Potion 2", 2, nodesLevel2));
         Levels.Add(new LevelData("Potion 3", 3, new List<Node>()));
         Levels.Add(new LevelData("Potion 4", 4, new List<Node>()));

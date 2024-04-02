@@ -6,7 +6,7 @@ public class NullCircleSpawner : MonoBehaviour
 {
     [SerializeField] private GameObject nullCirclePrefab;
     [SerializeField] private Canvas uiCanvas; // Reference to the Canvas where the nullCircles will be parented
-    public Dictionary<int, GameObject> nullCircles { get; } = new Dictionary<int, GameObject>();
+    public Dictionary<int, GameObject> NullCircles { get; } = new Dictionary<int, GameObject>();
 
     // Start is called before the first frame update
     void Start()
@@ -134,48 +134,49 @@ public class NullCircleSpawner : MonoBehaviour
 
 
         // Add the nullCircles to the dictionary
-        nullCircles.Add(0, nullCircle0);
-        nullCircles.Add(1, nullCircle1);
-        nullCircles.Add(2, nullCircle2);
-        nullCircles.Add(3, nullCircle3);
-        nullCircles.Add(4, nullCircle4);
-        nullCircles.Add(5, nullCircle5);
-        nullCircles.Add(6, nullCircle6);
-        nullCircles.Add(7, nullCircle7);
-        nullCircles.Add(8, nullCircle8);
-        nullCircles.Add(9, nullCircle9);
-        nullCircles.Add(10, nullCircle10);
-        nullCircles.Add(11, nullCircle11);
-        nullCircles.Add(12, nullCircle12);
-        nullCircles.Add(13, nullCircle13);
-        nullCircles.Add(14, nullCircle14);
-        nullCircles.Add(15, nullCircle15);
-        nullCircles.Add(16, nullCircle16);
-        nullCircles.Add(17, nullCircle17);
-        nullCircles.Add(18, nullCircle18);
-        nullCircles.Add(19, nullCircle19);
-        nullCircles.Add(20, nullCircle20);
-        nullCircles.Add(21, nullCircle21);
-        nullCircles.Add(22, nullCircle22);
-        nullCircles.Add(23, nullCircle23);
-        nullCircles.Add(24, nullCircle24);
-        nullCircles.Add(25, nullCircle25);
-        nullCircles.Add(26, nullCircle26);
-        nullCircles.Add(27, nullCircle27);
-        nullCircles.Add(28, nullCircle28);
-        nullCircles.Add(29, nullCircle29);
-        nullCircles.Add(30, nullCircle30);
+        NullCircles.Add(0, nullCircle0);
+        NullCircles.Add(1, nullCircle1);
+        NullCircles.Add(2, nullCircle2);
+        NullCircles.Add(3, nullCircle3);
+        NullCircles.Add(4, nullCircle4);
+        NullCircles.Add(5, nullCircle5);
+        NullCircles.Add(6, nullCircle6);
+        NullCircles.Add(7, nullCircle7);
+        NullCircles.Add(8, nullCircle8);
+        NullCircles.Add(9, nullCircle9);
+        NullCircles.Add(10, nullCircle10);
+        NullCircles.Add(11, nullCircle11);
+        NullCircles.Add(12, nullCircle12);
+        NullCircles.Add(13, nullCircle13);
+        NullCircles.Add(14, nullCircle14);
+        NullCircles.Add(15, nullCircle15);
+        NullCircles.Add(16, nullCircle16);
+        NullCircles.Add(17, nullCircle17);
+        NullCircles.Add(18, nullCircle18);
+        NullCircles.Add(19, nullCircle19);
+        NullCircles.Add(20, nullCircle20);
+        NullCircles.Add(21, nullCircle21);
+        NullCircles.Add(22, nullCircle22);
+        NullCircles.Add(23, nullCircle23);
+        NullCircles.Add(24, nullCircle24);
+        NullCircles.Add(25, nullCircle25);
+        NullCircles.Add(26, nullCircle26);
+        NullCircles.Add(27, nullCircle27);
+        NullCircles.Add(28, nullCircle28);
+        NullCircles.Add(29, nullCircle29);
+        NullCircles.Add(30, nullCircle30);
 
 
-        // Deactivate all nullCircles
-        foreach (GameObject c in nullCircles.Values)
+        for (int i = 0; i < NullCircles.Count; i++)
         {
-            c.SetActive(false);
+            NullCircles[i].GetComponent<NullCircle>().Index = i;
         }
 
+        // Deactivate all nullCircles
         // Set the parent of all nullCircles to the uiCanvas
-        foreach (GameObject c in nullCircles.Values)
+        foreach (GameObject c in NullCircles.Values)
         {
+            c.SetActive(false);
             c.transform.SetParent(uiCanvas.transform, false);
         }
 
