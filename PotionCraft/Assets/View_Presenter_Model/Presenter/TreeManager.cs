@@ -118,7 +118,7 @@ public class TreeManager : MonoBehaviour, ITreeManager
         // Get the current operation from the queue, whitout removing it
         Operation TheCurrentCorrectOperation = RedBlackTree.Operations.Peek();
         Debug.Log("The current  operation is: " + TheCurrentCorrectOperation.OperationType);
-        Debug.Log("The current operation node is: " + TheCurrentCorrectOperation.Node.Value);
+        //Debug.Log("The current operation node is: " + TheCurrentCorrectOperation.Node.Value);
 
 
         // Check if it is the correct operation/button is clicked
@@ -138,7 +138,7 @@ public class TreeManager : MonoBehaviour, ITreeManager
                 //print correctnodes
                 foreach (Node node in correctNodesInTree)
                 {
-                    Debug.Log("Correct node value: " + node.Value);
+                    //Debug.Log("Correct node value: " + node.Value);
                 }
 
 
@@ -211,7 +211,7 @@ public class TreeManager : MonoBehaviour, ITreeManager
                 // The tree is balanced!! Ready to insert the next ingredient
 
                 // Activate null circles again
-                _treeVisualizerManager.ShowNullCircles();
+                //_treeVisualizerManager.ShowNullCircles();
 
                 // Circlemarker skal rykkes 
 
