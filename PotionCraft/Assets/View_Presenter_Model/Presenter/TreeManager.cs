@@ -150,10 +150,14 @@ public class TreeManager : MonoBehaviour, ITreeManager
             // If we rotate right, we need to check if the selected node and the parent node and the grandparent node is the correct nodes
             if (TheCurrentCorrectOperation.OperationType == OperationType.RotateRight)
             {
-                HashSet<Node> correctNodesInTree = new HashSet<Node>();
-                correctNodesInTree.Add(TheCurrentCorrectOperation.Node);
-                correctNodesInTree.Add(TheCurrentCorrectOperation.Node.Parent);
-                correctNodesInTree.Add(TheCurrentCorrectOperation.Node.Parent.Parent);
+                Debug.Log("!!!!!! the TheCurrentCorrectOperation.Node.Value is: " + TheCurrentCorrectOperation.Node.Value);
+                HashSet<Node> correctNodesInTree = new HashSet<Node>
+                {
+                    TheCurrentCorrectOperation.Node,
+                    TheCurrentCorrectOperation.Node.Parent,
+                    TheCurrentCorrectOperation.Node.Parent.Parent
+                };
+                
                 ExecuteOperationIfCorrectNodesSelected(correctNodesInTree, OperationType.RotateRight);
 
             }

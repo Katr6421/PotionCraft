@@ -1,12 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class NullCircleSpawner : MonoBehaviour
 {
     [SerializeField] private GameObject nullCirclePrefab;
     [SerializeField] private Canvas uiCanvas; // Reference to the Canvas where the nullCircles will be parented
     public Dictionary<int, GameObject> NullCircles { get; } = new Dictionary<int, GameObject>();
+    private GameObject root;
 
     // Start is called before the first frame update
     void Start()
@@ -18,6 +20,7 @@ public class NullCircleSpawner : MonoBehaviour
     {
         // Instantiate the nullCircles
         GameObject nullCircle0 = Instantiate(nullCirclePrefab, new Vector3(440, 239, 0), Quaternion.identity);
+        root = nullCircle0;
         GameObject nullCircle1 = Instantiate(nullCirclePrefab, new Vector3(195, 117, 0), Quaternion.identity);
         GameObject nullCircle2 = Instantiate(nullCirclePrefab, new Vector3(685, 117, 0), Quaternion.identity);
 
@@ -172,14 +175,168 @@ public class NullCircleSpawner : MonoBehaviour
             NullCircles[i].GetComponent<NullCircle>().Index = i;
         }
 
+        
         // Deactivate all nullCircles
         // Set the parent of all nullCircles to the uiCanvas
         foreach (GameObject c in NullCircles.Values)
         {
-            c.SetActive(false);
+            HideNullCircle(c.GetComponent<NullCircle>());
             c.transform.SetParent(uiCanvas.transform, false);
         }
 
+        // Activate the root nullCircle
+        ShowNullCircle(nullCircle0.GetComponent<NullCircle>());
     }
+
+    public GameObject Get(int index)
+    { return Get(root, index); }
+
+    private GameObject Get(GameObject x, int key)
+    {
+        NullCircle nc = x.GetComponent<NullCircle>();
+        // Return Node associated with key in the subtree rooted at x;
+        // return null if key not present in subtree rooted at x.
+        if (nc == null) return null;
+        if (key < nc.Index) return Get(nc.LeftChild, key);
+        else if (key > nc.Index) return Get(nc.RightChild, key);
+        else return x;
+    }
+
+
+
+
+    // Recursively sets IsActive on null circles that should be active based on their values
+    public void UpdateActiveNullCircles()
+    {
+        
+        UpdateActiveNullCircles(root.GetComponent<NullCircle>());
+    }
+    
+    private void UpdateActiveNullCircles(NullCircle nullCircle)
+    {
+        if (nullCircle == null) return;
+
+        // If the current nullCircle has no value, it should be active,
+        // but we don't need to check its children because they would be beyond the current "border" of values.
+        if (nullCircle.Ingredient == null)
+        {
+            nullCircle.IsActive = true;
+            ShowNullCircle(nullCircle);
+        }
+        else
+        {
+            nullCircle.IsActive = false;
+            HideNullCircle(nullCircle);
+            // If this nullCircle has a value, its children might need to be activated,
+            // so we recursively check them.
+            NullCircle leftChild = nullCircle.LeftChild?.GetComponent<NullCircle>();
+            NullCircle rightChild = nullCircle.RightChild?.GetComponent<NullCircle>();
+
+            UpdateActiveNullCircles(leftChild);
+            UpdateActiveNullCircles(rightChild);
+        }
+    }
+
+    public void DeactivateAllNullCirclesInSubtree(NullCircle nullCircle)
+    {
+        if (nullCircle == null) return;
+
+        nullCircle.IsActive = false;
+        HideNullCircle(nullCircle);
+        // If this nullCircle has a value, its children might need to be activated,
+        // so we recursively check them.
+        NullCircle leftChild = nullCircle.LeftChild?.GetComponent<NullCircle>();
+        NullCircle rightChild = nullCircle.RightChild?.GetComponent<NullCircle>();
+
+        DeactivateAllNullCirclesInSubtree(leftChild);
+        DeactivateAllNullCirclesInSubtree(rightChild);
+    }
+
+    public NullCircle FindNullCircleBasedOnPosition(Vector3 newPosition)
+    {
+        // Assuming 'root' is accessible here and correctly references the root NullCircle object
+        return FindNullCircleBasedOnPosition(root.GetComponent<NullCircle>(), newPosition);
+    }
+
+    private NullCircle FindNullCircleBasedOnPosition(NullCircle nullCircle, Vector3 newPosition)
+    {
+        //Debug.Log("!!!!!!!!I am looking for a nullcircle at this posistion" + newPosition );
+        //Debug.Log("!!!!!!!! and the current nullcircle that i am looking at has this posistion" + nullCircle.transform.position );
+        if (nullCircle == null) return null;
+
+        // Assuming the positions are in the same coordinate space (you may need adjustments if they are not)
+        // Consider using a small threshold for comparison to handle floating-point imprecision
+        float positionThreshold = 0.5f; // This threshold can be adjusted based on your needs
+        if (Vector3.Distance(nullCircle.transform.position, newPosition) <= positionThreshold)
+        {
+            
+        //Debug.Log("!!!!!!!!!I found this nullcircle that has this posistion !!!!!!!!!!!!!" + nullCircle.transform.position );
+        Debug.Log("I have found the nullcircle that has this position" + nullCircle.transform.position);
+            return nullCircle; // Found the matching NullCircle
+            
+        }
+
+        // Recursively check the left child
+        NullCircle leftChildResult = null;
+        if (nullCircle.LeftChild != null)
+        {
+            leftChildResult = FindNullCircleBasedOnPosition(nullCircle.LeftChild.GetComponent<NullCircle>(), newPosition);
+            if (leftChildResult != null) return leftChildResult; // If found in the left subtree, return it
+        }
+
+        // Recursively check the right child
+        NullCircle rightChildResult = null;
+        if (nullCircle.RightChild != null)
+        {
+            rightChildResult = FindNullCircleBasedOnPosition(nullCircle.RightChild.GetComponent<NullCircle>(), newPosition);
+            if (rightChildResult != null) return rightChildResult; // If found in the right subtree, return it
+        }
+
+        // If not found in either subtree, return null
+    
+        return null;
+    }
+
+    public void HideNullCircle(NullCircle nullCircle)
+    {
+        if (nullCircle == null) return;
+
+        // Disable the Image component to hide the visual representation
+        Image image = nullCircle.GetComponent<Image>();
+        if (image != null)
+        {
+            image.enabled = false;
+        }
+
+        // Disable the Button component to prevent interaction
+        Button button = nullCircle.GetComponent<Button>();
+        if (button != null)
+        {
+            button.interactable = false;
+        }
+    }
+
+       
+    public void ShowNullCircle(NullCircle nullCircle)
+    {
+        if(nullCircle == null) return;
+
+        // Re-enable the Image component
+        Image image = nullCircle.GetComponent<Image>();
+        if (image != null)
+        {
+            image.enabled = true;
+        }
+
+        // Re-enable the Button component
+        Button button = nullCircle.GetComponent<Button>();
+        if (button != null)
+        {
+            button.interactable = true;
+        }
+    }
+    
+
+
 
 }

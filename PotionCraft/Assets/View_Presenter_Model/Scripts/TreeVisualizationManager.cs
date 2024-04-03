@@ -5,7 +5,7 @@ using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.UIElements;
+//using UnityEngine.UIElements;
 
 
 /*********************************************
@@ -32,7 +32,7 @@ public class TreeVisualizationManager : MonoBehaviour
     private GameObject _currentNullCircle; // Reference to the current NullCircle that the user has clicked on
     private int _currectIngredientIndex = 0;     // Index of the current ingredient in the list of ingredients.
     private List<GameObject> _lineRenderers = new List<GameObject>();
-    private int _currentNullCircleValue; // Holds the value of the current NullCircle
+    //private int _currentNullCircleValue; // Holds the value of the current NullCircle
     private List<GameObject> _currentInstantiatedNullCircles = new List<GameObject>();
 
 
@@ -78,21 +78,31 @@ public class TreeVisualizationManager : MonoBehaviour
         /*********************************************
         Set the current state of the Red-Black BST tree
         *********************************************/
-        _treeManager.InsertNode(_currentNullCircleValue, _currentNullCircleValue);
+        var currentIngredientValue = int.Parse(_currentIngredient.GetComponentInChildren<TextMeshProUGUI>().text);
+        Debug.Log("Current ingredient value: " + currentIngredientValue);
+        _treeManager.InsertNode(currentIngredientValue, currentIngredientValue);
         /*********************************************
         Validate if the ingredient is placed right, by checking the parent, and if it's left or right child
         *********************************************/
         bool isRightPlacement = _treeManager.ValidateNodePlacement(_currentNullCircle);
+       
 
         // Check if the current ingredient is not null
-        if (_currentIngredient != null)
+        if (_currentIngredient != null && isRightPlacement)
         {
+             // Prepare the next ingredient for placement. Update the index in the list of ingredients, that we need to place. 
+            _currectIngredientIndex++;
             // Move the current ingredient to this NullCircle Start position.
             // Needs to be a coroutine to be able to wait for the movement to finish before deactivating the NullCircle
-            StartCoroutine(MoveAndDeactivate(_currentIngredient, _currentNullCircle.transform.position, 0.5f, () =>
+            StartCoroutine(MoveAndHide(_currentIngredient, _currentNullCircle.transform.position, 0.5f, () =>
             {
                 Debug.Log("Current ingredient has the value : " + int.Parse(_currentIngredient.GetComponentInChildren<TextMeshProUGUI>().text) + " and is placed in the nullCircle with the index " + _currentNullCircle.GetComponent<NullCircle>().Index);
-                _currentIngredient.GetComponent<Ingredient>().NullCircleIndex = _currentNullCircle.GetComponent<NullCircle>().Index;
+                //_currentIngredient.GetComponent<Ingredient>().NullCircleIndex = _currentNullCircle.GetComponent<NullCircle>().Index;
+                _currentNullCircle.GetComponent<NullCircle>().Ingredient = _currentIngredient;
+                // Set the value of the current NullCircle to the value of the current ingredient
+                _currentNullCircle.GetComponent<NullCircle>().Value = currentIngredientValue;
+
+                
                 /*********************************************
                 PART 2
                 *********************************************/
@@ -120,7 +130,7 @@ public class TreeVisualizationManager : MonoBehaviour
     
                 }
                 else {
-                    // Deactivate all nullCircles
+                    // Hide all nullCircles
                     HideNullCircles();
                 }
                 
@@ -141,6 +151,11 @@ public class TreeVisualizationManager : MonoBehaviour
 
             }));
         }
+        else {
+            Debug.Log("Wrong null circle. You placede the ingredient wrong, try again");
+            // update hint 
+            // update current nullcircles value 
+        }
     }
 
 
@@ -150,16 +165,14 @@ public class TreeVisualizationManager : MonoBehaviour
         if (_currectIngredientIndex < _nodeSpawner.GetNodeObjects().Count)
         {
             _currentIngredient = _nodeSpawner.GetNodeObjects()[_currectIngredientIndex];
-            // Set the value of the current NullCircle to the value of the current ingredient
-            _currentNullCircle.GetComponent<NullCircle>().Value = int.Parse(_currentIngredient.GetComponentInChildren<TextMeshProUGUI>().text);
-            _currentNullCircleValue = _currentNullCircle.GetComponent<NullCircle>().Value;
+            _currentNullCircle.GetComponent<NullCircle>().Value = int.Parse(_currentIngredient.GetComponentInChildren<TextMeshProUGUI>().text);            
         }
         else
         {
             // Fjern alle nullCircles
             Debug.Log("Ingen flere ingredienser at indsætte");
         }
-        _currectIngredientIndex++;
+ 
     }
 
 
@@ -221,6 +234,7 @@ public class TreeVisualizationManager : MonoBehaviour
         GameObject leftChild;
         WhoIsWho(operationType, ingredientsToRotate, out grandparent, out parent, out rightChild, out leftChild);
         
+        
         switch (operationType)
         {
             case OperationType.RotateLeft:
@@ -243,13 +257,38 @@ public class TreeVisualizationManager : MonoBehaviour
                 }
                 else {
 
-                    StartCoroutine(RotateLeftAnimation(parent, rightChild, rightChildNullCircle));
+                    //StartCoroutine(RotateLeftAnimation(parent, rightChild, rightChildNullCircle));
                     //kun rotate animation
                 }
-
-            
                 break;
+
+
             case OperationType.RotateRight:
+               
+                //Slå først vores nullcircle op fra vores ingredient
+               // GameObject parentNullCircle = _nullCircleSpawner.GetComponent<NullCircleSpawner>().NullCircles[parent.GetComponent<Ingredient>().NullCircleIndex];
+                GameObject parentNullCircle = _currentNullCircle.GetComponent<NullCircle>().Parent;
+                Debug.Log("!!!!!!!!!!!! parentNullCircle index:" + parentNullCircle.GetComponent<NullCircle>().Index);
+                //Så vores null circles parent right child
+                GameObject parentRightChildNullCircle  =  parentNullCircle.GetComponent<NullCircle>().RightChild;
+                Debug.Log("!!!!!!!!!!!!!! parentRightChildNullCircle !!!!!!!!" + parentRightChildNullCircle.GetComponent<NullCircle>().Index);
+                
+                 //check if parent right child er null
+                if (parentRightChildNullCircle.GetComponent<NullCircle>().Value != 0){
+                    Debug.Log("Jeg har et rightChild, og derfor skal mit subtree op i bagen");
+                    //Bag animation
+                    //rotate animation
+
+                    // move parent to leftChild
+                    // move rightChild to parent
+
+                }
+                else {
+
+                    StartCoroutine(RotateRightAnimation(leftChild, parent, grandparent, parentNullCircle));
+                    //kun rotate animation
+                }
+                 
                 
                 break;
             case OperationType.FlipColors:
@@ -260,13 +299,267 @@ public class TreeVisualizationManager : MonoBehaviour
         }
     }
 
+    IEnumerator RotateRightAnimation(GameObject leftChild, GameObject parent, GameObject grandparent, GameObject parentNullCircle) {
+    // Move grandparent to grandparent.rightChild
+    // Move parent to grandparent
+    // Move leftChild to parent
+    // Update lines, nullcircle index, values, and visibility
+
+    // Calculate the positions based on your tree's structure.
+    Vector3 grandParentNewPosition = parentNullCircle.GetComponent<NullCircle>().Parent.GetComponent<NullCircle>().RightChild.transform.position;
+    Vector3 parentNewPosition = grandparent.transform.position;
+    Vector3 leftChildNewPosition = parent.transform.position;
+
+    //Translate our ingredients to nullcircles, such that we can look up on the nullcircles and get the ingredients that are attacted.
+    // Translate grandparent to its nullcircle
+    GameObject grandParentNullCircle = parentNullCircle.GetComponent<NullCircle>().Parent;
+    //Translate leftchild to nullcircle
+    GameObject leftChildNullCircle = parentNullCircle.GetComponent<NullCircle>().LeftChild;
+
+    //Debug.Log("Grandparent nullcircle index: " + grandParentNullCircle.GetComponent<NullCircle>().Index);
+    Debug.Log("Parent nullcircle: " + parentNullCircle.GetComponent<NullCircle>().Index);
+    Debug.Log("Leftchild nullcircle: " + leftChildNullCircle.GetComponent<NullCircle>().Index);
 
 
-    /*********************************************
-    METHOD: MoveAndDestroy                          
-    DESCRIPTION: This method moves a GameObject to a destination position over a specified duration.
-    *********************************************/
-    IEnumerator RotateLeftAnimation(GameObject parent, GameObject rightChild, GameObject rightChildNullCircle) {
+
+
+    // Move the nodes with their subtrees.
+    //grandParentNullCircle.GetComponent<NullCircle>().LeftChild.GetComponent<NullCircle>().Ingredient = null;
+    yield return StartCoroutine(MoveRightSubtreeAndAllDescendants(grandParentNullCircle, grandParentNewPosition, 1.0f, () => { 
+        Debug.Log("MoveRightSubtreeAndAllDescendants done");
+        
+    }));
+    Debug.Log("Now we move the parent and leftchild");
+    yield return StartCoroutine(MoveLeftSubtreeAndAllDescendants(parentNullCircle, parentNewPosition, 1.0f, () => {}));
+        
+        // Update nullCircles ingredients
+    Debug.Log("MoveNodeWithSubtree done and now we update active null circles");
+        // Update if nullCircles should be visible or not
+    _nullCircleSpawner.UpdateActiveNullCircles();
+       
+    //yield return StartCoroutine(MoveNodeWithSubtree(parentNullCircle, parentNewPosition, 1.0f));
+    //yield return StartCoroutine(MoveNodeWithSubtree(leftChildNullCircle, leftChildNewPosition, 1.0f));
+
+    
+    
+    
+
+    // After movements are done, update the logical connections.
+    //UpdateConnectionsAfterRightRotation(parentNullCircle);
+    //UpdateLinesAfterRotation();
+    // You would implement logic to update active/inactive status of null circles as needed.
+}
+
+
+
+
+
+   /*IEnumerator MoveNodeWithSubtree(GameObject nullCircleToMove, Vector3 newPosition, float duration, Action onComplete) {
+        Debug.Log(" !!!! IN MOVENODEWITHSUBTREE !!!!");
+        NullCircle nullCircle = nullCircleToMove.GetComponent<NullCircle>();
+
+
+        // Check grandparent's rightChild + subtree
+        // Recursively move children subtrees
+        // Move parent to grandparent's original position
+        // Move leftChild to parent's original position
+        // Check if leftChild has subtree (left + right)
+        // Recursively move children subtrees
+
+        // set grandparent's leftChild.Ingredient to null - as test
+        // if grandparent has rightChild
+
+
+        // Recursively move children subtrees.
+        if (nullCircle.RightChild.GetComponent<NullCircle>().Ingredient != null) {
+            yield return StartCoroutine(MoveNodeWithSubtree(nullCircle.RightChild, newPosition - (nullCircleToMove.transform.position - nullCircle.RightChild.transform.position), duration,  () => {}));
+        }
+        if (nullCircle.LeftChild.GetComponent<NullCircle>().Ingredient != null) {
+            yield return StartCoroutine(MoveNodeWithSubtree(nullCircle.LeftChild, newPosition - (nullCircleToMove.transform.position - nullCircle.LeftChild.transform.position), duration, () => {}));
+        }
+        
+
+        if (nullCircle.Ingredient != null) {
+            yield return StartCoroutine(MoveNode(nullCircle.Ingredient, newPosition, duration, nullCircle, () => {}));
+        }
+
+        yield return null;
+        onComplete?.Invoke();
+    }*/
+    IEnumerator MoveRightSubtreeAndAllDescendants(GameObject startingNode, Vector3 newPosition, float duration, Action onComplete) {
+        NullCircle startingNullCircle = startingNode.GetComponent<NullCircle>();
+
+        // Move the right child and its subtree if it exists.
+        if (startingNullCircle.RightChild.GetComponent<NullCircle>().Ingredient != null) {
+            GameObject rightChild = startingNullCircle.RightChild;
+            Vector3 rightChildNewPosition = newPosition - (startingNode.transform.position - rightChild.transform.position);
+            yield return StartCoroutine(MoveNodeAndAllDescendants(rightChild, rightChildNewPosition, duration, ()=>{
+                Debug.Log("Right subtree has been moved");}));
+            
+        }
+        // After the right subtree has been moved, now move the starting node itself if it has an ingredient.
+        
+        Debug.Log("Now i am moving myself");
+        yield return StartCoroutine(MoveNode(startingNullCircle.Ingredient, newPosition, duration, startingNullCircle, ()=>{}));
+        
+        onComplete?.Invoke();
+    }
+
+    IEnumerator MoveLeftSubtreeAndAllDescendants(GameObject startingNode, Vector3 newPosition, float duration, Action onComplete) {
+        NullCircle startingNullCircle = startingNode.GetComponent<NullCircle>();
+
+        // After the right subtree has been moved, now move the starting node itself if it has an ingredient.
+        Debug.Log("Now i am moving myself");
+        yield return StartCoroutine(MoveNode(startingNullCircle.Ingredient, newPosition, duration, startingNullCircle, ()=>{}));
+
+        // Move the right child and its subtree if it exists.
+        if (startingNullCircle.LeftChild.GetComponent<NullCircle>().Ingredient != null) {
+            GameObject leftChild = startingNullCircle.LeftChild;
+            Vector3 leftChildNewPosition = startingNode.transform.position;
+            //newPosition - (startingNode.transform.position - leftChild.transform.position);
+            yield return StartCoroutine(MoveNodeAndAllDescendants(leftChild, leftChildNewPosition, duration, ()=>{
+                Debug.Log("Left subtree has been moved");}));
+            
+        }
+        
+        onComplete?.Invoke();
+    }
+
+IEnumerator MoveNodeAndAllDescendants(GameObject nodeToMove, Vector3 newPosition, float duration, Action onComplete) {
+    NullCircle nullCircle = nodeToMove.GetComponent<NullCircle>();
+
+    // If the node has an ingredient, move it.
+    if (nullCircle.Ingredient != null) {
+        yield return StartCoroutine(MoveNode(nullCircle.Ingredient, newPosition, duration, nullCircle, () => {}));
+    }
+
+    // Recursively move the left subtree if it exists.
+    if (nullCircle.LeftChild.GetComponent<NullCircle>().Ingredient != null) {
+        GameObject leftChild = nullCircle.LeftChild;
+        Vector3 leftChildNewPosition = newPosition - (nodeToMove.transform.position - leftChild.transform.position);
+        yield return StartCoroutine(MoveNodeAndAllDescendants(leftChild, leftChildNewPosition, duration, () => {}));
+    }
+
+    // Recursively move the right subtree if it exists.
+    if (nullCircle.RightChild.GetComponent<NullCircle>().Ingredient != null) {
+        GameObject rightChild = nullCircle.RightChild;
+        Vector3 rightChildNewPosition = newPosition - (nodeToMove.transform.position - rightChild.transform.position);
+        yield return StartCoroutine(MoveNodeAndAllDescendants(rightChild, rightChildNewPosition, duration, () => {}));
+    }
+    onComplete?.Invoke();
+}
+
+
+
+
+   
+
+    IEnumerator MoveNode(GameObject ingredient, Vector3 newPosition, float duration, NullCircle nullCircle, Action onComplete) {
+        //kan slette parameter nullCircle senere
+        
+        Vector3 startingPos = ingredient.transform.position;
+        float elapsedTime = 0;
+        while (elapsedTime < duration) {
+            ingredient.transform.position = Vector3.Lerp(startingPos, newPosition, (elapsedTime / duration));
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+        ingredient.transform.position = newPosition;
+        nullCircle.Ingredient = null;
+        _nullCircleSpawner.DeactivateAllNullCirclesInSubtree(nullCircle);
+        
+
+        Debug.Log(" !!!! IN MOVENODE !!!!");
+        Debug.Log("Ingredient value is: " + ingredient.GetComponentInChildren<TextMeshProUGUI>().text);
+        Debug.Log("NullCircle index is: " + nullCircle.Index);
+
+        // Update the nullCircle ingredient
+        //newPosition = Utilities.WorldToCanvasPosition(_uiCanvas, newPosition);
+        NullCircle foundNullCircle = _nullCircleSpawner.FindNullCircleBasedOnPosition(newPosition);
+        if (foundNullCircle != null) {
+            Debug.Log("Found NullCircle with index: " + foundNullCircle.Index);
+            foundNullCircle.Ingredient = ingredient;
+            Debug.Log("Ingredient value is: " + foundNullCircle.Ingredient.GetComponentInChildren<TextMeshProUGUI>().text);
+        } else {
+            Debug.Log("NullCircle not found at position: " + newPosition);
+            
+        }
+        yield return null;
+        onComplete?.Invoke();
+        
+    }
+
+    
+
+
+
+
+
+
+
+
+
+    
+
+
+
+    /***************************** GAMMELT  UDKOMMENTERET *************************************/
+
+    /*IEnumerator RotateRightAnimation(GameObject leftChild, GameObject parent, GameObject grandparent, GameObject parentNullCircle) {
+        // Move grandparent to grandparent.rightChild
+        // Move parent to grandparent
+        // Move leftChild to parent
+        
+       
+        
+        // update lines
+        // update the nullcircle index for the parent and rightchild
+        // update nullcircle value
+        // update hvilke nullCircles der skal vises
+
+
+        // Assume positions are Vector3. If they are not, you will need to adjust.
+        Vector3 grandParentOriginalPosition = grandparent.transform.position;
+        Vector3 parentOriginalPosition = parent.transform.position;
+        Vector3 leftChildOriginalPosition = leftChild.transform.position;
+        
+        // This is the posistion we dont have yet, but we need to move the grandparent to its rightChild
+        Vector3 grandParentRightChildPosition = parentNullCircle.GetComponent<NullCircle>().Parent.GetComponent<NullCircle>().RightChild.transform.position;
+
+        float duration = 1.0f; // Duration of the animation in seconds
+        float elapsedTime = 0;
+
+        while (elapsedTime < duration)
+        {
+            // Calculate the current frame's progress
+            float t = elapsedTime / duration;
+            // Smoothly interpolate the position of each node
+            grandparent.transform.position = Vector3.Lerp(grandParentOriginalPosition, grandParentRightChildPosition, t);
+            parent.transform.position = Vector3.Lerp(parentOriginalPosition, grandParentOriginalPosition, t);
+            leftChild.transform.position = Vector3.Lerp(leftChildOriginalPosition, parentOriginalPosition, t);
+
+            // Increment the elapsed time and wait for the next frame
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        // Ensure both nodes are exactly in their final positions
+        grandparent.transform.position = grandParentRightChildPosition;
+        parent.transform.position = grandParentOriginalPosition;
+        leftChild.transform.position = parentOriginalPosition;
+
+        //All nullCircles values need to be updated
+        UpdateNullCirclesValuesAfterRightRotation(leftChild, parent, grandparent, parentNullCircle);
+
+        // Update visual connections if necessary
+        // For example, you might want to adjust the lines connecting these nodes to their parent/children
+        UpdateLinesAfterRotation(leftChild, parent, grandparent);
+        _nullCircleSpawner.UpdateActiveNullCircles();
+        ShowNullCircles();
+    }*/
+
+   
+    /*IEnumerator RotateLeftAnimation(GameObject parent, GameObject rightChild, GameObject rightChildNullCircle) {
         //Move parent to leftChild
         // first remove the line from rightchild to its leftchld
         // move parent down to rightChildNullCircle parent leftchild nullcircle posistion
@@ -313,32 +606,43 @@ public class TreeVisualizationManager : MonoBehaviour
         
         // Update which null circles are active
         // Dectivate rightChildNullCircle's parent's leftChild
-        rightChildNullCircle.GetComponent<NullCircle>().Parent.GetComponent<NullCircle>().LeftChild.GetComponent<NullCircle>().IsActive = false;
-        rightChildNullCircle.GetComponent<NullCircle>().Parent.GetComponent<NullCircle>().LeftChild.SetActive(false);
-        // Deactive rightChildNullCircle's children
-        rightChildNullCircle.GetComponent<NullCircle>().LeftChild.GetComponent<NullCircle>().IsActive = false;
-        rightChildNullCircle.GetComponent<NullCircle>().RightChild.GetComponent<NullCircle>().IsActive = false;
-        rightChildNullCircle.GetComponent<NullCircle>().LeftChild.SetActive(false);
-        rightChildNullCircle.GetComponent<NullCircle>().RightChild.SetActive(false);
+        _nullCircleSpawner.UpdateActiveNullCircles();
+        ShowNullCircles();
         
-        // Activate parent's leftChild's children
-        rightChildNullCircle.GetComponent<NullCircle>().Parent.GetComponent<NullCircle>().LeftChild.GetComponent<NullCircle>().LeftChild.GetComponent<NullCircle>().IsActive = true;
-        rightChildNullCircle.GetComponent<NullCircle>().Parent.GetComponent<NullCircle>().LeftChild.GetComponent<NullCircle>().RightChild.GetComponent<NullCircle>().IsActive = true;
-        rightChildNullCircle.GetComponent<NullCircle>().Parent.GetComponent<NullCircle>().LeftChild.GetComponent<NullCircle>().LeftChild.SetActive(true);
-        rightChildNullCircle.GetComponent<NullCircle>().Parent.GetComponent<NullCircle>().LeftChild.GetComponent<NullCircle>().RightChild.SetActive(true);
+    }*/
 
-        // Activate rightChildNullCircle
-        rightChildNullCircle.GetComponent<NullCircle>().IsActive = true;
-        rightChildNullCircle.SetActive(true);
-    }
+    /*public void UpdateNullCirclesValuesAfterRightRotation(GameObject leftChild, GameObject parent, GameObject grandparent, GameObject parentNullCircle)
+    {
+        // Update the values of the null circles after a right rotation
+        // The grandparent's value should be moved to the parent
+
+        // Update the null cirle grandparents right child to ingredient grandparent's value (GRANDPARENT orignal)
+        parentNullCircle.GetComponent<NullCircle>().Parent.GetComponent<NullCircle>().RightChild.GetComponent<NullCircle>().Value = int.Parse(grandparent.GetComponentInChildren<TextMeshProUGUI>().text);
+
+        //Update null circle grandparent value to ingredient parent's value (PARENT orignal)
+        parentNullCircle.GetComponent<NullCircle>().Parent.GetComponent<NullCircle>().Value = int.Parse(parent.GetComponentInChildren<TextMeshProUGUI>().text);
+        
+        // Update the null cirle parent to ingredient leftChild's value (LEFTCHILD orignal)
+        parentNullCircle.GetComponent<NullCircle>().Value = int.Parse(leftChild.GetComponentInChildren<TextMeshProUGUI>().text);
+        
+        // Child left null circles should be deactivated if they do not have a value
+    }*/
+
     
-    void UpdateLinesAfterRotation(GameObject parent, GameObject rightChild)
+    
+    public void UpdateLinesAfterRotation(GameObject parent, GameObject rightChild)
     {
         // Implement logic here to update or redraw lines between nodes to reflect the new tree structure.
         // This might involve finding the line renderer components and updating their start and end points.
     }
+    public void UpdateLinesAfterRotation(GameObject leftChild, GameObject parent, GameObject grandparent)
+    {
+        // Implement logic here to update or redraw lines between nodes to reflect the new tree structure.
+        // This might involve finding the line renderer components and updating their start and end points.
+    }
+    
 
-    IEnumerator MoveAndDeactivate(GameObject objectToMove, Vector3 destination, float duration, Action onComplete)
+    IEnumerator MoveAndHide(GameObject objectToMove, Vector3 destination, float duration, Action onComplete)
     {
         float elapsedTime = 0;
         Vector3 startingPos = objectToMove.transform.position;
@@ -354,7 +658,8 @@ public class TreeVisualizationManager : MonoBehaviour
 
 
         // Now that the movement is complete, destroy the NullCircle GameObject
-        _currentNullCircle.SetActive(false);
+        //_currentNullCircle.SetActive(false);
+        _nullCircleSpawner.HideNullCircle(_currentNullCircle.GetComponent<NullCircle>());
         _currentNullCircle.GetComponent<NullCircle>().IsActive = false;
         // Invoke the callback to continue with the rest of the method's logic
         onComplete?.Invoke();
@@ -413,12 +718,14 @@ public class TreeVisualizationManager : MonoBehaviour
             
             if (nullCircle != null && nullCircle.IsActive) // Checking if component is not null and IsActive is true
             {
-                nullCirclePair.Value.SetActive(true); // Activate the GameObject
+                //nullCirclePair.Value.SetActive(true); // Activate the GameObject
+                _nullCircleSpawner.ShowNullCircle(nullCircle);
             }
 
         }
 
     }
+    
 
     public void HideNullCircles()
     {
@@ -429,10 +736,10 @@ public class TreeVisualizationManager : MonoBehaviour
             // If the NullCircle component is found and IsActive is false, deactivate the GameObject
             if (nullCircle != null && nullCircle.IsActive) // Checking if component is not null and IsActive is false
             {
-                nullCirclePair.Value.SetActive(false); // Deactivate the GameObject
+                //nullCirclePair.Value.SetActive(false); // Deactivate the GameObject
+                _nullCircleSpawner.HideNullCircle(nullCircle);
             }
         }
-
     }
 
    

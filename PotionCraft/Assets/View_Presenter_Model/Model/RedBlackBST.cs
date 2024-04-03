@@ -53,8 +53,8 @@ public class RedBlackBST : IRedBlackBST
       // Enqueue operations instead of executing them
       if (IsRed(h.Right) && !IsRed(h.Left))
          Operations.Enqueue(new Operation(h.Right, OperationType.RotateLeft));
-      if (IsRed(h.Left) && IsRed(h.Left.Left))
-         Operations.Enqueue(new Operation(h.Left, OperationType.RotateRight));
+      if (IsRed(h.Left) && IsRed(h.Left.Left)) // Should maybe not be left left
+         Operations.Enqueue(new Operation(h.Left.Left, OperationType.RotateRight));
       if (IsRed(h.Left) && IsRed(h.Right)) //Should not be h here, later problem
          Operations.Enqueue(new Operation(h, OperationType.FlipColors));
 

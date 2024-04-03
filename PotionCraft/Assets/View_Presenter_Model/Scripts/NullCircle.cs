@@ -13,6 +13,7 @@ public class NullCircle : MonoBehaviour
     public GameObject Parent { get; set; }
     public bool IsActive { get; set; } = false;
     public int Index { get; set; }
+    public GameObject Ingredient { get; set; }
     
     
     void Start()
