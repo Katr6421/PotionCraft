@@ -28,7 +28,7 @@ public class TreeVisualizationManager : MonoBehaviour
     [SerializeField] private LevelUIController _levelUIController; // Need this to access the CircleMarker
     [SerializeField] private NullCircleSpawner _nullCircleSpawner; // Need this to access the list of NullCircles
     [SerializeField] private RightRotationVisualization _rightRotationVisualization; // Need this to make right rotation animations
-    //[SerializeField] private LeftRotationVisualization _leftRotationVisualization; // Need this to make left rotation animations
+    [SerializeField] private LeftRotationVisualization _leftRotationVisualization; // Need this to make left rotation animations
 
     private GameObject _currentIngredient; // Reference to the current Ingredient that the user must insert in the RedBlackTree
     private GameObject _currentNullCircle; // Reference to the current NullCircle that the user has clicked on
@@ -235,20 +235,18 @@ public class TreeVisualizationManager : MonoBehaviour
         GameObject rightChild;
         GameObject leftChild;
         WhoIsWho(operationType, ingredientsToRotate, out grandparent, out parent, out rightChild, out leftChild);
-        
-        
+
+        GameObject parentNullCircle = _currentNullCircle.GetComponent<NullCircle>().Parent;
+
+
         switch (operationType)
         {
             case OperationType.RotateLeft:
-                //int(index) to gameObject
-                // først slå vores nullcircle op fra vores ingredient
-                
-                GameObject rightChildNullCircle = _nullCircleSpawner.GetComponent<NullCircleSpawner>().NullCircles[rightChild.GetComponent<Ingredient>().NullCircleIndex];
                 // Så se vores nullcircles rigt child
-                GameObject grandleftChildNullCircle  =  rightChildNullCircle.GetComponent<NullCircle>().LeftChild;
+                GameObject leftChildNullCircle  =  _currentNullCircle.GetComponent<NullCircle>().LeftChild;
                 
                 //Check if the rightChild is  null
-                if (grandleftChildNullCircle.GetComponent<NullCircle>().Value != 0){
+                if (leftChildNullCircle.GetComponent<NullCircle>().Ingredient != null){
                     Debug.Log("Jeg har et leftChild, og derfor skal mit subtree op i bagen");
                     //Bag animation
                     //rotate animation
@@ -259,7 +257,7 @@ public class TreeVisualizationManager : MonoBehaviour
                 }
                 else {
 
-                    //StartCoroutine(RotateLeftAnimation(parent, rightChild, rightChildNullCircle));
+                    StartCoroutine(_leftRotationVisualization.RotateLeftAnimation(parent, rightChild, parentNullCircle));
                     //kun rotate animation
                 }
                 break;
@@ -268,19 +266,15 @@ public class TreeVisualizationManager : MonoBehaviour
             case OperationType.RotateRight:
                
                 //Slå først vores nullcircle op fra vores ingredient
-               // GameObject parentNullCircle = _nullCircleSpawner.GetComponent<NullCircleSpawner>().NullCircles[parent.GetComponent<Ingredient>().NullCircleIndex];
-                GameObject parentNullCircle = _currentNullCircle.GetComponent<NullCircle>().Parent;
-                //Debug.Log("!!!!!!!!!!!! parentNullCircle index:" + parentNullCircle.GetComponent<NullCircle>().Index);
+             
                 //Så vores null circles parent right child
-                GameObject parentRightChildNullCircle  =  parentNullCircle.GetComponent<NullCircle>().RightChild;
-                //Debug.Log("!!!!!!!!!!!!!! parentRightChildNullCircle !!!!!!!!" + parentRightChildNullCircle.GetComponent<NullCircle>().Index);
+                GameObject rightChildNullCircle  =  parentNullCircle.GetComponent<NullCircle>().RightChild;
                 
                  //check if parent right child er null
-                if (parentRightChildNullCircle.GetComponent<NullCircle>().Value != 0){
+                if (rightChildNullCircle.GetComponent<NullCircle>().Ingredient != null){
                     Debug.Log("Jeg har et rightChild, og derfor skal mit subtree op i bagen");
                     //Bag animation
                     //rotate animation
-
                     // move parent to leftChild
                     // move rightChild to parent
 
@@ -290,12 +284,7 @@ public class TreeVisualizationManager : MonoBehaviour
                     Debug.Log("Jeg har ikke et rightChild, og derfor skal jeg bare rotere");
                     // call RotataRightAnimation class 
                     StartCoroutine(_rightRotationVisualization.RotateRightAnimation(leftChild, parent, grandparent, parentNullCircle));
-                     //kun rotate animation
-                    //RightRotationVisualization.RotateRightAnimation(leftChild, parent, grandparent, parentNullCircle);
-                   
-                }
-                 
-                
+                }                
                 break;
             case OperationType.FlipColors:
                 throw new NotImplementedException();
@@ -544,57 +533,7 @@ public class TreeVisualizationManager : MonoBehaviour
     }*/
 
    
-    /*IEnumerator RotateLeftAnimation(GameObject parent, GameObject rightChild, GameObject rightChildNullCircle) {
-        //Move parent to leftChild
-        // first remove the line from rightchild to its leftchld
-        // move parent down to rightChildNullCircle parent leftchild nullcircle posistion
-        // move rightchild to parent null circle posistion
-        // update the nullcircle index for the parent and rightchild
-        // update nullcircle value 
-        // rightchild nullcircles børn skal deaktiveres
-
-        // Assume positions are Vector3. If they are not, you will need to adjust.
-        Vector3 parentOriginalPosition = parent.transform.position;
-        Vector3 rightChildOriginalPosition = rightChild.transform.position;
-        
-        // Temporarily just picking a position for the left child based on the parent.
-        // You should calculate this based on your tree's actual structure.
-        Vector3 leftChildPosition = rightChildNullCircle.GetComponent<NullCircle>().Parent.GetComponent<NullCircle>().LeftChild.transform.position;
-
-        float duration = 1.0f; // Duration of the animation in seconds
-        float elapsedTime = 0;
-
-        while (elapsedTime < duration)
-        {
-            // Calculate the current frame's progress
-            float t = elapsedTime / duration;
-            // Smoothly interpolate the position of each node
-            parent.transform.position = Vector3.Lerp(parentOriginalPosition, leftChildPosition, t);
-            rightChild.transform.position = Vector3.Lerp(rightChildOriginalPosition, parentOriginalPosition, t);
-
-            // Increment the elapsed time and wait for the next frame
-            elapsedTime += Time.deltaTime;
-            yield return null;
-        }
-
-        // Ensure both nodes are exactly in their final positions
-        parent.transform.position = leftChildPosition;
-        rightChild.transform.position = parentOriginalPosition;
-
-        // Update visual connections if necessary
-        // For example, you might want to adjust the lines connecting these nodes to their parent/children
-        UpdateLinesAfterRotation(parent, rightChild);
-
-        // Update the logical structure of your tree if not already done
-        // This might involve updating parent/child references, colors, etc.
-        // Tree.UpdateStructureAfterLeftRotation(parent, rightChild); // Example method call
-        
-        // Update which null circles are active
-        // Dectivate rightChildNullCircle's parent's leftChild
-        _nullCircleSpawner.UpdateActiveNullCircles();
-        ShowNullCircles();
-        
-    }*/
+    
 
     /*public void UpdateNullCirclesValuesAfterRightRotation(GameObject leftChild, GameObject parent, GameObject grandparent, GameObject parentNullCircle)
     {

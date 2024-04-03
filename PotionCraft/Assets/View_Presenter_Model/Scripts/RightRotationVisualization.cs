@@ -7,9 +7,8 @@ using UnityEngine;
 public class RightRotationVisualization : MonoBehaviour
 {
     [SerializeField] private NullCircleSpawner _nullCircleSpawner; 
+    [SerializeField] private VisualizationHelper _visualizationHelper;
 
-    void Start() {
-    }
 
     public IEnumerator RotateRightAnimation(GameObject leftChild, GameObject parent, GameObject grandparent, GameObject parentNullCircle) {
         /* 
@@ -61,16 +60,16 @@ public class RightRotationVisualization : MonoBehaviour
         if (startingNullCircle.RightChild.GetComponent<NullCircle>().Ingredient != null) {
             GameObject rightChild = startingNullCircle.RightChild;
             Vector3 rightChildNewPosition = newPosition - (startingNode.transform.position - rightChild.transform.position);
-            yield return StartCoroutine(MoveNodeAndAllDescendants(rightChild, rightChildNewPosition, duration, ()=>{
+            yield return StartCoroutine(_visualizationHelper.MoveNodeAndAllDescendants(rightChild, rightChildNewPosition, duration, ()=>{
                 Debug.Log("Right subtree has been moved");}));
             
         }
         // After the right subtree has been moved, now move the starting node itself if it has an ingredient.
         
         Debug.Log("Now i am moving myself");
-        yield return StartCoroutine(Utilities.MoveNode(startingNullCircle.Ingredient, newPosition, duration, startingNullCircle, ()=>{
+        yield return StartCoroutine(_visualizationHelper.MoveNode(startingNullCircle.Ingredient, newPosition, duration, startingNullCircle, ()=>{
             _nullCircleSpawner.DeactivateAllNullCirclesInSubtree(startingNullCircle);
-            UpdateNullCircleWithIngredient(newPosition, startingNullCircle);
+            _visualizationHelper.UpdateNullCircleWithIngredient(newPosition, startingNullCircle);
         }));
         
         onComplete?.Invoke();
@@ -82,17 +81,17 @@ public class RightRotationVisualization : MonoBehaviour
 
         // After the right subtree has been moved, now move the starting node itself if it has an ingredient.
         Debug.Log("Now i am moving myself");
-        yield return StartCoroutine(Utilities.MoveNode(startingNullCircle.Ingredient, newPosition, duration, startingNullCircle, ()=>{
+        yield return StartCoroutine(_visualizationHelper.MoveNode(startingNullCircle.Ingredient, newPosition, duration, startingNullCircle, ()=>{
             _nullCircleSpawner.DeactivateAllNullCirclesInSubtree(startingNullCircle);
-            UpdateNullCircleWithIngredient(newPosition, startingNullCircle);
+            _visualizationHelper.UpdateNullCircleWithIngredient(newPosition, startingNullCircle);
         }));
 
-        // Move the right child and its subtree if it exists.
+        // Move the left child and its subtree if it exists.
         if (startingNullCircle.LeftChild.GetComponent<NullCircle>().Ingredient != null) {
             GameObject leftChild = startingNullCircle.LeftChild;
             Vector3 leftChildNewPosition = startingNode.transform.position;
             //newPosition - (startingNode.transform.position - leftChild.transform.position);
-            yield return StartCoroutine(MoveNodeAndAllDescendants(leftChild, leftChildNewPosition, duration, ()=>{
+            yield return StartCoroutine(_visualizationHelper.MoveNodeAndAllDescendants(leftChild, leftChildNewPosition, duration, ()=>{
                 Debug.Log("Left subtree has been moved");}));
             
         }
@@ -100,47 +99,4 @@ public class RightRotationVisualization : MonoBehaviour
         onComplete?.Invoke();
     }
 
-
-    IEnumerator MoveNodeAndAllDescendants(GameObject nodeToMove, Vector3 newPosition, float duration, Action onComplete) {
-        NullCircle nullCircle = nodeToMove.GetComponent<NullCircle>();
-
-        // If the node has an ingredient, move it.
-        if (nullCircle.Ingredient != null) {
-            yield return StartCoroutine(Utilities.MoveNode(nullCircle.Ingredient, newPosition, duration, nullCircle, () => {
-                _nullCircleSpawner.DeactivateAllNullCirclesInSubtree(nullCircle);
-                UpdateNullCircleWithIngredient(newPosition, nullCircle);
-            }));
-        }
-
-        // Recursively move the left subtree if it exists.
-        if (nullCircle.LeftChild.GetComponent<NullCircle>().Ingredient != null) {
-            GameObject leftChild = nullCircle.LeftChild;
-            Vector3 leftChildNewPosition = newPosition - (nodeToMove.transform.position - leftChild.transform.position);
-            yield return StartCoroutine(MoveNodeAndAllDescendants(leftChild, leftChildNewPosition, duration, () => {}));
-        }
-
-        // Recursively move the right subtree if it exists.
-        if (nullCircle.RightChild.GetComponent<NullCircle>().Ingredient != null) {
-            GameObject rightChild = nullCircle.RightChild;
-            Vector3 rightChildNewPosition = newPosition - (nodeToMove.transform.position - rightChild.transform.position);
-            yield return StartCoroutine(MoveNodeAndAllDescendants(rightChild, rightChildNewPosition, duration, () => {}));
-        }
-        onComplete?.Invoke();
-    }
-
-    // Find the nullCircle at the given position and update its ingredient.
-    public void UpdateNullCircleWithIngredient(Vector3 newPosition, NullCircle nullCircle) {
-        NullCircle foundNullCircle = _nullCircleSpawner.FindNullCircleBasedOnPosition(newPosition);
-        if (foundNullCircle != null)
-        {
-            Debug.Log("null" + nullCircle.Index);
-            Debug.Log("Found NullCircle with index: " + foundNullCircle.Index + "and updated it with ingredient" + nullCircle.Ingredient.GetComponentInChildren<TextMeshProUGUI>().text);
-            foundNullCircle.Ingredient = nullCircle.Ingredient;
-        }
-        else
-        {
-            Debug.Log("NullCircle not found at position: " + newPosition);
-        }
-        nullCircle.Ingredient = null; // the null circle where the ingredient was earlier now has no ingredient
-    }
 }

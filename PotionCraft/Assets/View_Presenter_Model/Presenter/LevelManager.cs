@@ -83,7 +83,7 @@ public class LevelManager : MonoBehaviour, ILevelManager
 
         // Add levels to the list of levels. Hardcoded for each level
         Levels.Add(new LevelData("Dummy", 1, nodesLevel1));
-        Levels.Add(new LevelData("Crystal Elixir", 1, nodesLevel1));
+        Levels.Add(new LevelData("Crystal Elixir", 1, testLeftRotation));
         Levels.Add(new LevelData("Potion 2", 2, nodesLevel2));
         Levels.Add(new LevelData("Potion 3", 3, new List<Node>()));
         Levels.Add(new LevelData("Potion 4", 4, new List<Node>()));
