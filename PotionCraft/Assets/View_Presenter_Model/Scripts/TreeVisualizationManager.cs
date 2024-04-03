@@ -128,12 +128,12 @@ public class TreeVisualizationManager : MonoBehaviour
                 //Maybe slet this
                 if (shouldDrawNullCircles){
                     
-                    ShowNullCircles();
+                    _nullCircleSpawner.ShowNullCircles();
     
                 }
                 else {
                     // Hide all nullCircles
-                    HideNullCircles();
+                    _nullCircleSpawner.HideNullCircles();
                 }
                 
 
@@ -287,7 +287,8 @@ public class TreeVisualizationManager : MonoBehaviour
                 }                
                 break;
             case OperationType.FlipColors:
-                throw new NotImplementedException();
+                Debug.Log("NOT IMPLEMENTED");
+                break;
             default:
                 Debug.LogError("Invalid operation type. Eller vi glemte at give den en operationtype med");
                 throw new ArgumentOutOfRangeException();
@@ -392,7 +393,13 @@ public class TreeVisualizationManager : MonoBehaviour
                 rightChild = null;
                 break;
             case OperationType.FlipColors:
-                throw new NotImplementedException();
+                // Remember to correct this
+                grandparent = null;
+                parent = null;
+                rightChild = null;
+                leftChild = null;
+                Debug.Log("NOT IMPLEMENTED");
+                break;
             default:
                 Debug.LogError("Invalid operation type. Eller vi glemte at give den en operationtype med");
                 throw new ArgumentOutOfRangeException();
@@ -412,37 +419,7 @@ public class TreeVisualizationManager : MonoBehaviour
         return new Vector3(xPosition, yPosition, 0);
 
     }
-    public void ShowNullCircles()
-    {
-        foreach (KeyValuePair<int, GameObject> nullCirclePair in _nullCircleSpawner.NullCircles)
-        {
-            NullCircle nullCircle = nullCirclePair.Value.GetComponent<NullCircle>();
-            
-            if (nullCircle != null && nullCircle.IsActive) // Checking if component is not null and IsActive is true
-            {
-                //nullCirclePair.Value.SetActive(true); // Activate the GameObject
-                _nullCircleSpawner.ShowNullCircle(nullCircle);
-            }
-
-        }
-
-    }
     
-
-    public void HideNullCircles()
-    {
-        foreach (KeyValuePair<int, GameObject> nullCirclePair in _nullCircleSpawner.NullCircles)
-        {
-            NullCircle nullCircle = nullCirclePair.Value.GetComponent<NullCircle>();
-
-            // If the NullCircle component is found and IsActive is false, deactivate the GameObject
-            if (nullCircle != null && nullCircle.IsActive) // Checking if component is not null and IsActive is false
-            {
-                //nullCirclePair.Value.SetActive(false); // Deactivate the GameObject
-                _nullCircleSpawner.HideNullCircle(nullCircle);
-            }
-        }
-    }
 
       /***************************** GAMMELT  UDKOMMENTERET *************************************/
 

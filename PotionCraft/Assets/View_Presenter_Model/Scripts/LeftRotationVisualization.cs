@@ -37,8 +37,10 @@ public class LeftRotationVisualization : MonoBehaviour {
         
 
         //Debug.Log("MoveNodeWithSubtree done and now we update active null circles");
+        
+        
         // Update if nullCircles should be visible or not
-        _nullCircleSpawner.UpdateActiveNullCircles();
+        //_nullCircleSpawner.UpdateActiveNullCircles();
 
 
         // Update the lines

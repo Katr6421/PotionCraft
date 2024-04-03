@@ -6,6 +6,7 @@ public class TreeManager : MonoBehaviour, ITreeManager
 {
     // SHOULD BE INTERFACE??
     [SerializeField] private TreeVisualizationManager _treeVisualizerManager;
+    [SerializeField] private NullCircleSpawner _nullCircleSpawner;
     public RedBlackBST RedBlackTree { get; set; } = new RedBlackBST();
     public static TreeManager instance { get; private set; }
     private HashSet<Node> currentSelctedNodes = new HashSet<Node>();
@@ -225,20 +226,22 @@ public class TreeManager : MonoBehaviour, ITreeManager
             // Kalde isThereARedViolation
             Debug.Log("Checking for a tree violation");
             RedBlackTree.IsThereATreeViolation();
-            Debug.Log("The operation there is left is: " );
-            foreach (Operation operation in RedBlackTree.Operations)
-            {
-                Debug.Log(operation.OperationType);
-            }
+            
 
+
+           
             // Kalde en metode der håndtere næste operation i køen
             if (RedBlackTree.Operations.Count > 0)
             {
                 HandleNextOperation();
+                
             }
             else
             {
                 Debug.Log("No more operations in the queue");
+                // update nulls and then show them
+                _nullCircleSpawner.UpdateActiveNullCircles();
+                
                 // The tree is balanced!! Ready to insert the next ingredient
 
                 // Activate null circles again

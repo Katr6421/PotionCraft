@@ -43,9 +43,10 @@ public class RightRotationVisualization : MonoBehaviour
         yield return StartCoroutine(MoveLeftSubtreeAndAllDescendants(parentNullCircle, parentNewPosition, 1.0f, () => {}));
             
         
-       // Debug.Log("MoveNodeWithSubtree done and now we update active null circles");
+        // Debug.Log("MoveNodeWithSubtree done and now we update active null circles");
+        
         // Update if nullCircles should be visible or not
-        _nullCircleSpawner.UpdateActiveNullCircles();
+        //_nullCircleSpawner.UpdateActiveNullCircles();
         
         
 

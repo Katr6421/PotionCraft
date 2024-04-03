@@ -297,6 +297,38 @@ public class NullCircleSpawner : MonoBehaviour
         return null;
     }
 
+    public void ShowNullCircles()
+    {
+        foreach (KeyValuePair<int, GameObject> nullCirclePair in NullCircles)
+        {
+            NullCircle nullCircle = nullCirclePair.Value.GetComponent<NullCircle>();
+            
+            if (nullCircle != null && nullCircle.IsActive) // Checking if component is not null and IsActive is true
+            {
+                //nullCirclePair.Value.SetActive(true); // Activate the GameObject
+                ShowNullCircle(nullCircle);
+            }
+
+        }
+
+    }
+    
+
+    public void HideNullCircles()
+    {
+        foreach (KeyValuePair<int, GameObject> nullCirclePair in NullCircles)
+        {
+            NullCircle nullCircle = nullCirclePair.Value.GetComponent<NullCircle>();
+
+            // If the NullCircle component is found and IsActive is false, deactivate the GameObject
+            if (nullCircle != null && nullCircle.IsActive) // Checking if component is not null and IsActive is false
+            {
+                //nullCirclePair.Value.SetActive(false); // Deactivate the GameObject
+                HideNullCircle(nullCircle);
+            }
+        }
+    }
+
     public void HideNullCircle(NullCircle nullCircle)
     {
         if (nullCircle == null) return;
