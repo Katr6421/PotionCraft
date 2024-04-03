@@ -29,21 +29,21 @@ public class RightRotationVisualization : MonoBehaviour
         GameObject leftChildNullCircle = parentNullCircle.GetComponent<NullCircle>().LeftChild;
 
         //Debug.Log("Grandparent nullcircle index: " + grandParentNullCircle.GetComponent<NullCircle>().Index);
-        Debug.Log("Parent nullcircle: " + parentNullCircle.GetComponent<NullCircle>().Index);
-        Debug.Log("Leftchild nullcircle: " + leftChildNullCircle.GetComponent<NullCircle>().Index);
+       // Debug.Log("Parent nullcircle: " + parentNullCircle.GetComponent<NullCircle>().Index);
+       // Debug.Log("Leftchild nullcircle: " + leftChildNullCircle.GetComponent<NullCircle>().Index);
 
 
 
 
         // Move the nodes with their subtrees.
         yield return StartCoroutine(MoveRightSubtreeAndAllDescendants(grandParentNullCircle, grandParentNewPosition, 1.0f, () => { 
-            Debug.Log("MoveRightSubtreeAndAllDescendants done");
+            //Debug.Log("MoveRightSubtreeAndAllDescendants done");
         }));
-        Debug.Log("Now we move the parent and leftchild");
+        //Debug.Log("Now we move the parent and leftchild");
         yield return StartCoroutine(MoveLeftSubtreeAndAllDescendants(parentNullCircle, parentNewPosition, 1.0f, () => {}));
             
         
-        Debug.Log("MoveNodeWithSubtree done and now we update active null circles");
+       // Debug.Log("MoveNodeWithSubtree done and now we update active null circles");
         // Update if nullCircles should be visible or not
         _nullCircleSpawner.UpdateActiveNullCircles();
         
@@ -61,12 +61,13 @@ public class RightRotationVisualization : MonoBehaviour
             GameObject rightChild = startingNullCircle.RightChild;
             Vector3 rightChildNewPosition = newPosition - (startingNode.transform.position - rightChild.transform.position);
             yield return StartCoroutine(_visualizationHelper.MoveNodeAndAllDescendants(rightChild, rightChildNewPosition, duration, ()=>{
-                Debug.Log("Right subtree has been moved");}));
+                //Debug.Log("Right subtree has been moved");
+                }));
             
         }
         // After the right subtree has been moved, now move the starting node itself if it has an ingredient.
         
-        Debug.Log("Now i am moving myself");
+        //Debug.Log("Now i am moving myself");
         yield return StartCoroutine(_visualizationHelper.MoveNode(startingNullCircle.Ingredient, newPosition, duration, startingNullCircle, ()=>{
             _nullCircleSpawner.DeactivateAllNullCirclesInSubtree(startingNullCircle);
             _visualizationHelper.UpdateNullCircleWithIngredient(newPosition, startingNullCircle);
@@ -80,7 +81,7 @@ public class RightRotationVisualization : MonoBehaviour
         NullCircle startingNullCircle = startingNode.GetComponent<NullCircle>();
 
         // After the right subtree has been moved, now move the starting node itself if it has an ingredient.
-        Debug.Log("Now i am moving myself");
+        //Debug.Log("Now i am moving myself");
         yield return StartCoroutine(_visualizationHelper.MoveNode(startingNullCircle.Ingredient, newPosition, duration, startingNullCircle, ()=>{
             _nullCircleSpawner.DeactivateAllNullCirclesInSubtree(startingNullCircle);
             _visualizationHelper.UpdateNullCircleWithIngredient(newPosition, startingNullCircle);
@@ -92,7 +93,8 @@ public class RightRotationVisualization : MonoBehaviour
             Vector3 leftChildNewPosition = startingNode.transform.position;
             //newPosition - (startingNode.transform.position - leftChild.transform.position);
             yield return StartCoroutine(_visualizationHelper.MoveNodeAndAllDescendants(leftChild, leftChildNewPosition, duration, ()=>{
-                Debug.Log("Left subtree has been moved");}));
+                //Debug.Log("Left subtree has been moved");
+                }));
             
         }
         

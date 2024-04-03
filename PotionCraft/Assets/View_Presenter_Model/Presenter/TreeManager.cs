@@ -6,7 +6,7 @@ public class TreeManager : MonoBehaviour, ITreeManager
 {
     // SHOULD BE INTERFACE??
     [SerializeField] private TreeVisualizationManager _treeVisualizerManager;
-    public RedBlackBST RedBlackTree { get; set; }
+    public RedBlackBST RedBlackTree { get; set; } = new RedBlackBST();
     public static TreeManager instance { get; private set; }
     private HashSet<Node> currentSelctedNodes = new HashSet<Node>();
     public List<GameObject> CurrentSelectedIngredients { get; set; } = new List<GameObject>();
@@ -27,7 +27,7 @@ public class TreeManager : MonoBehaviour, ITreeManager
 
     void Start()
     {
-        RedBlackTree = new RedBlackBST();
+        //RedBlackTree = new RedBlackBST();
 
     }
 
@@ -49,7 +49,7 @@ public class TreeManager : MonoBehaviour, ITreeManager
         if ((clickedNullCircleObject.Parent) == null && (RedBlackTree.Get((clickedNullCircleObject.Value)).Parent) == null)
         {
             Debug.Log("We have inserted the root node correctly.");
-            Debug.Log("I return true.");
+            //Debug.Log("I return true.");
             return true;
         }
 
@@ -63,7 +63,7 @@ public class TreeManager : MonoBehaviour, ITreeManager
         if (parentInTree == null)
         {
             Debug.LogError("Parent node not found in the tree. This should not happen if the tree and visual representation are synchronized.");
-            Debug.Log("I return false.");
+            //Debug.Log("I return false.");
             return false;
         }
 
@@ -75,8 +75,8 @@ public class TreeManager : MonoBehaviour, ITreeManager
             // If it's supposed to be a left child, but the parent's left in the tree is not null or doesn't match expected value
             if (parentInTree.Left != null && parentInTree.Left.Value == clickedNullCircleObject.Value)
             {
-                Debug.Log("Correct placement of the left child");
-                Debug.Log("I return true.");
+                //Debug.Log("Correct placement of the left child");
+                //Debug.Log("I return true.");
                 return true;
             }
         }
@@ -85,14 +85,14 @@ public class TreeManager : MonoBehaviour, ITreeManager
             // If it's supposed to be a right child, but the parent's right in the tree is not null or doesn't match expected value
             if (parentInTree.Right != null && parentInTree.Right.Value == clickedNullCircleObject.Value)
             {
-                Debug.Log("Correct placement of the right child");
-                Debug.Log("I return true.");
+                //Debug.Log("Correct placement of the right child");
+                //Debug.Log("I return true.");
                 return true;
             }
         }
 
         Debug.Log("Incorrect placement: The clicked null circle is incorrect identified as a " + (isLeftChild ? "left" : "right") + " child of its parent.");
-        Debug.Log("I return false.");
+        //Debug.Log("I return false.");
         return false;
     }
 
@@ -102,11 +102,13 @@ public class TreeManager : MonoBehaviour, ITreeManager
         Debug.Log("I have translatede the clicked ingredient with the value: " + NodeValue + " to the corresponding node in the tree: " + clickedNode + " and its value is: " + clickedNode.Value);
         currentSelctedNodes.Add(clickedNode);
 
+        /*
         //print the list
         foreach (Node node in currentSelctedNodes)
         {
             Debug.Log("Node value: " + node.Value);
         }
+        */
 
 
         // Remember: Make sure it is only possible to select 2-3 nodes
@@ -117,7 +119,13 @@ public class TreeManager : MonoBehaviour, ITreeManager
     {
         // Get the current operation from the queue, whitout removing it
         Operation TheCurrentCorrectOperation = RedBlackTree.Operations.Peek();
-        Debug.Log("The current  operation is: " + TheCurrentCorrectOperation.OperationType);
+        
+        Debug.Log("!!!!!!!!!The current  operation is: !!!!!!!!" + TheCurrentCorrectOperation.OperationType);
+        Debug.Log("!!!!!!!!And the rest of the operations in the queue are: !!!!!!!!!!");
+        foreach (Operation operation in RedBlackTree.Operations)
+        {
+            Debug.Log(operation.OperationType);
+        }
         //Debug.Log("The current operation node is: " + TheCurrentCorrectOperation.Node.Value);
 
 
@@ -132,14 +140,16 @@ public class TreeManager : MonoBehaviour, ITreeManager
                 HashSet<Node> correctNodesInTree = new HashSet<Node>
                 {
                     TheCurrentCorrectOperation.Node,
-                    TheCurrentCorrectOperation.Node.Parent
+                    TheCurrentCorrectOperation.Node.Right
                 };
 
+                /*
                 //print correctnodes
                 foreach (Node node in correctNodesInTree)
                 {
-                    //Debug.Log("Correct node value: " + node.Value);
+                    Debug.Log("Correct node value: " + node.Value);
                 }
+                */
 
 
                 ExecuteOperationIfCorrectNodesSelected(correctNodesInTree, OperationType.RotateLeft);
@@ -154,8 +164,8 @@ public class TreeManager : MonoBehaviour, ITreeManager
                 HashSet<Node> correctNodesInTree = new HashSet<Node>
                 {
                     TheCurrentCorrectOperation.Node,
-                    TheCurrentCorrectOperation.Node.Parent,
-                    TheCurrentCorrectOperation.Node.Parent.Parent
+                    TheCurrentCorrectOperation.Node.Left,
+                    TheCurrentCorrectOperation.Node.Left.Left
                 };
                 
                 ExecuteOperationIfCorrectNodesSelected(correctNodesInTree, OperationType.RotateRight);
@@ -191,6 +201,7 @@ public class TreeManager : MonoBehaviour, ITreeManager
         if (correctNodesInTree.SetEquals(currentSelctedNodes))
         {
             Debug.Log("Correct nodes selected");
+            RedBlackTree.PrintTree();
             RedBlackTree.ExecuteNextOperation();
             // Delete sets
             //currentSelctedNodes.Clear();
@@ -199,6 +210,15 @@ public class TreeManager : MonoBehaviour, ITreeManager
             // kalde treeVisualizer til at opdatere visningen
             _treeVisualizerManager.VisualizeRotation(operationType, CurrentSelectedIngredients);
             CurrentSelectedIngredients.Clear();
+
+            // Kalde isThereARedViolation
+            Debug.Log("Checking for a tree violation");
+            RedBlackTree.IsThereATreeViolation();
+            Debug.Log("The operation there is left is: " );
+            foreach (Operation operation in RedBlackTree.Operations)
+            {
+                Debug.Log(operation.OperationType);
+            }
 
             // Kalde en metode der håndtere næste operation i køen
             if (RedBlackTree.Operations.Count > 0)

@@ -71,8 +71,8 @@ public class VisualizationHelper : MonoBehaviour
         NullCircle foundNullCircle = _nullCircleSpawner.FindNullCircleBasedOnPosition(newPosition);
         if (foundNullCircle != null)
         {
-            Debug.Log("null" + nullCircle.Index);
-            Debug.Log("Found NullCircle with index: " + foundNullCircle.Index + "and updated it with ingredient" + nullCircle.Ingredient.GetComponentInChildren<TextMeshProUGUI>().text);
+            //Debug.Log("null" + nullCircle.Index);
+            //Debug.Log("Found NullCircle with index: " + foundNullCircle.Index + "and updated it with ingredient" + nullCircle.Ingredient.GetComponentInChildren<TextMeshProUGUI>().text);
             foundNullCircle.Ingredient = nullCircle.Ingredient;
         }
         else

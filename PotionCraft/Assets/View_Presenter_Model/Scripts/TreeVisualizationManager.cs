@@ -98,7 +98,7 @@ public class TreeVisualizationManager : MonoBehaviour
             // Needs to be a coroutine to be able to wait for the movement to finish before deactivating the NullCircle
             StartCoroutine(MoveAndHide(_currentIngredient, _currentNullCircle.transform.position, 0.5f, () =>
             {
-                Debug.Log("Current ingredient has the value : " + int.Parse(_currentIngredient.GetComponentInChildren<TextMeshProUGUI>().text) + " and is placed in the nullCircle with the index " + _currentNullCircle.GetComponent<NullCircle>().Index);
+                //Debug.Log("Current ingredient has the value : " + int.Parse(_currentIngredient.GetComponentInChildren<TextMeshProUGUI>().text) + " and is placed in the nullCircle with the index " + _currentNullCircle.GetComponent<NullCircle>().Index);
                 //_currentIngredient.GetComponent<Ingredient>().NullCircleIndex = _currentNullCircle.GetComponent<NullCircle>().Index;
                 _currentNullCircle.GetComponent<NullCircle>().Ingredient = _currentIngredient;
                 // Set the value of the current NullCircle to the value of the current ingredient
@@ -281,7 +281,7 @@ public class TreeVisualizationManager : MonoBehaviour
                 }
                 else {
 
-                    Debug.Log("Jeg har ikke et rightChild, og derfor skal jeg bare rotere");
+                    // Debug.Log("Jeg har ikke et rightChild, og derfor skal jeg bare rotere");
                     // call RotataRightAnimation class 
                     StartCoroutine(_rightRotationVisualization.RotateRightAnimation(leftChild, parent, grandparent, parentNullCircle));
                 }                

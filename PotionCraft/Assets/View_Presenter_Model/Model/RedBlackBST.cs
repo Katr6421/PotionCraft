@@ -49,14 +49,22 @@ public class RedBlackBST : IRedBlackBST
       else if (cmp > 0) h.Right = Put(h.Right, key, val, h);
       else h.Value = val;
 
-      // Verify and maintain the red-black tree properties
-      // Enqueue operations instead of executing them
+
       if (IsRed(h.Right) && !IsRed(h.Left))
-         Operations.Enqueue(new Operation(h.Right, OperationType.RotateLeft));
-      if (IsRed(h.Left) && IsRed(h.Left.Left)) // Should maybe not be left left
-         Operations.Enqueue(new Operation(h.Left.Left, OperationType.RotateRight));
-      if (IsRed(h.Left) && IsRed(h.Right)) //Should not be h here, later problem
+      {
+         UnityEngine.Debug.Log("RotationLeft - Red violation found at node " + h.Key + " with right child " + h.Right.Key);
+         Operations.Enqueue(new Operation(h, OperationType.RotateLeft)); // var h.Right
+      }
+      if (IsRed(h.Left) && IsRed(h.Left.Left))
+      {
+         UnityEngine.Debug.Log("RotationRight - Red violation found at node " + h.Key + " with left child " + h.Left.Key);
+         Operations.Enqueue(new Operation(h, OperationType.RotateRight)); //h.Left.Left
+      }   
+      if (IsRed(h.Left) && IsRed(h.Right))
+      {
+         UnityEngine.Debug.Log("FlipColors - Red violation found at node " + h.Key + " with left child " + h.Left.Key + " and right child " + h.Right.Key);
          Operations.Enqueue(new Operation(h, OperationType.FlipColors));
+      }
 
       h.N = Size(h.Left) + Size(h.Right) + 1;
 
@@ -64,6 +72,51 @@ public class RedBlackBST : IRedBlackBST
       // Return the inserted node
       return h;
 
+   }
+
+   
+   public void IsThereATreeViolation()
+   {
+      UnityEngine.Debug.Log("Root is: " + Root.Key + " | " + Root.Value + " | " + (Root.Color ? "RED" : "BLACK"));
+      IsThereATreeViolation(Root);
+   }
+
+   private void IsThereATreeViolation(Node h) {
+      PrintTree();
+      UnityEngine.Debug.Log("!!!!!!!!!!INNI I IsThereATreeViolation!!!!!!!!!");
+      /*
+         starter fra root
+         IsRed(h.Right) && !IsRed(h.Left)
+         IsRed(h.Left) && IsRed(h.Left.Left)
+         IsRed(h.Left) && IsRed(h.Right)
+
+         også gå videre til children
+      */
+      if (h == null) return; // er på leaf node
+
+      UnityEngine.Debug.Log("Node value: " + h.Value);
+
+      // add operation to queue
+      if (IsRed(h.Right) && !IsRed(h.Left))
+      {
+         UnityEngine.Debug.Log("RotationLeft - Red violation found at node " + h.Key + " with right child " + h.Right.Key);
+         Operations.Enqueue(new Operation(h, OperationType.RotateLeft)); // var h.Right
+      }
+      if (IsRed(h.Left) && IsRed(h.Left.Left))
+      {
+         UnityEngine.Debug.Log("RotationRight - Red violation found at node " + h.Key + " with left child " + h.Left.Key);
+         Operations.Enqueue(new Operation(h, OperationType.RotateRight)); //h.Left.Left
+      }
+      if (IsRed(h.Left) && IsRed(h.Right))
+      {
+         UnityEngine.Debug.Log("FlipColors - Red violation found at node " + h.Key + " with left child " + h.Left.Key + " and right child " + h.Right.Key);
+         Operations.Enqueue(new Operation(h, OperationType.FlipColors));
+      }
+
+      // go to children
+      IsThereATreeViolation(h.Left);
+      IsThereATreeViolation(h.Right);
+   
    }
 
    private bool IsRed(Node x)
@@ -76,12 +129,20 @@ public class RedBlackBST : IRedBlackBST
    private Node RotateLeft(Node h)
    {
       Node x = h.Right;
+      Node parent = h.Parent;
       h.Right = x.Left;
-      if (x.Left != null) x.Left.Parent = h; // Set the new parent reference
       x.Left = h;
-      x.Parent = h.Parent; // Update parent reference
+      x.Color = h.Color;
+      h.Color = RED;
+      x.N = h.N;
+      h.N = 1 + Size(h.Left) + Size(h.Right);
+
+
+      // Update parent references
+      x.Parent = parent; // x gets the original parent of h
       h.Parent = x; // h is now a child of x
-                    // ... update colors and sizes, etc.
+      if (parent == null) Root = x;
+      
       return x;
    }
 
@@ -89,13 +150,22 @@ public class RedBlackBST : IRedBlackBST
 
    private Node RotateRight(Node h)
    {
+     
       Node x = h.Left;
-      h.Left = x.Right;
-      if (x.Right != null) x.Right.Parent = h; // Set the new parent reference
+      Node parent = h.Parent;
+      h.Left = x.Right;      
       x.Right = h;
-      x.Parent = h.Parent; // Update parent reference
+      x.Color = h.Color;
+      h.Color = RED;
+      x.N = h.N;
+      h.N = 1 + Size(h.Left) + Size(h.Right);
+
+
+      // Update parent references
+      x.Parent = parent; // x gets the original parent of h
       h.Parent = x; // h is now a child of x
-                    // ... update colors and sizes, etc.
+      if (parent == null) Root = x;
+
       return x;
    }
 
@@ -120,7 +190,7 @@ public class RedBlackBST : IRedBlackBST
    {
       if (Operations.Count == 0)
       {
-         UnityEngine.Debug.Log("No more operations to perform.");
+         UnityEngine.Debug.Log("ExecuteNextOperation was called but did not have any operations to execute.");
          return;
       }
 
@@ -131,12 +201,12 @@ public class RedBlackBST : IRedBlackBST
       switch (op.OperationType)
       {
          case OperationType.RotateLeft:
-            UnityEngine.Debug.Log("I am calling RotateLeft with the node " + op.Node.Key + " as the argument.");
-            RotateLeft(op.Node.Parent);
+            UnityEngine.Debug.Log("****************************I am calling RotateLeft with the node " + op.Node.Key + " as the argument.*********************************************");
+            RotateLeft(op.Node);
             break;
          case OperationType.RotateRight:
-            UnityEngine.Debug.Log("I am calling RotateRight with the node " + op.Node.Key + " as the argument.");
-            RotateRight(op.Node.Parent);
+            UnityEngine.Debug.Log("**********************************I am calling RotateRight with the node " + op.Node.Key + " as the argument.***************************************");
+            RotateRight(op.Node);
             break;
          case OperationType.FlipColors:
             UnityEngine.Debug.Log("I am calling FlipColors with the node " + op.Node.Key + " as the argument.");
@@ -144,7 +214,6 @@ public class RedBlackBST : IRedBlackBST
             break;
       }
 
-      // Update the tree visualization here
    }
 
 
@@ -152,6 +221,7 @@ public class RedBlackBST : IRedBlackBST
 
    public void PrintTree()
    {
+      UnityEngine.Debug.Log("Root is: " + Root.Key + " | " + Root.Value + " | " + (Root.Color ? "RED" : "BLACK"));
       PrintTree(Root, 0);
    }
 
