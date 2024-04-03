@@ -120,60 +120,66 @@ public class TreeManager : MonoBehaviour, ITreeManager
         // Get the current operation from the queue, whitout removing it
         Operation TheCurrentCorrectOperation = RedBlackTree.Operations.Peek();
         
-        Debug.Log("!!!!!!!!!The current  operation is: !!!!!!!!" + TheCurrentCorrectOperation.OperationType);
+        Debug.Log("!!!!!!!!!The current  operation is: " + TheCurrentCorrectOperation.OperationType + "!!!!!!!!");
         Debug.Log("!!!!!!!!And the rest of the operations in the queue are: !!!!!!!!!!");
-        foreach (Operation operation in RedBlackTree.Operations)
-        {
-            Debug.Log(operation.OperationType);
-        }
-        //Debug.Log("The current operation node is: " + TheCurrentCorrectOperation.Node.Value);
+        Debug.Log("The current operation node is: " + TheCurrentCorrectOperation.Node.Value);
 
 
         // Check if it is the correct operation/button is clicked
         if (operationType == TheCurrentCorrectOperation.OperationType)
         {
+            HashSet<Node> correctNodesInTree;
             Debug.Log("Correct operationButton clicked");
 
-            // If we rotate left, we need to check if the selected node and the parent node is the correct nodes
-            if (TheCurrentCorrectOperation.OperationType == OperationType.RotateLeft)
+            switch (operationType)
             {
-                HashSet<Node> correctNodesInTree = new HashSet<Node>
-                {
+                case OperationType.RotateLeft:
+                // If we rotate left, we need to check if the selected node and the parent node is the correct nodes
+                    correctNodesInTree = new HashSet<Node>
+                    {
                     TheCurrentCorrectOperation.Node,
                     TheCurrentCorrectOperation.Node.Right
-                };
+                    };
 
-                /*
-                //print correctnodes
-                foreach (Node node in correctNodesInTree)
-                {
-                    Debug.Log("Correct node value: " + node.Value);
-                }
-                */
-
-
-                ExecuteOperationIfCorrectNodesSelected(correctNodesInTree, OperationType.RotateLeft);
+                    /*
+                    //print correctnodes
+                    foreach (Node node in correctNodesInTree)
+                    {
+                        Debug.Log("Correct node value: " + node.Value);
+                    }
+                    */
 
 
+                    ExecuteOperationIfCorrectNodesSelected(correctNodesInTree, OperationType.RotateLeft);
+                    break;
+                    
+                case OperationType.RotateRight:
+                // If we rotate right, we need to check if the selected node and the parent node and the grandparent node is the correct nodes
+                    {
+                    correctNodesInTree = new HashSet<Node>
+                    {
+                        TheCurrentCorrectOperation.Node,
+                        TheCurrentCorrectOperation.Node.Left,
+                        TheCurrentCorrectOperation.Node.Left.Left
+                    };
+                    
+                    ExecuteOperationIfCorrectNodesSelected(correctNodesInTree, OperationType.RotateRight);
+
+                    }
+                    break;
+                    
+                case OperationType.FlipColors:
+                // If we flip colors, we need to check if the selected nodes are the correct nodes    
+                    correctNodesInTree = new HashSet<Node>
+                    {
+                        TheCurrentCorrectOperation.Node,
+                        TheCurrentCorrectOperation.Node.Left,
+                        TheCurrentCorrectOperation.Node.Right
+                    };
+                    ExecuteOperationIfCorrectNodesSelected(correctNodesInTree, OperationType.FlipColors);
+                    break;
             }
-
-            // If we rotate right, we need to check if the selected node and the parent node and the grandparent node is the correct nodes
-            if (TheCurrentCorrectOperation.OperationType == OperationType.RotateRight)
-            {
-                Debug.Log("!!!!!! the TheCurrentCorrectOperation.Node.Value is: " + TheCurrentCorrectOperation.Node.Value);
-                HashSet<Node> correctNodesInTree = new HashSet<Node>
-                {
-                    TheCurrentCorrectOperation.Node,
-                    TheCurrentCorrectOperation.Node.Left,
-                    TheCurrentCorrectOperation.Node.Left.Left
-                };
-                
-                ExecuteOperationIfCorrectNodesSelected(correctNodesInTree, OperationType.RotateRight);
-
-            }
-
-            // TODO
-            // If we flip colors, we need to check if the selected node and the parent node and the parents left
+            
 
         }
         else
@@ -182,6 +188,7 @@ public class TreeManager : MonoBehaviour, ITreeManager
             // Update hint
             // shake the button
             // make sure the operation is still in the queue
+            // make sure that the user can not click on the ingredient. The user should only be able to click on the operation buttons
         }
 
 
@@ -200,10 +207,14 @@ public class TreeManager : MonoBehaviour, ITreeManager
         // If these two sets are the same, then the user has selected the correct nodes and the correct operation button
         if (correctNodesInTree.SetEquals(currentSelctedNodes))
         {
-            Debug.Log("Correct nodes selected");
+            Debug.Log("You have selected the correct ingredients");
+            // Prints the current state of our tree
             RedBlackTree.PrintTree();
+
+            // Perform the next operation in the queue. RotateLeft, RotateRight or FlipColors
             RedBlackTree.ExecuteNextOperation();
-            // Delete sets
+            
+            // Clear the selected nodes the user has selected
             //currentSelctedNodes.Clear();
             correctNodesInTree.Clear();
 

@@ -141,6 +141,8 @@ public class RedBlackBST : IRedBlackBST
       // Update parent references
       x.Parent = parent; // x gets the original parent of h
       h.Parent = x; // h is now a child of x
+
+      // Maybe wrong when we have a lot of nodes
       if (parent == null) Root = x;
       
       return x;
@@ -164,6 +166,8 @@ public class RedBlackBST : IRedBlackBST
       // Update parent references
       x.Parent = parent; // x gets the original parent of h
       h.Parent = x; // h is now a child of x
+
+      // Maybe wrong when we have a lot of nodes
       if (parent == null) Root = x;
 
       return x;
@@ -201,16 +205,16 @@ public class RedBlackBST : IRedBlackBST
       switch (op.OperationType)
       {
          case OperationType.RotateLeft:
-            UnityEngine.Debug.Log("****************************I am calling RotateLeft with the node " + op.Node.Key + " as the argument.*********************************************");
+            UnityEngine.Debug.Log("I am calling RotateLeft with the node " + op.Node.Key + " as the argument.");
             RotateLeft(op.Node);
             break;
          case OperationType.RotateRight:
-            UnityEngine.Debug.Log("**********************************I am calling RotateRight with the node " + op.Node.Key + " as the argument.***************************************");
+            UnityEngine.Debug.Log("I am calling RotateRight with the node " + op.Node.Key + " as the argument.");
             RotateRight(op.Node);
             break;
          case OperationType.FlipColors:
-            UnityEngine.Debug.Log("I am calling FlipColors with the node " + op.Node.Key + " as the argument.");
-            FlipColors(op.Node); //should maybe be parent
+            UnityEngine.Debug.Log("*******************I am calling FlipColors with the node " + op.Node.Key + " as the argument.*******************");
+            FlipColors(op.Node); 
             break;
       }
 
