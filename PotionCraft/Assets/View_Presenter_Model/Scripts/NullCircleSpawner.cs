@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -205,14 +206,17 @@ public class NullCircleSpawner : MonoBehaviour
 
 
 
-    // Recursively sets IsActive on null circles that should be active based on their values
-    public void UpdateActiveNullCircles()
+    /// <summary>
+    /// Recursively updates the IsActive property of NullCircles.
+    /// Recursively checks if there is a ingredient places onto the nullcircle, if not, the nullcircle is active.
+    /// </summary>
+    public void UpdateActiveNullCirclesAndShow()
     {
         
-        UpdateActiveNullCircles(root.GetComponent<NullCircle>());
+        UpdateActiveNullCirclesAndShow(root.GetComponent<NullCircle>());
     }
     
-    private void UpdateActiveNullCircles(NullCircle nullCircle)
+    private void UpdateActiveNullCirclesAndShow(NullCircle nullCircle)
     {
         if (nullCircle == null) return;
 
@@ -232,8 +236,8 @@ public class NullCircleSpawner : MonoBehaviour
             NullCircle leftChild = nullCircle.LeftChild?.GetComponent<NullCircle>();
             NullCircle rightChild = nullCircle.RightChild?.GetComponent<NullCircle>();
 
-            UpdateActiveNullCircles(leftChild);
-            UpdateActiveNullCircles(rightChild);
+            UpdateActiveNullCirclesAndShow(leftChild);
+            UpdateActiveNullCirclesAndShow(rightChild);
         }
     }
 
@@ -252,6 +256,10 @@ public class NullCircleSpawner : MonoBehaviour
         DeactivateAllNullCirclesInSubtree(rightChild);
     }
 
+    /// <summary>
+    /// Finds a NullCircle based on its position in the scene.
+    /// </summary>
+
     public NullCircle FindNullCircleBasedOnPosition(Vector3 newPosition)
     {
         // Assuming 'root' is accessible here and correctly references the root NullCircle object
@@ -264,13 +272,12 @@ public class NullCircleSpawner : MonoBehaviour
         //Debug.Log("!!!!!!!! and the current nullcircle that i am looking at has this posistion" + nullCircle.transform.position );
         if (nullCircle == null) return null;
 
-        // Assuming the positions are in the same coordinate space (you may need adjustments if they are not)
+        
         // Consider using a small threshold for comparison to handle floating-point imprecision
         float positionThreshold = 0.5f; // This threshold can be adjusted based on your needs
         if (Vector3.Distance(nullCircle.transform.position, newPosition) <= positionThreshold)
         {
             
-        //Debug.Log("!!!!!!!!!I found this nullcircle that has this posistion !!!!!!!!!!!!!" + nullCircle.transform.position );
         Debug.Log("I have found the nullcircle that has this position" + nullCircle.transform.position);
             return nullCircle; // Found the matching NullCircle
             
@@ -293,9 +300,12 @@ public class NullCircleSpawner : MonoBehaviour
         }
 
         // If not found in either subtree, return null
-    
         return null;
     }
+
+    /// <summary>
+    /// Iterates throught a dictionary of NullCircles and shows the visual representation of the NullCircles that are active, by calling ShowNullCircle.
+    /// </summary>
 
     public void ShowNullCircles()
     {
@@ -313,6 +323,9 @@ public class NullCircleSpawner : MonoBehaviour
 
     }
     
+    /// <summary>
+    /// Iterates throught a dictionary of NullCircles and hides the visual representation of the NullCircles that are not active, by calling HideNullCircle.
+    /// </summary>
 
     public void HideNullCircles()
     {
@@ -329,6 +342,10 @@ public class NullCircleSpawner : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Hides the visual representation of one NullCircle and prevents interaction with it.
+    /// </summary>
+    /// <param name="nullCircle"></param>
     public void HideNullCircle(NullCircle nullCircle)
     {
         if (nullCircle == null) return;
@@ -365,6 +382,23 @@ public class NullCircleSpawner : MonoBehaviour
         if (button != null)
         {
             button.interactable = true;
+        }
+    }
+
+    public void PrintNullCircles()
+    {
+        foreach (KeyValuePair<int, GameObject> nullCirclePair in NullCircles)
+        {
+            NullCircle nullCircle = nullCirclePair.Value.GetComponent<NullCircle>();
+            Debug.Log("NullCircleIndex " + nullCircle.Index + " | isActive " + nullCircle.IsActive + " | Value " + nullCircle.Value);
+            if(nullCircle.Ingredient != null)
+            {
+                Debug.Log("and has a ingredient: " + nullCircle.Ingredient + " attached to it with the value" + nullCircle.Ingredient.GetComponentInChildren<TextMeshProUGUI>().text.ToString());
+            }
+            else
+            {
+                Debug.Log("and has no ingredient attached to it");
+            }
         }
     }
     

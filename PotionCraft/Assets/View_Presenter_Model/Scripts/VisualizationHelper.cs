@@ -47,8 +47,10 @@ public class VisualizationHelper : MonoBehaviour
         if (nullCircle.Ingredient != null) {
             yield return StartCoroutine(MoveNode(nullCircle.Ingredient, newPosition, duration, nullCircle, () => {
                 _nullCircleSpawner.DeactivateAllNullCirclesInSubtree(nullCircle);
-                UpdateNullCircleWithIngredient(newPosition, nullCircle);
+              
             }));
+
+            yield return StartCoroutine(UpdateNullCircleWithIngredient(newPosition, nullCircle, ()=>{}));
         }
 
         // Recursively move the left subtree if it exists.
@@ -67,19 +69,28 @@ public class VisualizationHelper : MonoBehaviour
         onComplete?.Invoke();
     }
 
-    public void UpdateNullCircleWithIngredient(Vector3 newPosition, NullCircle nullCircle) {
+    public IEnumerator UpdateNullCircleWithIngredient(Vector3 newPosition, NullCircle nullCircle, Action onComplete) {
         NullCircle foundNullCircle = _nullCircleSpawner.FindNullCircleBasedOnPosition(newPosition);
         if (foundNullCircle != null)
         {
             //Debug.Log("null" + nullCircle.Index);
-            //Debug.Log("Found NullCircle with index: " + foundNullCircle.Index + "and updated it with ingredient" + nullCircle.Ingredient.GetComponentInChildren<TextMeshProUGUI>().text);
+            Debug.Log("Found NullCircle with index: " + foundNullCircle.Index + "and updated it with ingredient " + nullCircle.Ingredient.GetComponentInChildren<TextMeshProUGUI>().text);
+            // Update the found null circle with the ingredient. Update the nullcircle the ingredient lands on with that ingredient
+
+            
             foundNullCircle.Ingredient = nullCircle.Ingredient;
+            //Update the value of the found null circle with the value of the ingredient. So the nullcircle where the ingredient lands on, update the value of that nullcircle with the value of that ingredient
+            foundNullCircle.Value = int.Parse(nullCircle.Ingredient.GetComponentInChildren<TextMeshProUGUI>().text);
         }
         else
         {
             Debug.Log("NullCircle not found at position: " + newPosition);
         }
         nullCircle.Ingredient = null; // the null circle where the ingredient was earlier now has no ingredient
+        nullCircle.Value = 0; // the value of the null circle where the ingredient was earlier now has no value
+        
+        yield return null;
+        onComplete?.Invoke();
     }
 
 }

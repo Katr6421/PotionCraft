@@ -138,17 +138,25 @@ public class TreeManager : MonoBehaviour, ITreeManager
                 // If we rotate left, we need to check if the selected node and the parent node is the correct nodes
                     correctNodesInTree = new HashSet<Node>
                     {
-                    TheCurrentCorrectOperation.Node,
-                    TheCurrentCorrectOperation.Node.Right
+                        TheCurrentCorrectOperation.Node,
+                        TheCurrentCorrectOperation.Node.Right
                     };
 
-                    /*
+                    
                     //print correctnodes
+                    Debug.Log("!!!!!!!!!!!!!!! The correct nodes in tree when we rotate left are: !!!!!!!!!!!!!!!");
                     foreach (Node node in correctNodesInTree)
                     {
                         Debug.Log("Correct node value: " + node.Value);
                     }
-                    */
+
+                    //Print current selected nodes
+                    Debug.Log("!!!!!!!!!!!!!!! The current selected nodes are when we rotate left are: !!!!!!!!!!!!!!!");
+                    foreach (Node node in currentSelctedNodes)
+                    {
+                        Debug.Log("Current selected node value: " + node.Value);
+                    }
+                    
 
 
                     ExecuteOperationIfCorrectNodesSelected(correctNodesInTree, OperationType.RotateLeft);
@@ -216,45 +224,56 @@ public class TreeManager : MonoBehaviour, ITreeManager
             RedBlackTree.ExecuteNextOperation();
             
             // Clear the selected nodes the user has selected
-            //currentSelctedNodes.Clear();
+            currentSelctedNodes.Clear();
             correctNodesInTree.Clear();
 
             // kalde treeVisualizer til at opdatere visningen
-            _treeVisualizerManager.VisualizeRotation(operationType, CurrentSelectedIngredients);
-            CurrentSelectedIngredients.Clear();
+            Debug.Log("Visualizing the rotation");
+            StartCoroutine(_treeVisualizerManager.VisualizeRotation(operationType, CurrentSelectedIngredients, () => {
+                Debug.Log("Visualizing done");
+                CurrentSelectedIngredients.Clear();
 
-            // Kalde isThereARedViolation
-            Debug.Log("Checking for a tree violation");
-            RedBlackTree.IsThereATreeViolation();
-            
+                // Kalde isThereARedViolation
+                //Debug.Log("Checking for a tree violation");
+                RedBlackTree.IsThereATreeViolation();
+                    Debug.Log("!!!!!!!!!!!!!*****The current state of all the null circles are: *****!!!!!!!!!!");
+                    _nullCircleSpawner.PrintNullCircles();
+                    Debug.Log("!!!!!!!!!!*****The current state of the tree is: *****!!!!!!!");
+                    RedBlackTree.PrintTree();
 
 
-           
-            // Kalde en metode der håndtere næste operation i køen
-            if (RedBlackTree.Operations.Count > 0)
-            {
-                HandleNextOperation();
-                
-            }
-            else
-            {
-                Debug.Log("No more operations in the queue");
-                // update nulls and then show them
-                _nullCircleSpawner.UpdateActiveNullCircles();
-                
-                // The tree is balanced!! Ready to insert the next ingredient
+                // Kalde en metode der håndtere næste operation i køen
+                if (RedBlackTree.Operations.Count > 0)
+                {
+                    HandleNextOperation();
+                }
+                else
+                {
+                    Debug.Log("*****No more operations in the queue! The tree is in balance! Insert next ingredient! *****");
+                    Debug.Log("*****The null circles are now visible!*****");
+                    // Update whitch null circles are visible, based on if they now have a ingredient or not
+                    _nullCircleSpawner.UpdateActiveNullCirclesAndShow();
+                    Debug.Log("*****The current state of all the null circles are: *****");
+                    _nullCircleSpawner.PrintNullCircles();
+                    Debug.Log("*****The current state of the tree is: *****");
+                    RedBlackTree.PrintTree();
 
-                // Activate null circles again
-                //_treeVisualizerManager.ShowNullCircles();
 
-                // Circlemarker skal rykkes 
+                    // The tree is balanced!! Ready to insert the next ingredient
 
-                // hint skal opdateres
-            }
-        }
+                    // Activate null circles again
+                    //_treeVisualizerManager.ShowNullCircles();
+
+                    // Circlemarker skal rykkes 
+
+                    // hint skal opdateres
+                }
+            }));
+        }     
         else
         {
             Debug.Log("Incorrect nodes selected");
+
             // Update hint
             // Kan klikke igen
         }

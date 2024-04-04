@@ -17,6 +17,9 @@ public class LeftRotationVisualization : MonoBehaviour {
 
         // Calculate the positions based on your tree's structure.
         // Calculate the posistion where the parent should be moved to
+        Debug.Log("Parent nullcircle: " + parentNullCircle.GetComponent<NullCircle>().Index);
+        Debug.Log("Rightchild nullcircle: " + parentNullCircle.GetComponent<NullCircle>().RightChild.GetComponent<NullCircle>().Index);
+
         Vector3 parentNewPosition = parentNullCircle.GetComponent<NullCircle>().LeftChild.transform.position;
         Vector3 rightChildNewPosition = parentNullCircle.transform.position;
 
@@ -52,21 +55,22 @@ public class LeftRotationVisualization : MonoBehaviour {
         NullCircle startingNullCircle = startingNode.GetComponent<NullCircle>();
 
         // Move the left child and its subtree if it exists.
+        // Check if My left child has an ingredient
         if (startingNullCircle.LeftChild.GetComponent<NullCircle>().Ingredient != null) {
+            Debug.Log("My left child has an ingredient");
             GameObject leftChild = startingNullCircle.LeftChild;
             Vector3 leftChildNewPosition = newPosition - (startingNode.transform.position - leftChild.transform.position);
             yield return StartCoroutine(_visualizationHelper.MoveNodeAndAllDescendants(leftChild, leftChildNewPosition, duration, ()=>{
                 //Debug.Log("Left subtree has been moved");
                 }));
-            
         }
 
         // After the right subtree has been moved, now move the starting node itself if it has an ingredient.
         //Debug.Log("Now i am moving myself");
         yield return StartCoroutine(_visualizationHelper.MoveNode(startingNullCircle.Ingredient, newPosition, duration, startingNullCircle, ()=>{
             _nullCircleSpawner.DeactivateAllNullCirclesInSubtree(startingNullCircle);
-            _visualizationHelper.UpdateNullCircleWithIngredient(newPosition, startingNullCircle);
         }));
+        yield return StartCoroutine(_visualizationHelper.UpdateNullCircleWithIngredient(newPosition, startingNullCircle, ()=>{}));
         
         onComplete?.Invoke();
     }
@@ -76,14 +80,15 @@ public class LeftRotationVisualization : MonoBehaviour {
         NullCircle startingNullCircle = startingNode.GetComponent<NullCircle>();
 
         // After the right subtree has been moved, now move the starting node itself if it has an ingredient.
-        //Debug.Log("Now i am moving myself");
+        Debug.Log("Now i am moving myself");
         yield return StartCoroutine(_visualizationHelper.MoveNode(startingNullCircle.Ingredient, newPosition, duration, startingNullCircle, ()=>{
-            _nullCircleSpawner.DeactivateAllNullCirclesInSubtree(startingNullCircle);
-            _visualizationHelper.UpdateNullCircleWithIngredient(newPosition, startingNullCircle);
+            _nullCircleSpawner.DeactivateAllNullCirclesInSubtree(startingNullCircle); 
         }));
+        yield return StartCoroutine(_visualizationHelper.UpdateNullCircleWithIngredient(newPosition, startingNullCircle, ()=>{}));
 
         // Move the right child and its subtree if it exists.
         if (startingNullCircle.RightChild.GetComponent<NullCircle>().Ingredient != null) {
+            Debug.Log("My right child has an ingredient");
             GameObject rightChild = startingNullCircle.RightChild;
             Vector3 rightChildNewPosition = startingNode.transform.position;
             //newPosition - (startingNode.transform.position - leftChild.transform.position);

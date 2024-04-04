@@ -82,6 +82,7 @@ public class TreeVisualizationManager : MonoBehaviour
         *********************************************/
         var currentIngredientValue = int.Parse(_currentIngredient.GetComponentInChildren<TextMeshProUGUI>().text);
         Debug.Log("Current ingredient value: " + currentIngredientValue);
+        Debug.Log("!!!!!!!!******??????????? I am inserting the node with the value: " + currentIngredientValue + " into the tree. ?????");
         _treeManager.InsertNode(currentIngredientValue, currentIngredientValue);
         /*********************************************
         Validate if the ingredient is placed right, by checking the parent, and if it's left or right child
@@ -228,7 +229,7 @@ public class TreeVisualizationManager : MonoBehaviour
         return lineGameObject;
     }
 
-    public void VisualizeRotation(OperationType operationType, List<GameObject> ingredientsToRotate){
+    public IEnumerator VisualizeRotation(OperationType operationType, List<GameObject> ingredientsToRotate, Action onComplete){
         // If we need to rotate Left
         GameObject grandparent;
         GameObject parent;
@@ -257,7 +258,8 @@ public class TreeVisualizationManager : MonoBehaviour
                 }
                 else {
 
-                    StartCoroutine(_leftRotationVisualization.RotateLeftAnimation(parent, rightChild, parentNullCircle));
+                    yield return StartCoroutine(_leftRotationVisualization.RotateLeftAnimation(parent, rightChild, parentNullCircle));
+                    
                     //kun rotate animation
                 }
                 break;
@@ -283,7 +285,8 @@ public class TreeVisualizationManager : MonoBehaviour
 
                     // Debug.Log("Jeg har ikke et rightChild, og derfor skal jeg bare rotere");
                     // call RotataRightAnimation class 
-                    StartCoroutine(_rightRotationVisualization.RotateRightAnimation(leftChild, parent, grandparent, parentNullCircle));
+                    Debug.Log("Jeg start rightRotationAnimation");
+                    yield return StartCoroutine(_rightRotationVisualization.RotateRightAnimation(leftChild, parent, grandparent, parentNullCircle));
                 }                
                 break;
             case OperationType.FlipColors:
@@ -293,6 +296,7 @@ public class TreeVisualizationManager : MonoBehaviour
                 Debug.LogError("Invalid operation type. Eller vi glemte at give den en operationtype med");
                 throw new ArgumentOutOfRangeException();
         }
+        onComplete?.Invoke();
     }
 
     
