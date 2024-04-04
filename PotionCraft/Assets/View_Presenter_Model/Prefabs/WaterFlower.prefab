@@ -34,8 +34,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 13.316864, y: -3.971405}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 9.1380005, y: 5.833008}
+  m_SizeDelta: {x: -571.159, y: -578.738}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4737128566300182937
 CanvasRenderer:
@@ -202,7 +202,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 6a6922733f6e74add86c643de127b9a9, type: 3}
+  m_Sprite: {fileID: -2011145580, guid: 849a8b35de7c4499cb82741f5db36f69, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -280,3 +280,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 96001ba23e6e34528b317ec2031f340f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _radishSprite: []
+  _mushroomSprite: []
+  _pinkFlowerSprite: []
+  _waterFlowerSprite:
+  - {fileID: -2011145580, guid: 849a8b35de7c4499cb82741f5db36f69, type: 3}
+  - {fileID: 581800595, guid: 849a8b35de7c4499cb82741f5db36f69, type: 3}
+  _katnissSprite: []

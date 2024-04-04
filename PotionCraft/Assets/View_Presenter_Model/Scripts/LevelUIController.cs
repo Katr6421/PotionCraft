@@ -30,7 +30,7 @@ public class LevelUIController : MonoBehaviour
     public void Start()
     {
         //When the scene starts, we update the recipe text.
-        SelectedLevelText.text = "Level " + LevelSelector.selectedLevel;
+        SelectedLevelText.text = "" + LevelSelector.selectedLevel;
         SelectedLevelPotionName.text = LevelSelector.potionName;
     
         // When the scene starts, we instantiate the CircleMarker
@@ -50,7 +50,6 @@ public class LevelUIController : MonoBehaviour
     }
 
     // Moves the circle marker to the new position
-
     public void MoveCircleMarker(Vector3 newPosition, float duration)
     {
         StartCoroutine(MoveCircleRoutine(CircleMarker, newPosition, duration));
