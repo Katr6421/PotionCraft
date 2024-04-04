@@ -10,7 +10,7 @@ public class RightRotationVisualization : MonoBehaviour
     [SerializeField] private VisualizationHelper _visualizationHelper;
 
 
-    public IEnumerator RotateRightAnimation(GameObject leftChild, GameObject parent, GameObject grandparent, GameObject parentNullCircle) {
+    public IEnumerator RotateRightAnimation(GameObject leftChild, GameObject parent, GameObject grandparent, NullCircle parentNullCircle) {
         /* 
             Move grandparent to grandparent.rightChild
             Move parent to grandparent
@@ -24,13 +24,26 @@ public class RightRotationVisualization : MonoBehaviour
         Vector3 parentNewPosition = grandparent.transform.position;
         Vector3 leftChildNewPosition = parent.transform.position;
 
-        //Translate our ingredients to nullcircles, such that we can look up on the nullcircles and get the ingredients that are attacted.
-        GameObject grandParentNullCircle = parentNullCircle.GetComponent<NullCircle>().Parent;
+        // Find nullcircles
+        GameObject grandParentNullCircle = parentNullCircle.GetComponent<NullCircle>().Parent; 
         GameObject leftChildNullCircle = parentNullCircle.GetComponent<NullCircle>().LeftChild;
 
+        // Delete if we find something better
+        // Change color of nullcircles according to the algorithm
+        // Bytter om på x og h
+        // h is parent
+        // x is grandparent
+        /*x.color = h.color;
+        h.color = RED;*/
+        //grandParentNullCircle.GetComponent<NullCircle>().IsRed = parentNullCircle.GetComponent<NullCircle>().IsRed;
+        //parentNullCircle.GetComponent<NullCircle>().IsRed = true;
+
+
+
+
         //Debug.Log("Grandparent nullcircle index: " + grandParentNullCircle.GetComponent<NullCircle>().Index);
-       // Debug.Log("Parent nullcircle: " + parentNullCircle.GetComponent<NullCircle>().Index);
-       // Debug.Log("Leftchild nullcircle: " + leftChildNullCircle.GetComponent<NullCircle>().Index);
+        // Debug.Log("Parent nullcircle: " + parentNullCircle.GetComponent<NullCircle>().Index);
+        // Debug.Log("Leftchild nullcircle: " + leftChildNullCircle.GetComponent<NullCircle>().Index);
 
 
 
@@ -80,7 +93,7 @@ public class RightRotationVisualization : MonoBehaviour
     }
 
 
-    IEnumerator MoveLeftSubtreeAndAllDescendants(GameObject startingNode, Vector3 newPosition, float duration, Action onComplete) {
+    IEnumerator MoveLeftSubtreeAndAllDescendants(NullCircle startingNode, Vector3 newPosition, float duration, Action onComplete) {
         NullCircle startingNullCircle = startingNode.GetComponent<NullCircle>();
 
         // After the right subtree has been moved, now move the starting node itself if it has an ingredient.

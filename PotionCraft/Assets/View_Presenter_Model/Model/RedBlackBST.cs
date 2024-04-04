@@ -20,34 +20,34 @@ public class RedBlackBST : IRedBlackBST
 
    public Node Get(int key)
    { 
-      UnityEngine.Debug.Log("FIRST GET --- Get thinks root is " + Root.Key + " | " + Root.Value + " | " + (Root.Color ? "RED" : "BLACK"));
+      //UnityEngine.Debug.Log("FIRST GET --- Get thinks root is " + Root.Key + " | " + Root.Value + " | " + (Root.Color ? "RED" : "BLACK"));
       return Get(Root, key); 
    }
 
-   private Node Get(Node x, int key)
-   {  // Return Node associated with key in the subtree rooted at x;
-      // return null if key not present in subtree rooted at x.
+   private Node Get(Node x, int key){
+      // Node with given key not present in tree
       if (x == null) 
       {
-         UnityEngine.Debug.Log("GET ---- Node with key " + key + " not found.");
+         UnityEngine.Debug.Log("GET ---- Couldn't find node with key " + key + " in the tree");
          return null;
       }
 
-      if (key < x.Key) 
-      {
-         return Get(x.Left, key);
-      }
+      // Recursive search
+      if (key < x.Key) return Get(x.Left, key);
+      else if (key > x.Key) return Get(x.Right, key);
 
-      else if (key > x.Key) 
-      {
-      return Get(x.Right, key);
-      }
-
+      // Found node with the given key - return it
       else 
       {
          UnityEngine.Debug.Log("GET ---- Found node with key " + key + " and value " + x.Value);
          return x;
       }
+   }
+
+   public bool GetColor(int key)
+   {
+      UnityEngine.Debug.Log("GETCOLOR --- Found color of node with key " + key + " to be " + Get(Root, key).Color);
+      return Get(Root, key).Color;
    }
 
    public void Put(int key, int val)
@@ -66,14 +66,13 @@ public class RedBlackBST : IRedBlackBST
          return new Node(key, val, 1, RED, parent);
       }
 
-
       // Binary search tree insertion
       int cmp = key.CompareTo(h.Key);
       if (cmp < 0) h.Left = Put(h.Left, key, val, h);
       else if (cmp > 0) h.Right = Put(h.Right, key, val, h);
       else h.Value = val;
 
-
+      // Check red-black tree properties and add to queue if violation is found
       if (IsRed(h.Right) && !IsRed(h.Left))
       {
          UnityEngine.Debug.Log("RotationLeft - Red violation found at node " + h.Key + " with right child " + h.Right.Key);
@@ -90,10 +89,10 @@ public class RedBlackBST : IRedBlackBST
          Operations.Enqueue(new Operation(h, OperationType.FlipColors));
       }
 
+      // Update the size of the subtree rooted at h
       h.N = Size(h.Left) + Size(h.Right) + 1;
 
-
-      // Return the inserted node
+      // Return the updated tree
       return h;
 
    }
@@ -230,6 +229,7 @@ public class RedBlackBST : IRedBlackBST
    }
 
    public void UpdateRootAfterFlipColors(Node h){
+      UnityEngine.Debug.Log("BEFORE FLIPPING COLORS, Root is: " + Root.Key);
       Root = UpdateRootAfterFlipColors(Root, h);
       Root.Color = BLACK;
 

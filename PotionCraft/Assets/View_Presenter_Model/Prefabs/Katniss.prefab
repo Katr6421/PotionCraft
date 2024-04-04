@@ -68,7 +68,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 209a17c0a41264fdd9840485462ebf84, type: 3}
+  m_Sprite: {fileID: -524630135, guid: 63747600e85c341c2b5ad6c212803f5c, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -146,6 +146,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 96001ba23e6e34528b317ec2031f340f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _radishSprite: []
+  _mushroomSprite: []
+  _pinkFlowerSprite: []
+  _waterFlowerSprite: []
+  _katnissSprite:
+  - {fileID: -524630135, guid: 63747600e85c341c2b5ad6c212803f5c, type: 3}
+  - {fileID: 1114330855, guid: 63747600e85c341c2b5ad6c212803f5c, type: 3}
 --- !u!1 &5175727685793577537
 GameObject:
   m_ObjectHideFlags: 0
@@ -180,8 +187,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 5.280548, y: 28.173399}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 23.145, y: 43.275}
+  m_SizeDelta: {x: -337.678, y: -614.001}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &31181954311489260
 CanvasRenderer:
@@ -274,7 +281,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_margin: {x: 0, y: 3.8274612, z: 9.542801, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0

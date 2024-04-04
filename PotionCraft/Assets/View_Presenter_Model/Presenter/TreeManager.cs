@@ -27,16 +27,12 @@ public class TreeManager : MonoBehaviour, ITreeManager
     }
 
     void Start()
-    {
-        //RedBlackTree = new RedBlackBST();
-
-    }
+    {}
 
     // Add a node to the tree
     public void InsertNode(int key, int value)
     {
         RedBlackTree.Put(key, value);
-        //return parent value and what child it is
     }
 
 
@@ -44,7 +40,7 @@ public class TreeManager : MonoBehaviour, ITreeManager
     {
 
         NullCircle clickedNullCircleObject = clickedNullCircle.GetComponent<NullCircle>();
-        RunDebugPrints(clickedNullCircleObject);
+        //RunDebugPrints(clickedNullCircleObject);
 
         // Base case: If the clickedNullCircle is the root
         if ((clickedNullCircleObject.Parent) == null && (RedBlackTree.Get((clickedNullCircleObject.Value)).Parent) == null)
@@ -78,6 +74,7 @@ public class TreeManager : MonoBehaviour, ITreeManager
             {
                 //Debug.Log("Correct placement of the left child");
                 //Debug.Log("I return true.");
+                clickedNullCircle.GetComponent<NullCircle>().IsRed = true;
                 return true;
             }
         }
@@ -88,31 +85,46 @@ public class TreeManager : MonoBehaviour, ITreeManager
             {
                 //Debug.Log("Correct placement of the right child");
                 //Debug.Log("I return true.");
+                clickedNullCircle.GetComponent<NullCircle>().IsRed = true;
                 return true;
             }
         }
 
         Debug.Log("Incorrect placement: The clicked null circle is incorrect identified as a " + (isLeftChild ? "left" : "right") + " child of its parent.");
-        //Debug.Log("I return false.");
+        
         return false;
     }
 
     public void HandleIngredientClick(int NodeValue)
     {
         Node clickedNode = RedBlackTree.Get(NodeValue);
-        Debug.Log("I have translatede the clicked ingredient with the value: " + NodeValue + " to the corresponding node in the tree: " + clickedNode + " and its value is: " + clickedNode.Value);
-        currentSelctedNodes.Add(clickedNode);
+        //Debug.Log("I have translatede the clicked ingredient with the value: " + NodeValue + " to the corresponding node in the tree: " + clickedNode + " and its value is: " + clickedNode.Value);
+        
+        // Togle between selected and not selected nodes
+        if (currentSelctedNodes.Contains(clickedNode))
+        {
+            currentSelctedNodes.Remove(clickedNode);
+        } else
+        {
+            currentSelctedNodes.Add(clickedNode);
+        }
 
-        /*
-        //print the list
         foreach (Node node in currentSelctedNodes)
         {
-            Debug.Log("Node value: " + node.Value);
+            Debug.Log("Current Node value in currentSelctedNodes: " + node.Value);
         }
-        */
+        
 
+        
+        // Vi sætter ikke en grænse for hvor mange ingredients de må vælge - så afslører det ikke noget om hvilken operation der er næste
+        // De kan deselecte en ingredient
 
-        // Remember: Make sure it is only possible to select 2-3 nodes
+        //but if we want to, this is how we could do it:
+        // Check what the next operation is in the queue
+        // If the next operation is:
+        //// RotateLeft: can only select 2 nodes - så længe størrelsen på set'et er mindre end 2
+        //// RotateRight: can only select 3 nodes - så længe størrelsen på set'et er mindre end 3
+        //// FlipColors: can only select 3 nodes - så længe størrelsen på set'et er mindre end 3
 
     }
 
@@ -122,7 +134,6 @@ public class TreeManager : MonoBehaviour, ITreeManager
         Operation TheCurrentCorrectOperation = RedBlackTree.Operations.Peek();
         
         Debug.Log("!!!!!!!!!The current  operation is: " + TheCurrentCorrectOperation.OperationType + "!!!!!!!!");
-        Debug.Log("!!!!!!!!And the rest of the operations in the queue are: !!!!!!!!!!");
         Debug.Log("The current operation node is: " + TheCurrentCorrectOperation.Node.Value);
 
 
@@ -130,12 +141,14 @@ public class TreeManager : MonoBehaviour, ITreeManager
         if (operationType == TheCurrentCorrectOperation.OperationType)
         {
             HashSet<Node> correctNodesInTree;
-            Debug.Log("Correct operationButton clicked");
+            Debug.Log("Correct operationButton clicked! Wuhu you go!");
 
             switch (operationType)
             {
                 case OperationType.RotateLeft:
+
                 // If we rotate left, we need to check if the selected node and the parent node is the correct nodes
+                // We get the Node and its right child from the node we flaged inside our red-black tree put method, that is stored in RedBlackTree.Operations
                     correctNodesInTree = new HashSet<Node>
                     {
                         TheCurrentCorrectOperation.Node,
@@ -147,7 +160,7 @@ public class TreeManager : MonoBehaviour, ITreeManager
                     Debug.Log("!!!!!!!!!!!!!!! The correct nodes in tree when we rotate left are: !!!!!!!!!!!!!!!");
                     foreach (Node node in correctNodesInTree)
                     {
-                        Debug.Log("Correct node value: " + node.Value);
+                        Debug.Log("Correct node value in tree: " + node.Value);
                     }
 
                     //Print current selected nodes
@@ -164,6 +177,7 @@ public class TreeManager : MonoBehaviour, ITreeManager
                     
                 case OperationType.RotateRight:
                 // If we rotate right, we need to check if the selected node and the parent node and the grandparent node is the correct nodes
+                 // We get the Node and its left child and thats left child from the node we flaged inside our red-black tree put method, that is stored in RedBlackTree.Operations
                     {
                     correctNodesInTree = new HashSet<Node>
                     {
@@ -194,52 +208,53 @@ public class TreeManager : MonoBehaviour, ITreeManager
         else
         {
             Debug.Log("Incorrect operationButton clicked");
+            // TO DO!!!!!!!! FejlHåndtering!!!!
             // Update hint
             // shake the button
             // make sure the operation is still in the queue
             // make sure that the user can not click on the ingredient. The user should only be able to click on the operation buttons
         }
 
-
     }
 
-    public void HandleNextOperation()
-    {
-        // update hint
-        // gøre så man kan klikke på alt igen
-
-
-    }
+  
 
     public void ExecuteOperationIfCorrectNodesSelected(HashSet<Node> correctNodesInTree, OperationType operationType)
     {
         // If these two sets are the same, then the user has selected the correct nodes and the correct operation button
         if (correctNodesInTree.SetEquals(currentSelctedNodes))
         {
-            Debug.Log("You have selected the correct ingredients");
+            Debug.Log("You have selected the correct ingredients! Wuhu you go!");
             // Prints the current state of our tree
-            RedBlackTree.PrintTree();
+            //RedBlackTree.PrintTree();
 
-            // Perform the next operation in the queue. RotateLeft, RotateRight or FlipColors
+            // Perform the next operation in the queue on our RedBlackBST tree, such that the current state of our tree machted the operation we just did. RotateLeft, RotateRight or FlipColors
             RedBlackTree.ExecuteNextOperation();
             
             // Clear the selected nodes the user has selected
             currentSelctedNodes.Clear();
             correctNodesInTree.Clear();
 
-            // kalde treeVisualizer til at opdatere visningen
-            Debug.Log("Visualizing the rotation");
+             Debug.Log("!!!!!!!!!!*****The current state of the tree is: *****!!!!!!!");
+            RedBlackTree.PrintTree();
+            Debug.Log("!!!!!!!!!!!!!*****The current state of all the null circles BEFORE a visulize rotation: *****!!!!!!!!!!");
+            _nullCircleSpawner.PrintNullCircles();
+
+            // Call TreeVisualizerManager to visualize the operation. The rest of the code will wait for the visualization to finish before continuing
             StartCoroutine(_treeVisualizerManager.VisualizeRotation(operationType, CurrentSelectedIngredients, () => {
-                Debug.Log("Visualizing done");
+                
+                // Change the image of the ingredients to the correct image
+                // Change the image of the selected ingredients to default imange
+                ChangeIngredientImageToDefault();
+                
+                // Clear the selected ingredients
                 CurrentSelectedIngredients.Clear();
 
-                // Kalde isThereARedViolation
-                //Debug.Log("Checking for a tree violation");
+                // Check the current state of our RedBlackBST tree to see if we need to perfome more operations
                 RedBlackTree.IsThereATreeViolation();
-                    Debug.Log("!!!!!!!!!!!!!*****The current state of all the null circles are: *****!!!!!!!!!!");
+                    Debug.Log("!!!!!!!!!!!!!*****The current state of all the null circles AFTER a visulize rotation: *****!!!!!!!!!!");
                     _nullCircleSpawner.PrintNullCircles();
-                    Debug.Log("!!!!!!!!!!*****The current state of the tree is: *****!!!!!!!");
-                    RedBlackTree.PrintTree();
+                   
 
 
                 // Kalde en metode der håndtere næste operation i køen
@@ -250,12 +265,13 @@ public class TreeManager : MonoBehaviour, ITreeManager
                 else
                 {
                     Debug.Log("*****No more operations in the queue! The tree is in balance! Insert next ingredient! *****");
-                    Debug.Log("*****The null circles are now visible!*****");
+                 
                     // Update whitch null circles are visible, based on if they now have a ingredient or not
                     _nullCircleSpawner.UpdateActiveNullCirclesAndShow();
+                    //_nullCircleSpawner.UpdateActiveLineRenderersAndShow();
                     Debug.Log("*****The current state of all the null circles are: *****");
                     _nullCircleSpawner.PrintNullCircles();
-                    Debug.Log("*****The current state of the tree is: *****");
+                   // Debug.Log("*****The current state of the tree is: *****");
                     RedBlackTree.PrintTree();
 
 
@@ -279,41 +295,41 @@ public class TreeManager : MonoBehaviour, ITreeManager
         }
     }
 
+    public void ChangeIngredientImageToDefault(){
+        foreach (GameObject ingredient in CurrentSelectedIngredients)
+            {
+                var i = ingredient.GetComponent<Ingredient>();
+                i.ChangePrefabImage(i.name);
+            }
+    }
+
+    // Get the color of the node with the given value in the red-black tree
+    public bool GetColor(int value)
+    {
+        //Debug.Log("GetColor in TreeManager called with value: " + value);
+        //Debug.Log("Calling GetColor returns " + RedBlackTree.GetColor(value));
+        return RedBlackTree.GetColor(value);
+    }
+
+
+
     public bool ShouldDrawNullCircles()
     {
         // If the queue is empty, the tree is balanced and the null circles should be drawn
         return RedBlackTree.Operations.Count == 0;
     }
 
-    public void WaitForRotateRight(Node currentNode)
+      public void HandleNextOperation()
     {
-        // Update hint
+        // update hint
+        // gøre så man kan klikke på alt igen
 
-        // Wait to check which button is pressed
-        // Update hint according to the button pressed
 
-        // If correct button is pressed, continue algorithm
     }
 
-    public void WaitForRotateLeft(Node currentNode)
-    {
-        // Update hint
+   
 
-        // Wait to check which button is pressed
-        // Update hint according to the button pressed
-
-        // If correct button is pressed, continue algorithm
-    }
-
-    public void WaitForFliColour()
-    {
-        // Update hint
-
-        // Wait to check which button is pressed
-        // Update hint according to the button pressed
-
-        // If correct button is pressed, continue algorithm
-    }
+    
 
     public void SetCurrentHint()
     {
@@ -358,6 +374,44 @@ public class TreeManager : MonoBehaviour, ITreeManager
     }
 
     //////////////// SKRALDESPANDEN /////////////////
+    /*
+    
+    public void WaitForRotateRight(Node currentNode)
+    {
+        // Update hint
+
+        // Wait to check which button is pressed
+        // Update hint according to the button pressed
+
+        // If correct button is pressed, continue algorithm
+    }
+
+    public void WaitForRotateLeft(Node currentNode)
+    {
+        // Update hint
+
+        // Wait to check which button is pressed
+        // Update hint according to the button pressed
+
+        // If correct button is pressed, continue algorithm
+    }
+
+    public void WaitForFliColour()
+    {
+        // Update hint
+
+        // Wait to check which button is pressed
+        // Update hint according to the button pressed
+
+        // If correct button is pressed, continue algorithm
+    }
+
+
+
+*/
+
+
+
     /* public bool ValidateNodePlacement(GameObject clickedNullCircle){
         Debug.Log("Nu printer jeg træet");
         RedBlackTree.PrintTree();

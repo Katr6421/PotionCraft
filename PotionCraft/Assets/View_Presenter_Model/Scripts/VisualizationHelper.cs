@@ -8,6 +8,7 @@ using UnityEngine.UI;
 public class VisualizationHelper : MonoBehaviour
 {
     [SerializeField] private  NullCircleSpawner _nullCircleSpawner;
+    [SerializeField] private  TreeManager _treeManager;
 
 
     public Vector3 WorldToCanvasPosition(Canvas canvas, Vector3 worldPosition)
@@ -73,21 +74,33 @@ public class VisualizationHelper : MonoBehaviour
         NullCircle foundNullCircle = _nullCircleSpawner.FindNullCircleBasedOnPosition(newPosition);
         if (foundNullCircle != null)
         {
-            //Debug.Log("null" + nullCircle.Index);
             Debug.Log("Found NullCircle with index: " + foundNullCircle.Index + "and updated it with ingredient " + nullCircle.Ingredient.GetComponentInChildren<TextMeshProUGUI>().text);
-            // Update the found null circle with the ingredient. Update the nullcircle the ingredient lands on with that ingredient
-
-            
+            // Update the found null circle with its new ingredient
             foundNullCircle.Ingredient = nullCircle.Ingredient;
-            //Update the value of the found null circle with the value of the ingredient. So the nullcircle where the ingredient lands on, update the value of that nullcircle with the value of that ingredient
+            // Update the value of the found null circle with the value of the ingredient. 
             foundNullCircle.Value = int.Parse(nullCircle.Ingredient.GetComponentInChildren<TextMeshProUGUI>().text);
+
+            // Update the color based on the nodes in our tree. We look up in our RedBlaackBST to get the node that the ingredients value corresponds to. Then we return the nodes color
+            Debug.Log("Now I am chaning the colors of the foundnullcircle at index" + foundNullCircle.Index);
+
+            //Debug.Log("The value of the found null circle is: " + foundNullCircle.Value);
+            foundNullCircle.IsRed = _treeManager.GetColor(foundNullCircle.Value);
+
+            // Only set null circle to null if the child is also null. Then we know that there will not be any more ingredients in the subtree.
+            if (nullCircle.LeftChild.GetComponent<NullCircle>().Ingredient == null && nullCircle.RightChild.GetComponent<NullCircle>().Ingredient == null) {
+                //Debug.Log("Setting nullcircle ingredient to null" + nullCircle.Index);
+                nullCircle.Ingredient = null; // the null circle where the ingredient was earlier now has no ingredient
+                nullCircle.Value = 0; // the value of the null circle where the ingredient was earlier now has no value
+                nullCircle.IsRed = false; // the color of the null circle where the ingredient was earlier now has no color
+            }
+
+            //Debug.Log("Now we update the lines");
+            _nullCircleSpawner.UpdateLineRenderers();
         }
         else
         {
             Debug.Log("NullCircle not found at position: " + newPosition);
         }
-        nullCircle.Ingredient = null; // the null circle where the ingredient was earlier now has no ingredient
-        nullCircle.Value = 0; // the value of the null circle where the ingredient was earlier now has no value
         
         yield return null;
         onComplete?.Invoke();

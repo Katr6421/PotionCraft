@@ -8,7 +8,7 @@ public class LeftRotationVisualization : MonoBehaviour {
     [SerializeField] private NullCircleSpawner _nullCircleSpawner;
     [SerializeField] private VisualizationHelper _visualizationHelper;
 
-    public IEnumerator RotateLeftAnimation(GameObject parent, GameObject rightChild, GameObject parentNullCircle){
+    public IEnumerator RotateLeftAnimation(GameObject parent, GameObject rightChild, NullCircle parentNullCircle){
         /*
             Move parent to leftChild
             Move rightChild to parent
@@ -17,15 +17,23 @@ public class LeftRotationVisualization : MonoBehaviour {
 
         // Calculate the positions based on your tree's structure.
         // Calculate the posistion where the parent should be moved to
-        Debug.Log("Parent nullcircle: " + parentNullCircle.GetComponent<NullCircle>().Index);
-        Debug.Log("Rightchild nullcircle: " + parentNullCircle.GetComponent<NullCircle>().RightChild.GetComponent<NullCircle>().Index);
+        Debug.Log("????***************!!!!!!!!!!!!!!!!!!!!!!!!!!! Given Parent nullcircle index !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!***********???" + parentNullCircle.GetComponent<NullCircle>().Index);
+        Debug.Log("Rightchild nullcircle index: " + parentNullCircle.GetComponent<NullCircle>().RightChild.GetComponent<NullCircle>().Index);
 
         Vector3 parentNewPosition = parentNullCircle.GetComponent<NullCircle>().LeftChild.transform.position;
         Vector3 rightChildNewPosition = parentNullCircle.transform.position;
 
-
-        //Translate our ingredients to nullcircles, such that we can look up on the nullcircles and get the ingredients that are attacted.
+        // Find nullcircles
         GameObject rightChildNullCircle = parentNullCircle.GetComponent<NullCircle>().RightChild;
+
+        // Delete if we find something better
+        // Change color of nullcircles according to the algorithm
+        //x.color = h.color;
+        //h.color = RED;
+        // h is parent
+        // x is right child
+        //rightChildNullCircle.GetComponent<NullCircle>().IsRed = parentNullCircle.GetComponent<NullCircle>().IsRed;
+        //parentNullCircle.GetComponent<NullCircle>().IsRed = true;
 
         //Debug.Log("Parent nullcircle: " + parentNullCircle.GetComponent<NullCircle>().Index);
         //Debug.Log("Rightchild nullcircle: " + rightChildNullCircle.GetComponent<NullCircle>().Index);
@@ -51,7 +59,7 @@ public class LeftRotationVisualization : MonoBehaviour {
 
     }
 
-    IEnumerator MoveLeftSubtreeAndAllDescendants(GameObject startingNode, Vector3 newPosition, float duration, Action onComplete) {
+    IEnumerator MoveLeftSubtreeAndAllDescendants(NullCircle startingNode, Vector3 newPosition, float duration, Action onComplete) {
         NullCircle startingNullCircle = startingNode.GetComponent<NullCircle>();
 
         // Move the left child and its subtree if it exists.
