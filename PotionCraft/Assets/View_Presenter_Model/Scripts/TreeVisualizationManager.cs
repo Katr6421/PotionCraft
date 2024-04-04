@@ -30,6 +30,8 @@ public class TreeVisualizationManager : MonoBehaviour
     [SerializeField] private RightRotationVisualization _rightRotationVisualization; // Need this to make right rotation animations
     [SerializeField] private LeftRotationVisualization _leftRotationVisualization; // Need this to make left rotation animations
     [SerializeField] private FlipColorVisualization _flipColorVisualization; // Need this to make left rotation animations
+    [SerializeField] private JarVisualization _jarVisualization; // Need this to make left rotation animations
+    [SerializeField] private Spline _spline;
 
     private GameObject _currentIngredient; // Reference to the current Ingredient that the user must insert in the RedBlackTree
     private GameObject _currentNullCircle; // Reference to the latest NullCircle that the user has clicked on
@@ -190,18 +192,34 @@ public class TreeVisualizationManager : MonoBehaviour
                 
                 //Check if the rightChild is  null
                 if (rightChildLeftChildNullCircle.Ingredient != null){
-                    // Debug.Log("Jeg har et leftChild, og derfor skal mit subtree op i bagen");
+                    Debug.Log("**********Jeg har et leftChild, og derfor skal mit subtree op i bagen**********");
 
-                    // Bag animation
-                    //NullCircle subtreeTmpRootNullCircle = Instantiate(_nullCirclePrefab, new Vector(0,0,0), Quaternion.identity).getComponent<NullCircle>();
-                    //subtreeTmpRootNullCircle.Ingredient = rightChildLeftChildNullCircle.Ingredient;
-                    //subtreeTmpRootNullCircle.Value = rightChildLeftChildNullCircle.Value;
+                    // Bag animationl
+                    NullCircle CopyRoot = _nullCircleSpawner.CopyNullCircleSubtree(rightChildLeftChildNullCircle);
+
+                    List<GameObject> ingredientsToJar = _nullCircleSpawner.CollectIngredients(rightChildLeftChildNullCircle, new List<GameObject>());
+
+
+
+                    //yield return StartCoroutine(_jarVisualization.ShrinkMultiple(ingredientsToJar, () => {}));
+                    // Move subtree to jar
+                    Debug.Log("Jeg starter followSpline animation wuuuuuu!!!!");
+            
+                    foreach (GameObject ingredient in ingredientsToJar)
+                    {
+                        _spline.ChangeFirstKnotPosition(ingredient.transform.position);
+                        yield return StartCoroutine(_spline.FollowSpline(ingredient));
+                    }
+                    
+                    yield return StartCoroutine(_leftRotationVisualization.RotateLeftAnimation(parent, rightChild, parentNullCircle));
+                    // yield return (_jarAnimation.GrowAndMove(yourGameObject, pathPoints, finalPosition, totalAnimationDuration));
+
+                    
+                    
+                    
                     
 
-                    
-                    // rotate animation
-                    // move parent to leftChild
-                    // move rightChild to parent
+                
 
                 }
                 else {

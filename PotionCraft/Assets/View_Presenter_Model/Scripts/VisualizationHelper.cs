@@ -2,13 +2,16 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using TreeEditor;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Splines;
 
 public class VisualizationHelper : MonoBehaviour
 {
     [SerializeField] private  NullCircleSpawner _nullCircleSpawner;
     [SerializeField] private  TreeManager _treeManager;
+    [SerializeField] private SplineContainer spline;
 
 
     public Vector3 WorldToCanvasPosition(Canvas canvas, Vector3 worldPosition)
@@ -105,5 +108,7 @@ public class VisualizationHelper : MonoBehaviour
         yield return null;
         onComplete?.Invoke();
     }
+
+ 
 
 }

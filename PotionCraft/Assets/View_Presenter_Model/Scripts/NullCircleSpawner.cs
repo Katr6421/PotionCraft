@@ -9,7 +9,7 @@ public class NullCircleSpawner : MonoBehaviour
     [SerializeField] private GameObject nullCirclePrefab;
     [SerializeField] private Canvas uiCanvas; // Reference to the Canvas where the nullCircles will be parented
     public Dictionary<int, GameObject> NullCircles { get; } = new Dictionary<int, GameObject>();
-    private GameObject root;
+    public GameObject Root { get; set; }
 
     // Start is called before the first frame update
     void Start()
@@ -21,7 +21,7 @@ public class NullCircleSpawner : MonoBehaviour
     {
         // Instantiate the nullCircles
         GameObject nullCircle0 = Instantiate(nullCirclePrefab, new Vector3(440, 239, 0), Quaternion.identity);
-        root = nullCircle0;
+        Root = nullCircle0;
 
         GameObject nullCircle1 = Instantiate(nullCirclePrefab, new Vector3(195, 117, 0), Quaternion.identity);
         GameObject nullCircle2 = Instantiate(nullCirclePrefab, new Vector3(685, 117, 0), Quaternion.identity);
@@ -226,7 +226,7 @@ public class NullCircleSpawner : MonoBehaviour
     }
 
     public GameObject Get(int index)
-    { return Get(root, index); }
+    { return Get(Root, index); }
 
     private GameObject Get(GameObject x, int key)
     {
@@ -249,7 +249,7 @@ public class NullCircleSpawner : MonoBehaviour
     public void UpdateActiveNullCirclesAndShow()
     {
         
-        UpdateActiveNullCirclesAndShow(root.GetComponent<NullCircle>());
+        UpdateActiveNullCirclesAndShow(Root.GetComponent<NullCircle>());
     }
     
     private void UpdateActiveNullCirclesAndShow(NullCircle nullCircle)
@@ -294,7 +294,7 @@ public class NullCircleSpawner : MonoBehaviour
 
     public void UpdateLineRenderers()
     {
-        UpdateLineRenderers(root.GetComponent<NullCircle>());
+        UpdateLineRenderers(Root.GetComponent<NullCircle>());
     }
     
     private void UpdateLineRenderers(NullCircle nullCircle)
@@ -368,7 +368,7 @@ public class NullCircleSpawner : MonoBehaviour
     public NullCircle FindNullCircleBasedOnPosition(Vector3 newPosition)
     {
         // Assuming 'root' is accessible here and correctly references the root NullCircle object
-        return FindNullCircleBasedOnPosition(root.GetComponent<NullCircle>(), newPosition);
+        return FindNullCircleBasedOnPosition(Root.GetComponent<NullCircle>(), newPosition);
     }
 
     private NullCircle FindNullCircleBasedOnPosition(NullCircle nullCircle, Vector3 newPosition)
@@ -407,6 +407,61 @@ public class NullCircleSpawner : MonoBehaviour
         // If not found in either subtree, return null
         return null;
     }
+
+    public NullCircle CopyNullCircleSubtree(NullCircle root) {
+        if (root == null) return null;
+
+        // Instantiate a new NullCircle GameObject as a copy of the root
+        GameObject copyObject = Instantiate(root.gameObject);
+        NullCircle copyNullCircle = copyObject.GetComponent<NullCircle>();
+
+        // Recursively copy the left and right subtrees
+        copyNullCircle.LeftChild = root.LeftChild == null ? null : CopyNullCircleSubtree(root.LeftChild.GetComponent<NullCircle>()).gameObject;
+        copyNullCircle.RightChild = root.RightChild == null ? null : CopyNullCircleSubtree(root.RightChild.GetComponent<NullCircle>()).gameObject;
+
+        // If this copy has children, set their parent to this new copy
+        if (copyNullCircle.LeftChild != null) {
+            copyNullCircle.LeftChild.GetComponent<NullCircle>().Parent = copyNullCircle.gameObject;
+        }
+        if (copyNullCircle.RightChild != null) {
+            copyNullCircle.RightChild.GetComponent<NullCircle>().Parent = copyNullCircle.gameObject;
+        }
+
+        // Copy the value type fields
+        copyNullCircle.Value = root.Value;
+        copyNullCircle.IsActive = root.IsActive;
+        copyNullCircle.Index = root.Index;
+        copyNullCircle.IsRed = root.IsRed;
+        copyNullCircle.Ingredient = root.Ingredient;
+        //copyNullCircle.Ingredient = Instantiate(root.Ingredient);
+
+        return copyNullCircle;
+    }
+
+    // Call this method with the root of your tree and an empty list to fill with ingredients
+    public List<GameObject> CollectIngredients(NullCircle nullCircle, List<GameObject> ingredients)
+    {
+        if (nullCircle == null)
+        {
+            return ingredients; // Base case: root is null, do nothing
+        }
+        // Process the current node (NullCircle)
+        if (nullCircle.Ingredient != null && !ingredients.Contains(nullCircle.Ingredient))
+        {
+            ingredients.Add(nullCircle.Ingredient);
+        }
+
+        // Convert GameObject to NullCircle for LeftChild and RightChild, if they exist, before recursive calls
+        NullCircle leftChild = nullCircle.LeftChild ? nullCircle.LeftChild.GetComponent<NullCircle>() : null;
+        NullCircle rightChild = nullCircle.RightChild ? nullCircle.RightChild.GetComponent<NullCircle>() : null;
+
+        // Recursive case: Traverse the left and right children
+        CollectIngredients(leftChild, ingredients);
+        CollectIngredients(rightChild, ingredients);
+
+        return ingredients;
+    }
+
 
     /// <summary>
     /// Iterates throught a dictionary of NullCircles and shows the visual representation of the NullCircles that are active, by calling ShowNullCircle.
