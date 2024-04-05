@@ -67,6 +67,40 @@ public class NullCircleSpawner : MonoBehaviour
 
         GameObject nullCircle29 = Instantiate(nullCirclePrefab, new Vector3(840, -322, 0), Quaternion.identity);
         GameObject nullCircle30 = Instantiate(nullCirclePrefab, new Vector3(902, -322, 0), Quaternion.identity);
+
+        // Hidden nullCircles in bottom - Should never be shown!! To avoid nullPointerExceptions
+        GameObject nullCircle31 = Instantiate(nullCirclePrefab);
+        GameObject nullCircle32 = Instantiate(nullCirclePrefab);
+        GameObject nullCircle33 = Instantiate(nullCirclePrefab);
+        GameObject nullCircle34 = Instantiate(nullCirclePrefab);
+        GameObject nullCircle35 = Instantiate(nullCirclePrefab);
+        GameObject nullCircle36 = Instantiate(nullCirclePrefab);
+        GameObject nullCircle37 = Instantiate(nullCirclePrefab);
+        GameObject nullCircle38 = Instantiate(nullCirclePrefab);
+        GameObject nullCircle39 = Instantiate(nullCirclePrefab);
+        GameObject nullCircle40 = Instantiate(nullCirclePrefab);
+        GameObject nullCircle41 = Instantiate(nullCirclePrefab);
+        GameObject nullCircle42 = Instantiate(nullCirclePrefab);
+        GameObject nullCircle43 = Instantiate(nullCirclePrefab);
+        GameObject nullCircle44 = Instantiate(nullCirclePrefab);
+        GameObject nullCircle45 = Instantiate(nullCirclePrefab);
+        GameObject nullCircle46 = Instantiate(nullCirclePrefab);
+        GameObject nullCircle47 = Instantiate(nullCirclePrefab);
+        GameObject nullCircle48 = Instantiate(nullCirclePrefab);
+        GameObject nullCircle49 = Instantiate(nullCirclePrefab);
+        GameObject nullCircle50 = Instantiate(nullCirclePrefab);
+        GameObject nullCircle51 = Instantiate(nullCirclePrefab);
+        GameObject nullCircle52 = Instantiate(nullCirclePrefab);
+        GameObject nullCircle53 = Instantiate(nullCirclePrefab);
+        GameObject nullCircle54 = Instantiate(nullCirclePrefab);
+        GameObject nullCircle55 = Instantiate(nullCirclePrefab);
+        GameObject nullCircle56 = Instantiate(nullCirclePrefab);
+        GameObject nullCircle57 = Instantiate(nullCirclePrefab);
+        GameObject nullCircle58 = Instantiate(nullCirclePrefab);
+        GameObject nullCircle59 = Instantiate(nullCirclePrefab);
+        GameObject nullCircle60 = Instantiate(nullCirclePrefab);
+        GameObject nullCircle61 = Instantiate(nullCirclePrefab);
+        GameObject nullCircle62 = Instantiate(nullCirclePrefab);
         
 
         
@@ -102,6 +136,39 @@ public class NullCircleSpawner : MonoBehaviour
         nullCircle13.GetComponent<NullCircle>().RightChild = nullCircle28;
         nullCircle14.GetComponent<NullCircle>().LeftChild = nullCircle29;
         nullCircle14.GetComponent<NullCircle>().RightChild = nullCircle30;
+        // Hidden. Never ever show these nullCircles. Only meant to avoid nullPointerExceptions
+        nullCircle15.GetComponent<NullCircle>().LeftChild = nullCircle31;
+        nullCircle15.GetComponent<NullCircle>().RightChild = nullCircle32;
+        nullCircle16.GetComponent<NullCircle>().LeftChild = nullCircle33;
+        nullCircle16.GetComponent<NullCircle>().RightChild = nullCircle34;
+        nullCircle17.GetComponent<NullCircle>().LeftChild = nullCircle35;
+        nullCircle17.GetComponent<NullCircle>().RightChild = nullCircle36;
+        nullCircle18.GetComponent<NullCircle>().LeftChild = nullCircle37;
+        nullCircle18.GetComponent<NullCircle>().RightChild = nullCircle38;
+        nullCircle19.GetComponent<NullCircle>().LeftChild = nullCircle39;
+        nullCircle19.GetComponent<NullCircle>().RightChild = nullCircle40;
+        nullCircle20.GetComponent<NullCircle>().LeftChild = nullCircle41;
+        nullCircle20.GetComponent<NullCircle>().RightChild = nullCircle42;
+        nullCircle21.GetComponent<NullCircle>().LeftChild = nullCircle43;
+        nullCircle21.GetComponent<NullCircle>().RightChild = nullCircle44;
+        nullCircle22.GetComponent<NullCircle>().LeftChild = nullCircle45;
+        nullCircle22.GetComponent<NullCircle>().RightChild = nullCircle46;
+        nullCircle23.GetComponent<NullCircle>().LeftChild = nullCircle47;
+        nullCircle23.GetComponent<NullCircle>().RightChild = nullCircle48;
+        nullCircle24.GetComponent<NullCircle>().LeftChild = nullCircle49;
+        nullCircle24.GetComponent<NullCircle>().RightChild = nullCircle50;
+        nullCircle25.GetComponent<NullCircle>().LeftChild = nullCircle51;
+        nullCircle25.GetComponent<NullCircle>().RightChild = nullCircle52;
+        nullCircle26.GetComponent<NullCircle>().LeftChild = nullCircle53;
+        nullCircle26.GetComponent<NullCircle>().RightChild = nullCircle54;
+        nullCircle27.GetComponent<NullCircle>().LeftChild = nullCircle55;
+        nullCircle27.GetComponent<NullCircle>().RightChild = nullCircle56;
+        nullCircle28.GetComponent<NullCircle>().LeftChild = nullCircle57;
+        nullCircle28.GetComponent<NullCircle>().RightChild = nullCircle58;
+        nullCircle29.GetComponent<NullCircle>().LeftChild = nullCircle59;
+        nullCircle29.GetComponent<NullCircle>().RightChild = nullCircle60;
+        nullCircle30.GetComponent<NullCircle>().LeftChild = nullCircle61;
+        nullCircle30.GetComponent<NullCircle>().RightChild = nullCircle62;
 
 
         // Set the parent of each nullCircle
@@ -136,7 +203,38 @@ public class NullCircleSpawner : MonoBehaviour
         nullCircle28.GetComponent<NullCircle>().Parent = nullCircle13;
         nullCircle29.GetComponent<NullCircle>().Parent = nullCircle14;
         nullCircle30.GetComponent<NullCircle>().Parent = nullCircle14;
-
+        nullCircle31.GetComponent<NullCircle>().Parent = nullCircle15;
+        nullCircle32.GetComponent<NullCircle>().Parent = nullCircle15;
+        nullCircle33.GetComponent<NullCircle>().Parent = nullCircle16;
+        nullCircle34.GetComponent<NullCircle>().Parent = nullCircle16;
+        nullCircle35.GetComponent<NullCircle>().Parent = nullCircle17;
+        nullCircle36.GetComponent<NullCircle>().Parent = nullCircle17;
+        nullCircle37.GetComponent<NullCircle>().Parent = nullCircle18;
+        nullCircle38.GetComponent<NullCircle>().Parent = nullCircle18;
+        nullCircle39.GetComponent<NullCircle>().Parent = nullCircle19;
+        nullCircle40.GetComponent<NullCircle>().Parent = nullCircle19;
+        nullCircle41.GetComponent<NullCircle>().Parent = nullCircle20;
+        nullCircle42.GetComponent<NullCircle>().Parent = nullCircle20;
+        nullCircle43.GetComponent<NullCircle>().Parent = nullCircle21;
+        nullCircle44.GetComponent<NullCircle>().Parent = nullCircle21;
+        nullCircle45.GetComponent<NullCircle>().Parent = nullCircle22;
+        nullCircle46.GetComponent<NullCircle>().Parent = nullCircle22;
+        nullCircle47.GetComponent<NullCircle>().Parent = nullCircle23;
+        nullCircle48.GetComponent<NullCircle>().Parent = nullCircle23;
+        nullCircle49.GetComponent<NullCircle>().Parent = nullCircle24;
+        nullCircle50.GetComponent<NullCircle>().Parent = nullCircle24;
+        nullCircle51.GetComponent<NullCircle>().Parent = nullCircle25;
+        nullCircle52.GetComponent<NullCircle>().Parent = nullCircle25;
+        nullCircle53.GetComponent<NullCircle>().Parent = nullCircle26;
+        nullCircle54.GetComponent<NullCircle>().Parent = nullCircle26;
+        nullCircle55.GetComponent<NullCircle>().Parent = nullCircle27;
+        nullCircle56.GetComponent<NullCircle>().Parent = nullCircle27;
+        nullCircle57.GetComponent<NullCircle>().Parent = nullCircle28;
+        nullCircle58.GetComponent<NullCircle>().Parent = nullCircle28;
+        nullCircle59.GetComponent<NullCircle>().Parent = nullCircle29;
+        nullCircle60.GetComponent<NullCircle>().Parent = nullCircle29;
+        nullCircle61.GetComponent<NullCircle>().Parent = nullCircle30;
+        nullCircle62.GetComponent<NullCircle>().Parent = nullCircle30;
 
         // Add the nullCircles to the dictionary
         NullCircles.Add(0, nullCircle0);
@@ -202,6 +300,38 @@ public class NullCircleSpawner : MonoBehaviour
         nullCircle28.GetComponent<NullCircle>().LineToParent = SpawnLinesToParent(nullCircle28, nullCircle13);
         nullCircle29.GetComponent<NullCircle>().LineToParent = SpawnLinesToParent(nullCircle29, nullCircle14);
         nullCircle30.GetComponent<NullCircle>().LineToParent = SpawnLinesToParent(nullCircle30, nullCircle14);
+        nullCircle31.GetComponent<NullCircle>().LineToParent = SpawnLinesToParent(nullCircle31, nullCircle15);
+        nullCircle32.GetComponent<NullCircle>().LineToParent = SpawnLinesToParent(nullCircle32, nullCircle15);
+        nullCircle33.GetComponent<NullCircle>().LineToParent = SpawnLinesToParent(nullCircle33, nullCircle16);
+        nullCircle34.GetComponent<NullCircle>().LineToParent = SpawnLinesToParent(nullCircle34, nullCircle16);
+        nullCircle35.GetComponent<NullCircle>().LineToParent = SpawnLinesToParent(nullCircle35, nullCircle17);
+        nullCircle36.GetComponent<NullCircle>().LineToParent = SpawnLinesToParent(nullCircle36, nullCircle17);
+        nullCircle37.GetComponent<NullCircle>().LineToParent = SpawnLinesToParent(nullCircle37, nullCircle18);
+        nullCircle38.GetComponent<NullCircle>().LineToParent = SpawnLinesToParent(nullCircle38, nullCircle18);
+        nullCircle39.GetComponent<NullCircle>().LineToParent = SpawnLinesToParent(nullCircle39, nullCircle19);
+        nullCircle40.GetComponent<NullCircle>().LineToParent = SpawnLinesToParent(nullCircle40, nullCircle19);
+        nullCircle41.GetComponent<NullCircle>().LineToParent = SpawnLinesToParent(nullCircle41, nullCircle20);
+        nullCircle42.GetComponent<NullCircle>().LineToParent = SpawnLinesToParent(nullCircle42, nullCircle20);
+        nullCircle43.GetComponent<NullCircle>().LineToParent = SpawnLinesToParent(nullCircle43, nullCircle21);
+        nullCircle44.GetComponent<NullCircle>().LineToParent = SpawnLinesToParent(nullCircle44, nullCircle21);
+        nullCircle45.GetComponent<NullCircle>().LineToParent = SpawnLinesToParent(nullCircle45, nullCircle22);
+        nullCircle46.GetComponent<NullCircle>().LineToParent = SpawnLinesToParent(nullCircle46, nullCircle22);
+        nullCircle47.GetComponent<NullCircle>().LineToParent = SpawnLinesToParent(nullCircle47, nullCircle23);
+        nullCircle48.GetComponent<NullCircle>().LineToParent = SpawnLinesToParent(nullCircle48, nullCircle23);
+        nullCircle49.GetComponent<NullCircle>().LineToParent = SpawnLinesToParent(nullCircle49, nullCircle24);
+        nullCircle50.GetComponent<NullCircle>().LineToParent = SpawnLinesToParent(nullCircle50, nullCircle24);
+        nullCircle51.GetComponent<NullCircle>().LineToParent = SpawnLinesToParent(nullCircle51, nullCircle25);
+        nullCircle52.GetComponent<NullCircle>().LineToParent = SpawnLinesToParent(nullCircle52, nullCircle25);
+        nullCircle53.GetComponent<NullCircle>().LineToParent = SpawnLinesToParent(nullCircle53, nullCircle26);
+        nullCircle54.GetComponent<NullCircle>().LineToParent = SpawnLinesToParent(nullCircle54, nullCircle26);
+        nullCircle55.GetComponent<NullCircle>().LineToParent = SpawnLinesToParent(nullCircle55, nullCircle27);
+        nullCircle56.GetComponent<NullCircle>().LineToParent = SpawnLinesToParent(nullCircle56, nullCircle27);
+        nullCircle57.GetComponent<NullCircle>().LineToParent = SpawnLinesToParent(nullCircle57, nullCircle28);
+        nullCircle58.GetComponent<NullCircle>().LineToParent = SpawnLinesToParent(nullCircle58, nullCircle28);
+        nullCircle59.GetComponent<NullCircle>().LineToParent = SpawnLinesToParent(nullCircle59, nullCircle29);
+        nullCircle60.GetComponent<NullCircle>().LineToParent = SpawnLinesToParent(nullCircle60, nullCircle29);
+        nullCircle61.GetComponent<NullCircle>().LineToParent = SpawnLinesToParent(nullCircle61, nullCircle30);
+        nullCircle62.GetComponent<NullCircle>().LineToParent = SpawnLinesToParent(nullCircle62, nullCircle30);
 
         // Hide all linderenders to begin with
         UpdateLineRenderers();
@@ -617,6 +747,8 @@ public class NullCircleSpawner : MonoBehaviour
 
     public void PrintNullCircles()
     {
+
+        Debug.Log("**********Printing all NullCircles**********");
         foreach (KeyValuePair<int, GameObject> nullCirclePair in NullCircles)
         {
             NullCircle nullCircle = nullCirclePair.Value.GetComponent<NullCircle>();
@@ -636,7 +768,20 @@ public class NullCircleSpawner : MonoBehaviour
 
     }
 
-    public void destroyNullCircle(GameObject nullCircle) {
+    public void destroyNullCircleAndAllDescendants(GameObject nullCircle) {
+        if (nullCircle == null) return;
+
+        NullCircle nc = nullCircle.GetComponent<NullCircle>();
+        if (nc.LeftChild != null)
+        {
+            destroyNullCircleAndAllDescendants(nc.LeftChild);
+        }
+        if (nc.RightChild != null)
+        {
+            destroyNullCircleAndAllDescendants(nc.RightChild);
+        }
+
+        // Destroy the GameObject
         Destroy(nullCircle);
     }
 

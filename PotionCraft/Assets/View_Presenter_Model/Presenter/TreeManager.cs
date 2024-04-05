@@ -160,7 +160,7 @@ public class TreeManager : MonoBehaviour, ITreeManager
                     //Debug.Log("!!!!!!!!!!!!!!! The correct nodes in tree when we rotate left are: !!!!!!!!!!!!!!!");
                     foreach (Node node in correctNodesInTree)
                     {
-                        Debug.Log("Correct node value in tree: " + node.Value);
+                        //Debug.Log("Correct node value in tree: " + node.Value);
                     }
 
                     //Print current selected nodes
@@ -231,8 +231,11 @@ public class TreeManager : MonoBehaviour, ITreeManager
             // Perform the next operation in the queue on our RedBlackBST tree, such that the current state of our tree machted the operation we just did. RotateLeft, RotateRight or FlipColors
             RedBlackTree.ExecuteNextOperation();
 
-             Debug.Log("!!!!!!!!!!!!!!!Current state of the tree!!!!!! **********************");
-            RedBlackTree.PrintTree();
+            //Debug.Log("!!!!!!!!!!!!!!!Current state of the tree after rotation!!!!!! **********************" + operationType);
+            //RedBlackTree.PrintTree();
+            Debug.Log("***************Færdig med at printe træet i ExecuteOperationIfCorrectNodesSelected***********");
+            Debug.Log("***************PRINTER ALL NULLCIRCLES IN ExecuteOperationIfCorrectNodesSelected***********");
+            _nullCircleSpawner.PrintNullCircles();
             
             // Clear the selected nodes the user has selected
             currentSelctedNodes.Clear();
@@ -310,8 +313,8 @@ public class TreeManager : MonoBehaviour, ITreeManager
     // Get the color of the node with the given value in the red-black tree
     public bool GetColor(int value)
     {
-        Debug.Log("GetColor in TreeManager called with value: " + value);
-        Debug.Log("Calling GetColor returns " + RedBlackTree.GetColor(value));
+        //Debug.Log("GetColor in TreeManager called with value: " + value);
+        //Debug.Log("Calling GetColor returns " + RedBlackTree.GetColor(value));
         return RedBlackTree.GetColor(value);
     }
 
@@ -377,122 +380,4 @@ public class TreeManager : MonoBehaviour, ITreeManager
 
     }
 
-    //////////////// SKRALDESPANDEN /////////////////
-    /*
-    
-    public void WaitForRotateRight(Node currentNode)
-    {
-        // Update hint
-
-        // Wait to check which button is pressed
-        // Update hint according to the button pressed
-
-        // If correct button is pressed, continue algorithm
-    }
-
-    public void WaitForRotateLeft(Node currentNode)
-    {
-        // Update hint
-
-        // Wait to check which button is pressed
-        // Update hint according to the button pressed
-
-        // If correct button is pressed, continue algorithm
-    }
-
-    public void WaitForFliColour()
-    {
-        // Update hint
-
-        // Wait to check which button is pressed
-        // Update hint according to the button pressed
-
-        // If correct button is pressed, continue algorithm
-    }
-
-
-
-*/
-
-
-
-    /* public bool ValidateNodePlacement(GameObject clickedNullCircle){
-        Debug.Log("Nu printer jeg træet");
-        RedBlackTree.PrintTree();
-
-        // Check if the clickedNullCircles parent is the correct parent
-        // Check if the clickedNullCircles parent is the correct parent in the red black tree
-        NullCircle clickedNullCircleObject = clickedNullCircle.GetComponent<NullCircle>();
-
-        // Base case: If the clickedNullCircle is the root
-        if ((clickedNullCircleObject.Parent) == null && (RedBlackTree.Get((clickedNullCircleObject.Value)).Parent) == null ) {
-            // is root
-            Debug.Log("Root");
-            return true;
-        }
-
-        // Check if one of the parent is null. Not sure if we need, or will ever come to this case
-        if ((clickedNullCircleObject.Parent) == null || (RedBlackTree.Get((clickedNullCircleObject.Value)).Parent) == null ) {
-            return false;
-        }
-
-
-        int parentNullCircleValue = (clickedNullCircleObject.Parent).GetComponent<NullCircle>().Value;
-        Debug.Log("Parent Null Circle Value: " + parentNullCircleValue);
-        int parentNodeValue = RedBlackTree.Get((clickedNullCircleObject.Value)).Parent.Value;
-        Debug.Log("Parent Node Value: " + parentNodeValue);
-
-
-        NullCircle parentNullCircle = clickedNullCircleObject.Parent.GetComponent<NullCircle>();
-        //Node parentNode = (RedBlackTree.Get(clickedNullCircleObject.Value)).Parent;
-        Debug.Log("NullCircle rightchild " + (parentNullCircle.RightChild).GetComponent<NullCircle>().Value);
-        Debug.Log("NullCircle leftchild " + (parentNullCircle.LeftChild).GetComponent<NullCircle>().Value);
-        Debug.Log("clickedNullCircleObject.Value " + clickedNullCircleObject.Value);
-        Debug.Log("node parent " + (RedBlackTree.Get(clickedNullCircleObject.Value)).Parent);
-        Debug.Log("node parent right " + (RedBlackTree.Get(clickedNullCircleObject.Value)).Parent.Right);
-
-        Node parentNode = RedBlackTree.Get(clickedNullCircleObject.Value).Parent;
-        if (parentNode.Right != null)
-        {
-            int rightValue = parentNode.Right.Value; // Assuming Value is a non-nullable int, otherwise check for null
-            UnityEngine.Debug.Log("Node parent right value: " + rightValue);
-        }
-        else
-        {
-            UnityEngine.Debug.Log("Node parent right is null.");
-        }
-         if (parentNode.Left != null)
-        {
-            int leftValue = parentNode.Left.Value; // Assuming Value is a non-nullable int, otherwise check for null
-            UnityEngine.Debug.Log("Node parent left value: " + leftValue);
-        }
-        else
-        {
-            UnityEngine.Debug.Log("Node parent left is null.");
-        }
-
-        //Debug.Log("Node right" + parentNode.Right.Value);
-        //Debug.Log("Node left" + parentNode.Left.Value);
-
-        if ((parentNullCircle.RightChild).GetComponent<NullCircle>().Value == parentNode.Right.Value) {
-            Debug.Log("Right Child");
-        }
-        else if ((parentNullCircle.LeftChild).GetComponent<NullCircle>().Value == parentNode.Left.Value) {
-            Debug.Log("Left Child");
-        }
-        else {
-            Debug.Log("Not a child");
-        }
-
-
-
-
-        if (parentNullCircleValue == parentNodeValue) {
-            return true;
-        }
-        return false;
-
-
-
-    }*/
 }

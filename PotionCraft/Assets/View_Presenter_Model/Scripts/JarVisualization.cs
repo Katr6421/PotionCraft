@@ -60,13 +60,13 @@ public class JarVisualization : MonoBehaviour
     
 
     public IEnumerator MoveNodeAndAllDescendantsJar(NullCircle nodeToMove, NullCircle newPosition, float duration, Action onComplete) {
-        Debug.Log("Calling MoveNodeAndAllDescendantsJar");
+       // Debug.Log("Calling MoveNodeAndAllDescendantsJar");
 
         // Recursively move the left subtree if it exists.
         if (nodeToMove.LeftChild.GetComponent<NullCircle>().Ingredient != null) {
             NullCircle leftChild = nodeToMove.LeftChild.GetComponent<NullCircle>();
             NullCircle newLeftChildPosition = newPosition.LeftChild.GetComponent<NullCircle>();
-            Debug.Log("newleftchildPosistion index:" + leftChild.GetComponent<NullCircle>().LeftChild.GetComponent<NullCircle>().Index);
+           // Debug.Log("newleftchildPosistion index:" + leftChild.GetComponent<NullCircle>().LeftChild.GetComponent<NullCircle>().Index);
 
             //Vector3 leftChildNewPosition = newPosition - (nodeToMove.transform.position - leftChild.transform.position);
             //leftChild.transform.position
@@ -83,25 +83,10 @@ public class JarVisualization : MonoBehaviour
 
         // If the node has an ingredient, move it.
         if (nodeToMove.Ingredient != null) {
-
-            
-           
-            
             _spline.ChangeLastKnotPosition(newPosition.transform.position);
             yield return StartCoroutine(_spline.FollowSplineFromJar(nodeToMove.Ingredient));
-            _visualizationHelper.UpdateNullCircleWithIngredient(newPosition.transform.position, nodeToMove);
-            
-            
-
-            /*    
-            yield return StartCoroutine(MoveNode(nullCircle.Ingredient, newPosition, duration, nullCircle, () => {
-                _nullCircleSpawner.DeactivateAllNullCirclesInSubtree(nullCircle);
-                 UpdateNullCircleWithIngredient(newPosition, nullCircle);
-            }));*/
-           
+            _visualizationHelper.UpdateNullCircleWithIngredient(newPosition.transform.position, nodeToMove); 
         }
-
-        
         onComplete?.Invoke();
     }
 

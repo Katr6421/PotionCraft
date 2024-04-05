@@ -23,6 +23,7 @@ public class Spline : MonoBehaviour
 
     public void ChangeLastKnotPosition(Vector3 newPosition)
     {
+
         if (spline != null && spline.Spline.Count > 0)
         {
             // Change the position of the last knot
