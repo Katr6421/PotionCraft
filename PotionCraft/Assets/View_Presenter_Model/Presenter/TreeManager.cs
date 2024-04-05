@@ -230,6 +230,9 @@ public class TreeManager : MonoBehaviour, ITreeManager
 
             // Perform the next operation in the queue on our RedBlackBST tree, such that the current state of our tree machted the operation we just did. RotateLeft, RotateRight or FlipColors
             RedBlackTree.ExecuteNextOperation();
+
+             Debug.Log("!!!!!!!!!!!!!!!Current state of the tree!!!!!! **********************");
+            RedBlackTree.PrintTree();
             
             // Clear the selected nodes the user has selected
             currentSelctedNodes.Clear();
@@ -253,7 +256,8 @@ public class TreeManager : MonoBehaviour, ITreeManager
                 // Check the current state of our RedBlackBST tree to see if we need to perfome more operations
                 RedBlackTree.IsThereATreeViolation();
                    // Debug.Log("!!!!!!!!!!!!!*****The current state of all the null circles AFTER a visulize rotation: *****!!!!!!!!!!");
-                    _nullCircleSpawner.PrintNullCircles();
+                    //_nullCircleSpawner.PrintNullCircles();
+                    
                    
 
 
@@ -306,8 +310,8 @@ public class TreeManager : MonoBehaviour, ITreeManager
     // Get the color of the node with the given value in the red-black tree
     public bool GetColor(int value)
     {
-        //Debug.Log("GetColor in TreeManager called with value: " + value);
-        //Debug.Log("Calling GetColor returns " + RedBlackTree.GetColor(value));
+        Debug.Log("GetColor in TreeManager called with value: " + value);
+        Debug.Log("Calling GetColor returns " + RedBlackTree.GetColor(value));
         return RedBlackTree.GetColor(value);
     }
 

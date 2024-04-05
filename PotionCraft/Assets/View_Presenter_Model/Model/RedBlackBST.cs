@@ -28,7 +28,7 @@ public class RedBlackBST : IRedBlackBST
       // Node with given key not present in tree
       if (x == null) 
       {
-         //UnityEngine.Debug.Log("GET ---- Couldn't find node with key " + key + " in the tree");
+         UnityEngine.Debug.Log("GET ---- Couldn't find node with key " + key + " in the tree");
          return null;
       }
 
@@ -39,14 +39,26 @@ public class RedBlackBST : IRedBlackBST
       // Found node with the given key - return it
       else 
       {
-         //UnityEngine.Debug.Log("GET ---- Found node with key " + key + " and value " + x.Value);
+         UnityEngine.Debug.Log("GET ---- Found node with key " + key + " and value " + x.Value);
          return x;
       }
    }
 
    public bool GetColor(int key)
    {
-      //UnityEngine.Debug.Log("GETCOLOR --- Found color of node with key " + key + " to be " + Get(Root, key).Color);
+
+      UnityEngine.Debug.Log("GETCOLOR er blevet kaldt med key: " + key);
+      UnityEngine.Debug.Log("Min root er:"+ Root.Key);
+      UnityEngine.Debug.Log("Current state of the tree from get color"); 
+     
+      PrintTree();
+
+
+
+
+
+
+      UnityEngine.Debug.Log("GETCOLOR --- Found color of node with key " + key + " to be " + Get(Root, key).Color);
       return Get(Root, key).Color;
    }
 

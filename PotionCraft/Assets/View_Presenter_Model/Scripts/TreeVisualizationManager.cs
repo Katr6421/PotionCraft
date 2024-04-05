@@ -32,6 +32,7 @@ public class TreeVisualizationManager : MonoBehaviour
     [SerializeField] private FlipColorVisualization _flipColorVisualization; // Need this to make left rotation animations
     [SerializeField] private JarVisualization _jarVisualization; // Need this to make left rotation animations
     [SerializeField] private Spline _spline;
+    [SerializeField] private VisualizationHelper _visualizationHelper;
 
     private GameObject _currentIngredient; // Reference to the current Ingredient that the user must insert in the RedBlackTree
     private GameObject _currentNullCircle; // Reference to the latest NullCircle that the user has clicked on
@@ -195,7 +196,7 @@ public class TreeVisualizationManager : MonoBehaviour
                     //Debug.Log("**********Jeg har et leftChild, og derfor skal mit subtree op i bagen**********");
 
                     // Bag animationl
-                    NullCircle CopyRoot = _nullCircleSpawner.CopyNullCircleSubtree(rightChildLeftChildNullCircle);
+                    NullCircle copyRootOfSubTree = _nullCircleSpawner.CopyNullCircleSubtree(rightChildLeftChildNullCircle);
                     List<GameObject> ingredientsToJar = _nullCircleSpawner.CollectIngredients(rightChildLeftChildNullCircle, new List<GameObject>());
                     //Update nullcircle
                     _nullCircleSpawner.setNullCircleToDefault(rightChildLeftChildNullCircle);
@@ -210,7 +211,7 @@ public class TreeVisualizationManager : MonoBehaviour
                     foreach (GameObject ingredient in ingredientsToJar)
                     {
                         _spline.ChangeFirstKnotPosition(ingredient.transform.position);
-                        yield return StartCoroutine(_spline.FollowSpline(ingredient));
+                        yield return StartCoroutine(_spline.FollowSplineToJar(ingredient));
                         
                     }
                     
@@ -219,6 +220,27 @@ public class TreeVisualizationManager : MonoBehaviour
                     Debug.Log("Jeg har kopieret nullcircle og nu er jeg blevet nulstillet og mine lijer er blevet opdateret");
                     _nullCircleSpawner.PrintNullCircles();
                     
+
+                    // Sæt subtree tilbage
+                    // Skal sættes tilbage til parent's rightChild (på den nye position)
+
+                    // Get h's leftchild. That is where the subtree needs to go.
+                    NullCircle rootToPlaceSubtree = parentNullCircle.GetComponent<NullCircle>().LeftChild.GetComponent<NullCircle>().RightChild.GetComponent<NullCircle>();
+
+
+                    // Animation to move subtree to new position
+                    yield return StartCoroutine( _jarVisualization.MoveNodeAndAllDescendantsJar(copyRootOfSubTree, rootToPlaceSubtree, 1.0f, ()=>{}));
+                    // Update nullcircles after we have moved them
+                    _nullCircleSpawner.UpdateLineRenderers();
+
+                    Debug.Log("PRINTER ALL NULLCIRCLES!!!!!!");
+                    _nullCircleSpawner.PrintNullCircles();
+                
+                    //_nullCircleSpawner.DestroyNullCircle(nodeToMove);
+                    
+
+                    
+
                     
                     
                     

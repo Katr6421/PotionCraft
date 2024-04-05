@@ -97,10 +97,18 @@ public class LeftRotationVisualization : MonoBehaviour {
     IEnumerator MoveRightSubtreeAndAllDescendants(GameObject startingNode, Vector3 newPosition, float duration, Action onComplete) {
         NullCircle startingNullCircle = startingNode.GetComponent<NullCircle>();
 
+        Debug.Log("!!!!!!!!!!!!!!!!!!**********************NULLCIRCLETREE BEFORE MOVING MY SELF SUBTREE:*************************!!!!!!!!!!!!");
+        _nullCircleSpawner.PrintNullCircles();
+
         // After the right subtree has been moved, now move the starting node itself if it has an ingredient.
         Debug.Log("Now i am moving myself");
         yield return StartCoroutine(_visualizationHelper.MoveNode(startingNullCircle.Ingredient, newPosition, duration, startingNullCircle, ()=>{
             _nullCircleSpawner.DeactivateAllNullCirclesInSubtree(startingNullCircle); 
+             Debug.Log("************!!!!!!!!!!!!!!NULLCIRCLETREE AFTER MOVING MY SELF SUBTREE:************!!!!!!!!");
+            _nullCircleSpawner.PrintNullCircles();
+           
+            
+
             _visualizationHelper.UpdateNullCircleWithIngredient(newPosition, startingNullCircle);
         }));
         

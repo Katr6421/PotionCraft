@@ -178,6 +178,7 @@ MonoBehaviour:
   _flipColorVisualization: {fileID: 716256337}
   _jarVisualization: {fileID: 261952716}
   _spline: {fileID: 156142562}
+  _visualizationHelper: {fileID: 1755271417}
 --- !u!1 &107009967
 GameObject:
   m_ObjectHideFlags: 0
@@ -388,8 +389,8 @@ MonoBehaviour:
           z: 0
           w: 1
     - Position:
-        x: -1.16
-        y: -2.19
+        x: -0.63
+        y: -2.04
         z: 212.87
       TangentIn:
         x: 0
@@ -412,17 +413,17 @@ MonoBehaviour:
       TangentIn:
         x: -0
         y: -0
-        z: -1.9601004
+        z: -1.9532806
       TangentOut:
         x: 0
         y: 0
-        z: 0.23941693
+        z: 0.2385795
       Rotation:
         value:
-          x: 0.3072944
-          y: 0.6844104
-          z: 0.6229634
-          w: -0.22151555
+          x: 0.3044392
+          y: 0.6857938
+          z: 0.62164366
+          w: -0.22486177
     - Position:
         x: -4.12
         y: -0.27
@@ -499,6 +500,138 @@ MonoBehaviour:
       m_Data: []
     m_ObjectData:
       m_Data: []
+  - m_EditModeType: 1
+    m_Knots:
+    - Position:
+        x: -5.72
+        y: 2.12
+        z: 13.89
+      TangentIn:
+        x: 0
+        y: 0
+        z: -0.53739554
+      TangentOut:
+        x: 0
+        y: 0
+        z: 0.53739554
+      Rotation:
+        value:
+          x: 0.0024730305
+          y: 0.95993286
+          z: -0.28009078
+          w: 0.00847552
+    - Position:
+        x: -4.2
+        y: 2.62
+        z: 12.53
+      TangentIn:
+        x: -0
+        y: -0
+        z: -0.72809863
+      TangentOut:
+        x: 0
+        y: 0
+        z: 1.1647362
+      Rotation:
+        value:
+          x: -0.24036922
+          y: 0.93974936
+          z: -0.14435649
+          w: 0.19558907
+    - Position:
+        x: -4.12
+        y: -0.27
+        z: 8
+      TangentIn:
+        x: 0
+        y: 0
+        z: -1
+      TangentOut:
+        x: 0
+        y: 0
+        z: 1
+      Rotation:
+        value:
+          x: 0
+          y: 1
+          z: 0
+          w: -0.00000004371139
+    - Position:
+        x: -4.23
+        y: -1.05
+        z: 5
+      TangentIn:
+        x: -0
+        y: -0
+        z: -0.2385795
+      TangentOut:
+        x: 0
+        y: 0
+        z: 1.9532806
+      Rotation:
+        value:
+          x: -0.48374844
+          y: -0.45054528
+          z: 0.54890037
+          w: -0.5115709
+    - Position:
+        x: -0.63
+        y: -2.04
+        z: 212.87
+      TangentIn:
+        x: -0.00000027559366
+        y: -4.656613e-10
+        z: -1.7888287
+      TangentOut:
+        x: 0.00000027559366
+        y: 4.656613e-10
+        z: 1.7888287
+      Rotation:
+        value:
+          x: 0.000008394476
+          y: 0.7998478
+          z: 0.0035008714
+          w: 0.60019267
+    - Position:
+        x: 8.29
+        y: 2.6
+        z: 5
+      TangentIn:
+        x: 0
+        y: 0
+        z: -0.5
+      TangentOut:
+        x: 0
+        y: 0
+        z: 1
+      Rotation:
+        value:
+          x: 0
+          y: 1
+          z: 0
+          w: -0.00000004371139
+    m_MetaData:
+    - Mode: 2
+      Tension: 0.5
+    - Mode: 0
+      Tension: 0.5
+    - Mode: 2
+      Tension: 0.5
+    - Mode: 0
+      Tension: 0.5
+    - Mode: 4
+      Tension: 0.5
+    - Mode: 3
+      Tension: 0.5
+    m_Closed: 0
+    m_IntData:
+      m_Data: []
+    m_FloatData:
+      m_Data: []
+    m_Float4Data:
+      m_Data: []
+    m_ObjectData:
+      m_Data: []
   m_Knots:
     m_KnotsLink: []
 --- !u!4 &156142561
@@ -510,7 +643,7 @@ Transform:
   m_GameObject: {fileID: 156142559}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0.03, y: 0.06, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -10412,6 +10545,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7fb47f71db82f47ddbb5963ba9bf7b32, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _visualizationHelper: {fileID: 1755271417}
+  _spline: {fileID: 156142562}
 --- !u!4 &261952717
 Transform:
   m_ObjectHideFlags: 0
@@ -31274,7 +31409,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _nullCircleSpawner: {fileID: 769144078}
   _treeManager: {fileID: 1750167745}
-  spline: {fileID: 0}
+  _spline: {fileID: 156142562}
 --- !u!4 &1755271418
 Transform:
   m_ObjectHideFlags: 0
@@ -36215,7 +36350,7 @@ Transform:
   m_GameObject: {fileID: 1825988707}
   serializedVersion: 2
   m_LocalRotation: {x: -0.7071068, y: -0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 0.14945436, y: -1.7444723, z: -0.042132493}
+  m_LocalPosition: {x: 0.161, y: -1.777, z: -0.042}
   m_LocalScale: {x: 0.29, y: 0.29, z: 0.29}
   m_ConstrainProportionsScale: 1
   m_Children: []

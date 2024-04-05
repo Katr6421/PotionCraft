@@ -11,7 +11,7 @@ public class VisualizationHelper : MonoBehaviour
 {
     [SerializeField] private  NullCircleSpawner _nullCircleSpawner;
     [SerializeField] private  TreeManager _treeManager;
-    [SerializeField] private SplineContainer spline;
+    [SerializeField] private Spline _spline;
 
 
     public Vector3 WorldToCanvasPosition(Canvas canvas, Vector3 worldPosition)
@@ -74,7 +74,7 @@ public class VisualizationHelper : MonoBehaviour
         if (nullCircle.Ingredient != null) {
             yield return StartCoroutine(MoveNode(nullCircle.Ingredient, newPosition, duration, nullCircle, () => {
                 _nullCircleSpawner.DeactivateAllNullCirclesInSubtree(nullCircle);
-                 UpdateNullCircleWithIngredient(newPosition, nullCircle);
+                UpdateNullCircleWithIngredient(newPosition, nullCircle);
             }));
            
         }
@@ -82,6 +82,9 @@ public class VisualizationHelper : MonoBehaviour
         
         onComplete?.Invoke();
     }
+
+
+
 
     public void UpdateNullCircleWithIngredient(Vector3 newPosition, NullCircle nullCircle) {
         //Debug.Log("I am in UpdateNullCircleWithIngredient");
@@ -97,7 +100,9 @@ public class VisualizationHelper : MonoBehaviour
             // Update the color based on the nodes in our tree. We look up in our RedBlaackBST to get the node that the ingredients value corresponds to. Then we return the nodes color
             //Debug.Log("Now I am chaning the colors of the foundnullcircle at index" + foundNullCircle.Index);
 
-            //Debug.Log("The value of the found null circle is: " + foundNullCircle.Value);
+            Debug.Log("FoundNullCircleValue " + foundNullCircle.Value + " | FoundNullCircleIndex " + foundNullCircle.Index);
+            
+            
             foundNullCircle.IsRed = _treeManager.GetColor(foundNullCircle.Value);
 
             // Only set null circle to null if the child is also null. Then we know that there will not be any more ingredients in the subtree.
@@ -119,6 +124,11 @@ public class VisualizationHelper : MonoBehaviour
         
         //yield return null;
         //onComplete?.Invoke();
+    }
+
+    public void MoveSubtreeToNewPosition(NullCircle rootOfSubtree, GameObject rootToPlaceSubtree) {
+        // flyt root til ny position
+        // recursive flyt 
     }
  
 

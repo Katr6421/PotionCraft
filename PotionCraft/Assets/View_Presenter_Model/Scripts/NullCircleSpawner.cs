@@ -279,7 +279,7 @@ public class NullCircleSpawner : MonoBehaviour
 
     public void setNullCircleToDefault(NullCircle nullCircle) {
         // Reset properties of the current node
-        nullCircle.Value = 0; // Assuming 0 is the default value for int
+        nullCircle.Value = 0;
         nullCircle.IsActive = false;
         nullCircle.IsRed = false;
         nullCircle.Ingredient = null;
@@ -620,19 +620,25 @@ public class NullCircleSpawner : MonoBehaviour
         foreach (KeyValuePair<int, GameObject> nullCirclePair in NullCircles)
         {
             NullCircle nullCircle = nullCirclePair.Value.GetComponent<NullCircle>();
-            //Debug.Log("NullCircleIndex " + nullCircle.Index + " | isActive " + nullCircle.IsActive + " | Value " + nullCircle.Value + " Color " + nullCircle.IsRed);
+            Debug.Log("NullCircleIndex " + nullCircle.Index + " | isActive " + nullCircle.IsActive + " | Value " + nullCircle.Value + " Color " + nullCircle.IsRed);
             if(nullCircle.Ingredient != null)
             {
-                //Debug.Log("and has a ingredient: " + nullCircle.Ingredient + " attached to it with the value" + nullCircle.Ingredient.GetComponentInChildren<TextMeshProUGUI>().text.ToString());
+                Debug.Log("and has a ingredient: " + nullCircle.Ingredient + " attached to it with the value" + nullCircle.Ingredient.GetComponentInChildren<TextMeshProUGUI>().text.ToString());
             }
             else
             {
-                //Debug.Log("and has no ingredient attached to it");
+                Debug.Log("and has no ingredient attached to it");
             }
         }
     }
     
+    public void copyNullCircleToNewValue(GameObject t) {
 
+    }
+
+    public void destroyNullCircle(GameObject nullCircle) {
+        Destroy(nullCircle);
+    }
 
 
 }
