@@ -25,7 +25,7 @@ public class Ingredient : MonoBehaviour
 
     // Start is called before the first frame update
     public void OnClick(){
-        Debug.Log("Clicked on ingredient, with the value:  " + GetComponentInChildren<TextMeshProUGUI>().text);
+        //Debug.Log("Clicked on ingredient, with the value:  " + GetComponentInChildren<TextMeshProUGUI>().text);
         
         ChangePrefabImage(gameObject.name);
         var setOfSelectedIngredients = TreeManager.instance.CurrentSelectedIngredients;
@@ -44,10 +44,10 @@ public class Ingredient : MonoBehaviour
         }
 
         // print  setOfSelectedIngredients
-        foreach (var ingredient in setOfSelectedIngredients)
+        /*foreach (var ingredient in setOfSelectedIngredients)
         {
             Debug.Log("Current selected ingredients: " + ingredient.name);
-        }
+        }*/
     }
 
     public void ChangePrefabImage(string prefabName)

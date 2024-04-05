@@ -84,10 +84,8 @@ public class RightRotationVisualization : MonoBehaviour
         //Debug.Log("Now i am moving myself");
         yield return StartCoroutine(_visualizationHelper.MoveNode(startingNullCircle.Ingredient, newPosition, duration, startingNullCircle, ()=>{
             _nullCircleSpawner.DeactivateAllNullCirclesInSubtree(startingNullCircle);
-            //_visualizationHelper.UpdateNullCircleWithIngredient(newPosition, startingNullCircle);
+            _visualizationHelper.UpdateNullCircleWithIngredient(newPosition, startingNullCircle);
         }));
-
-        yield return StartCoroutine(_visualizationHelper.UpdateNullCircleWithIngredient(newPosition, startingNullCircle, ()=>{}));
         
         onComplete?.Invoke();
     }
@@ -100,10 +98,9 @@ public class RightRotationVisualization : MonoBehaviour
         //Debug.Log("Now i am moving myself");
         yield return StartCoroutine(_visualizationHelper.MoveNode(startingNullCircle.Ingredient, newPosition, duration, startingNullCircle, ()=>{
             _nullCircleSpawner.DeactivateAllNullCirclesInSubtree(startingNullCircle);
-            //_visualizationHelper.UpdateNullCircleWithIngredient(newPosition, startingNullCircle);
+            _visualizationHelper.UpdateNullCircleWithIngredient(newPosition, startingNullCircle);
         }));
 
-        yield return StartCoroutine(_visualizationHelper.UpdateNullCircleWithIngredient(newPosition, startingNullCircle, ()=>{}));
 
         // Move the left child and its subtree if it exists.
         if (startingNullCircle.LeftChild.GetComponent<NullCircle>().Ingredient != null) {

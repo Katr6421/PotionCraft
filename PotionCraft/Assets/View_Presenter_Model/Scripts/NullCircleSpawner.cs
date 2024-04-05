@@ -277,8 +277,35 @@ public class NullCircleSpawner : MonoBehaviour
         }
     }
 
+    public void setNullCircleToDefault(NullCircle nullCircle) {
+        // Reset properties of the current node
+        nullCircle.Value = 0; // Assuming 0 is the default value for int
+        nullCircle.IsActive = false;
+        nullCircle.IsRed = false;
+        nullCircle.Ingredient = null;
+
+
+        // If LeftChild exists, call ResetProperties on it
+        if (nullCircle.LeftChild.GetComponent<NullCircle>().Ingredient != null)
+        {
+            var leftNullCircle = nullCircle.LeftChild.GetComponent<NullCircle>();
+            setNullCircleToDefault(leftNullCircle);
+        }
+
+        // If RightChild exists, call ResetProperties on it
+        if (nullCircle.RightChild.GetComponent<NullCircle>().Ingredient != null)
+        {
+            var rightNullCircle = nullCircle.RightChild.GetComponent<NullCircle>();
+            setNullCircleToDefault(rightNullCircle);
+            
+        }
+        
+        return;
+    }
+
     public void DeactivateAllNullCirclesInSubtree(NullCircle nullCircle)
     {
+        //Debug.Log("I am in DeactivateAllNullCirclesInSubtree");
         if (nullCircle == null) return;
 
         nullCircle.IsActive = false;
@@ -593,14 +620,14 @@ public class NullCircleSpawner : MonoBehaviour
         foreach (KeyValuePair<int, GameObject> nullCirclePair in NullCircles)
         {
             NullCircle nullCircle = nullCirclePair.Value.GetComponent<NullCircle>();
-            Debug.Log("NullCircleIndex " + nullCircle.Index + " | isActive " + nullCircle.IsActive + " | Value " + nullCircle.Value + " Color " + nullCircle.IsRed);
+            //Debug.Log("NullCircleIndex " + nullCircle.Index + " | isActive " + nullCircle.IsActive + " | Value " + nullCircle.Value + " Color " + nullCircle.IsRed);
             if(nullCircle.Ingredient != null)
             {
-                Debug.Log("and has a ingredient: " + nullCircle.Ingredient + " attached to it with the value" + nullCircle.Ingredient.GetComponentInChildren<TextMeshProUGUI>().text.ToString());
+                //Debug.Log("and has a ingredient: " + nullCircle.Ingredient + " attached to it with the value" + nullCircle.Ingredient.GetComponentInChildren<TextMeshProUGUI>().text.ToString());
             }
             else
             {
-                Debug.Log("and has no ingredient attached to it");
+                //Debug.Log("and has no ingredient attached to it");
             }
         }
     }

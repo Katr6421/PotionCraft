@@ -45,35 +45,46 @@ public class VisualizationHelper : MonoBehaviour
 
 
     public IEnumerator MoveNodeAndAllDescendants(GameObject nodeToMove, Vector3 newPosition, float duration, Action onComplete) {
+        Debug.Log("Calling MoveNodeAndAllDescendants");
         NullCircle nullCircle = nodeToMove.GetComponent<NullCircle>();
-
-        // If the node has an ingredient, move it.
-        if (nullCircle.Ingredient != null) {
-            yield return StartCoroutine(MoveNode(nullCircle.Ingredient, newPosition, duration, nullCircle, () => {
-                _nullCircleSpawner.DeactivateAllNullCirclesInSubtree(nullCircle);
-              
-            }));
-
-            yield return StartCoroutine(UpdateNullCircleWithIngredient(newPosition, nullCircle, ()=>{}));
-        }
 
         // Recursively move the left subtree if it exists.
         if (nullCircle.LeftChild.GetComponent<NullCircle>().Ingredient != null) {
+            Debug.Log("Jeg har et venstre barn");
             GameObject leftChild = nullCircle.LeftChild;
-            Vector3 leftChildNewPosition = newPosition - (nodeToMove.transform.position - leftChild.transform.position);
-            yield return StartCoroutine(MoveNodeAndAllDescendants(leftChild, leftChildNewPosition, duration, () => {}));
+            Debug.Log("Leftchild index: " + leftChild.GetComponent<NullCircle>().Index);
+            Vector3 newLeftChildPosition = leftChild.GetComponent<NullCircle>().LeftChild.transform.position;
+            Debug.Log("newleftchildPosistion index:" + leftChild.GetComponent<NullCircle>().LeftChild.GetComponent<NullCircle>().Index);
+
+            //Vector3 leftChildNewPosition = newPosition - (nodeToMove.transform.position - leftChild.transform.position);
+            //leftChild.transform.position
+            yield return StartCoroutine(MoveNodeAndAllDescendants(leftChild, newLeftChildPosition, duration, () => {}));
         }
 
         // Recursively move the right subtree if it exists.
         if (nullCircle.RightChild.GetComponent<NullCircle>().Ingredient != null) {
             GameObject rightChild = nullCircle.RightChild;
             Vector3 rightChildNewPosition = newPosition - (nodeToMove.transform.position - rightChild.transform.position);
+            // SHOULD MAYBE BE A DIFFERENT METHOD
             yield return StartCoroutine(MoveNodeAndAllDescendants(rightChild, rightChildNewPosition, duration, () => {}));
         }
+
+
+        // If the node has an ingredient, move it.
+        if (nullCircle.Ingredient != null) {
+            yield return StartCoroutine(MoveNode(nullCircle.Ingredient, newPosition, duration, nullCircle, () => {
+                _nullCircleSpawner.DeactivateAllNullCirclesInSubtree(nullCircle);
+                 UpdateNullCircleWithIngredient(newPosition, nullCircle);
+            }));
+           
+        }
+
+        
         onComplete?.Invoke();
     }
 
-    public IEnumerator UpdateNullCircleWithIngredient(Vector3 newPosition, NullCircle nullCircle, Action onComplete) {
+    public void UpdateNullCircleWithIngredient(Vector3 newPosition, NullCircle nullCircle) {
+        //Debug.Log("I am in UpdateNullCircleWithIngredient");
         NullCircle foundNullCircle = _nullCircleSpawner.FindNullCircleBasedOnPosition(newPosition);
         if (foundNullCircle != null)
         {
@@ -84,7 +95,7 @@ public class VisualizationHelper : MonoBehaviour
             foundNullCircle.Value = int.Parse(nullCircle.Ingredient.GetComponentInChildren<TextMeshProUGUI>().text);
 
             // Update the color based on the nodes in our tree. We look up in our RedBlaackBST to get the node that the ingredients value corresponds to. Then we return the nodes color
-            Debug.Log("Now I am chaning the colors of the foundnullcircle at index" + foundNullCircle.Index);
+            //Debug.Log("Now I am chaning the colors of the foundnullcircle at index" + foundNullCircle.Index);
 
             //Debug.Log("The value of the found null circle is: " + foundNullCircle.Value);
             foundNullCircle.IsRed = _treeManager.GetColor(foundNullCircle.Value);
@@ -105,10 +116,10 @@ public class VisualizationHelper : MonoBehaviour
             Debug.Log("NullCircle not found at position: " + newPosition);
         }
         
-        yield return null;
-        onComplete?.Invoke();
+        
+        //yield return null;
+        //onComplete?.Invoke();
     }
-
  
 
 }

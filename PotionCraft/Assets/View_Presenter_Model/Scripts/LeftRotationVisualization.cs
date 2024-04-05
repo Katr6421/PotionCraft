@@ -17,8 +17,8 @@ public class LeftRotationVisualization : MonoBehaviour {
 
         // Calculate the positions based on your tree's structure.
         // Calculate the posistion where the parent should be moved to
-        Debug.Log("????***************!!!!!!!!!!!!!!!!!!!!!!!!!!! Given Parent nullcircle index !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!***********???" + parentNullCircle.GetComponent<NullCircle>().Index);
-        Debug.Log("Rightchild nullcircle index: " + parentNullCircle.GetComponent<NullCircle>().RightChild.GetComponent<NullCircle>().Index);
+        //Debug.Log("????***************!!!!!!!!!!!!!!!!!!!!!!!!!!! Given Parent nullcircle index !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!***********???" + parentNullCircle.GetComponent<NullCircle>().Index);
+        //Debug.Log("Rightchild nullcircle index: " + parentNullCircle.GetComponent<NullCircle>().RightChild.GetComponent<NullCircle>().Index);
 
         Vector3 parentNewPosition = parentNullCircle.GetComponent<NullCircle>().LeftChild.transform.position;
         Vector3 rightChildNewPosition = parentNullCircle.transform.position;
@@ -38,7 +38,7 @@ public class LeftRotationVisualization : MonoBehaviour {
         //Debug.Log("Parent nullcircle: " + parentNullCircle.GetComponent<NullCircle>().Index);
         //Debug.Log("Rightchild nullcircle: " + rightChildNullCircle.GetComponent<NullCircle>().Index);
 
-        // Move the parent and the ueft sbtrees.
+        // Move the parent and the left sbtrees.
         yield return StartCoroutine(MoveLeftSubtreeAndAllDescendants(parentNullCircle, parentNewPosition, 1.0f, () => { 
             //Debug.Log("MoveLeftSubtreeAndAllDescendants done");
         }));
@@ -65,10 +65,19 @@ public class LeftRotationVisualization : MonoBehaviour {
         // Move the left child and its subtree if it exists.
         // Check if My left child has an ingredient
         if (startingNullCircle.LeftChild.GetComponent<NullCircle>().Ingredient != null) {
-            Debug.Log("My left child has an ingredient");
+            
+            Debug.Log("MoveLeftSubtreeAndAllDescendants: ");
             GameObject leftChild = startingNullCircle.LeftChild;
-            Vector3 leftChildNewPosition = newPosition - (startingNode.transform.position - leftChild.transform.position);
-            yield return StartCoroutine(_visualizationHelper.MoveNodeAndAllDescendants(leftChild, leftChildNewPosition, duration, ()=>{
+            Debug.Log("Leftchild index: " + leftChild.GetComponent<NullCircle>().Index);
+            Vector3 newLeftChildPosition = leftChild.GetComponent<NullCircle>().LeftChild.transform.position;
+            Debug.Log("newleftchildPosistion index:" + leftChild.GetComponent<NullCircle>().LeftChild.GetComponent<NullCircle>().Index);
+            
+            // Måske fucking vigtigt!!
+            //Vector3 leftChildNewPosition = newPosition - (startingNode.transform.position - leftChild.transform.position);
+           
+            // leftChild.transform.position
+            Debug.Log("Calling moveNodeAndAllDescendants");
+            yield return StartCoroutine(_visualizationHelper.MoveNodeAndAllDescendants(leftChild, newLeftChildPosition, duration, ()=>{
                 //Debug.Log("Left subtree has been moved");
                 }));
         }
@@ -77,8 +86,9 @@ public class LeftRotationVisualization : MonoBehaviour {
         //Debug.Log("Now i am moving myself");
         yield return StartCoroutine(_visualizationHelper.MoveNode(startingNullCircle.Ingredient, newPosition, duration, startingNullCircle, ()=>{
             _nullCircleSpawner.DeactivateAllNullCirclesInSubtree(startingNullCircle);
+            _visualizationHelper.UpdateNullCircleWithIngredient(newPosition, startingNullCircle);
         }));
-        yield return StartCoroutine(_visualizationHelper.UpdateNullCircleWithIngredient(newPosition, startingNullCircle, ()=>{}));
+        
         
         onComplete?.Invoke();
     }
@@ -91,8 +101,9 @@ public class LeftRotationVisualization : MonoBehaviour {
         Debug.Log("Now i am moving myself");
         yield return StartCoroutine(_visualizationHelper.MoveNode(startingNullCircle.Ingredient, newPosition, duration, startingNullCircle, ()=>{
             _nullCircleSpawner.DeactivateAllNullCirclesInSubtree(startingNullCircle); 
+            _visualizationHelper.UpdateNullCircleWithIngredient(newPosition, startingNullCircle);
         }));
-        yield return StartCoroutine(_visualizationHelper.UpdateNullCircleWithIngredient(newPosition, startingNullCircle, ()=>{}));
+        
 
         // Move the right child and its subtree if it exists.
         if (startingNullCircle.RightChild.GetComponent<NullCircle>().Ingredient != null) {

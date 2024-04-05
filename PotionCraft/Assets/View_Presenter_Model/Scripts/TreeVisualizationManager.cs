@@ -69,7 +69,7 @@ public class TreeVisualizationManager : MonoBehaviour
     {
         // The nullcircle that was clicked - Do we need to update this after rotations?
         _currentNullCircle = UnityEngine.EventSystems.EventSystem.current.currentSelectedGameObject;
-        Debug.Log("!!!!! _currentNullCircle !!!!! - I just clicked on the nullCircle with the index: " + _currentNullCircle.GetComponent<NullCircle>().Index);
+        //Debug.Log("!!!!! _currentNullCircle !!!!! - I just clicked on the nullCircle with the index: " + _currentNullCircle.GetComponent<NullCircle>().Index);
 
         /*********************************************
         Set _currentIngredient and _currentNullCircle.Value
@@ -80,7 +80,7 @@ public class TreeVisualizationManager : MonoBehaviour
         Set the current state of the Red-Black BST tree
         *********************************************/
         var currentIngredientValue = int.Parse(_currentIngredient.GetComponentInChildren<TextMeshProUGUI>().text);
-        Debug.Log("I am inserting the node with the value: " + currentIngredientValue + " into the tree.");
+        //Debug.Log("I am inserting the node with the value: " + currentIngredientValue + " into the tree.");
         _treeManager.InsertNode(currentIngredientValue, currentIngredientValue);
 
         /*********************************************
@@ -179,8 +179,8 @@ public class TreeVisualizationManager : MonoBehaviour
         //GameObject parentNullCircle = _currentNullCircle.GetComponent<NullCircle>().Parent;
 
 
-        Debug.Log("I am in VisualizeRotation. _currentNullCircle is index " + _currentNullCircle.GetComponent<NullCircle>().Index);
-        Debug.Log("I am in VisualizeRotation. My parentNullCircle is index " + parentNullCircle.GetComponent<NullCircle>().Index);
+        //Debug.Log("I am in VisualizeRotation. _currentNullCircle is index " + _currentNullCircle.GetComponent<NullCircle>().Index);
+        //Debug.Log("I am in VisualizeRotation. My parentNullCircle is index " + parentNullCircle.GetComponent<NullCircle>().Index);
 
         switch (operationType)
         {
@@ -192,28 +192,32 @@ public class TreeVisualizationManager : MonoBehaviour
                 
                 //Check if the rightChild is  null
                 if (rightChildLeftChildNullCircle.Ingredient != null){
-                    Debug.Log("**********Jeg har et leftChild, og derfor skal mit subtree op i bagen**********");
+                    //Debug.Log("**********Jeg har et leftChild, og derfor skal mit subtree op i bagen**********");
 
                     // Bag animationl
                     NullCircle CopyRoot = _nullCircleSpawner.CopyNullCircleSubtree(rightChildLeftChildNullCircle);
-
                     List<GameObject> ingredientsToJar = _nullCircleSpawner.CollectIngredients(rightChildLeftChildNullCircle, new List<GameObject>());
-
+                    //Update nullcircle
+                    _nullCircleSpawner.setNullCircleToDefault(rightChildLeftChildNullCircle);
+                    _nullCircleSpawner.UpdateLineRenderers();
+                    
 
 
                     //yield return StartCoroutine(_jarVisualization.ShrinkMultiple(ingredientsToJar, () => {}));
                     // Move subtree to jar
-                    Debug.Log("Jeg starter followSpline animation wuuuuuu!!!!");
+                    //Debug.Log("Jeg starter followSpline animation wuuuuuu!!!!");
             
                     foreach (GameObject ingredient in ingredientsToJar)
                     {
                         _spline.ChangeFirstKnotPosition(ingredient.transform.position);
                         yield return StartCoroutine(_spline.FollowSpline(ingredient));
+                        
                     }
                     
                     yield return StartCoroutine(_leftRotationVisualization.RotateLeftAnimation(parent, rightChild, parentNullCircle));
                     // yield return (_jarAnimation.GrowAndMove(yourGameObject, pathPoints, finalPosition, totalAnimationDuration));
-
+                    Debug.Log("Jeg har kopieret nullcircle og nu er jeg blevet nulstillet og mine lijer er blevet opdateret");
+                    _nullCircleSpawner.PrintNullCircles();
                     
                     
                     
