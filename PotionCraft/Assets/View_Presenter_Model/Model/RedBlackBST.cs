@@ -18,15 +18,16 @@ public class RedBlackBST : IRedBlackBST
    }
 
    public Node Get(int key)
-   { 
+   {
       //UnityEngine.Debug.Log("FIRST GET --- Get thinks root is " + Root.Key + " | " + Root.Value + " | " + (Root.Color ? "RED" : "BLACK"));
-      return Get(Root, key); 
+      return Get(Root, key);
    }
 
-   private Node Get(Node x, int key){
+   private Node Get(Node x, int key)
+   {
       // Node with given key not present in tree
-      
-      if (x == null) 
+
+      if (x == null)
       {
          //UnityEngine.Debug.Log("GET ---- Couldn't find node with key " + key + " in the tree");
          return null;
@@ -37,7 +38,7 @@ public class RedBlackBST : IRedBlackBST
       else if (key > x.Key) return Get(x.Right, key);
 
       // Found node with the given key - return it
-      else 
+      else
       {
          //UnityEngine.Debug.Log("GET ---- Found node with key " + key + " and value " + x.Value);
          return x;
@@ -47,7 +48,7 @@ public class RedBlackBST : IRedBlackBST
    public bool GetColor(int key)
    {
 
-     // UnityEngine.Debug.Log("GETCOLOR --- Found color of node with key " + key + " to be " + Get(Root, key).Color);
+      // UnityEngine.Debug.Log("GETCOLOR --- Found color of node with key " + key + " to be " + Get(Root, key).Color);
       return Get(Root, key).Color;
    }
 
@@ -83,7 +84,7 @@ public class RedBlackBST : IRedBlackBST
       {
          //UnityEngine.Debug.Log("RotationRight - Red violation found at node " + h.Key + " with left child " + h.Left.Key);
          Operations.Enqueue(new Operation(h, OperationType.RotateRight)); //h.Left.Left
-      }   
+      }
       if (IsRed(h.Left) && IsRed(h.Right))
       {
          //UnityEngine.Debug.Log("FlipColors - Red violation found at node " + h.Key + " with left child " + h.Left.Key + " and right child " + h.Right.Key);
@@ -98,13 +99,15 @@ public class RedBlackBST : IRedBlackBST
 
    }
 
-   public void UpdateRootAfterRotateLeft(Node h){
+   public void UpdateRootAfterRotateLeft(Node h)
+   {
       Root = UpdateRootAfterRotateLeft(Root, h);
       Root.Color = BLACK;
       //UnityEngine.Debug.Log("Root is: " + Root.Key + " | " + Root.Value);
    }
 
-   private Node UpdateRootAfterRotateLeft(Node root, Node h){
+   private Node UpdateRootAfterRotateLeft(Node root, Node h)
+   {
       // Update the link between the parent of h (before rotation) and the new node x (after rotation)
       // UnityEngine.Debug.Log("!!!!!!!********!!!!!!!!!!!!!!UpdateRootAfterRotateLeft!!!!!!!!!!!!!!!!!!");
       // UnityEngine.Debug.Log("Root is: " + root.Key + " | " + root.Value);
@@ -122,9 +125,9 @@ public class RedBlackBST : IRedBlackBST
          root = x;
       }
       // UnityEngine.Debug.Log("Node x is: " + x.Key + " | " + x.Value);
-      
+
       x.Parent = oldParent;
-      
+
       if (x.Parent != null)
       {
          if (x.Parent.Right == h)
@@ -141,7 +144,8 @@ public class RedBlackBST : IRedBlackBST
       return root;
    }
 
-   public void UpdateRootAfterRotateRight(Node h){
+   public void UpdateRootAfterRotateRight(Node h)
+   {
       Root = UpdateRootAfterRotateRight(Root, h);
       Root.Color = BLACK;
       //UnityEngine.Debug.Log("Root is: " + Root.Key + " | " + Root.Value);
@@ -149,16 +153,17 @@ public class RedBlackBST : IRedBlackBST
 
    }
 
-   private Node UpdateRootAfterRotateRight(Node root, Node h){
-     // Update the link between the parent of h (before rotation) and the new node x (after rotation)
-     //UnityEngine.Debug.Log("!!!!!!!********!!!!!!!!!!!!!!UpdateRootAfterRotateRight!!!!!!!!!!!!!!!!!!");
-     //UnityEngine.Debug.Log("Root starts beeing: " + root.Key + " | " + root.Value);
+   private Node UpdateRootAfterRotateRight(Node root, Node h)
+   {
+      // Update the link between the parent of h (before rotation) and the new node x (after rotation)
+      //UnityEngine.Debug.Log("!!!!!!!********!!!!!!!!!!!!!!UpdateRootAfterRotateRight!!!!!!!!!!!!!!!!!!");
+      //UnityEngine.Debug.Log("Root starts beeing: " + root.Key + " | " + root.Value);
 
       Node oldParent = h.Parent;
 
       //UnityEngine.Debug.Log("RotateRight is called with node " + h.Key + " as the argument.");
       Node x = RotateRight(h);
-      
+
       //UnityEngine.Debug.Log("Node h is: " + h.Key + " | " + h.Value);
       //UnityEngine.Debug.Log("Node root is: " + Root.Key + " | " + Root.Value);
       if (h == Root)
@@ -167,7 +172,7 @@ public class RedBlackBST : IRedBlackBST
          root = x;
       }
       //UnityEngine.Debug.Log("Node x is: " + x.Key + " | " + x.Value);
-      
+
       x.Parent = oldParent;
 
       if (x.Parent != null)
@@ -180,33 +185,36 @@ public class RedBlackBST : IRedBlackBST
          {
             x.Parent.Right = x;
          }
-      }      
+      }
 
       //UnityEngine.Debug.Log("Root is: " + root.Key + " | " + root.Value);
       return root;
    }
 
-   public void UpdateRootAfterFlipColors(Node h){
+   public void UpdateRootAfterFlipColors(Node h)
+   {
       //UnityEngine.Debug.Log("BEFORE FLIPPING COLORS, Root is: " + Root.Key);
       Root = UpdateRootAfterFlipColors(Root, h);
       Root.Color = BLACK;
 
    }
 
-   private Node UpdateRootAfterFlipColors(Node root, Node h){
+   private Node UpdateRootAfterFlipColors(Node root, Node h)
+   {
       FlipColors(h);
       return root;
 
    }
 
-   
+
    public void IsThereATreeViolation()
    {
-     // UnityEngine.Debug.Log("Root is: " + Root.Key + " | " + Root.Value + " | " + (Root.Color ? "RED" : "BLACK"));
+      // UnityEngine.Debug.Log("Root is: " + Root.Key + " | " + Root.Value + " | " + (Root.Color ? "RED" : "BLACK"));
       IsThereATreeViolation(Root);
    }
 
-   private void IsThereATreeViolation(Node h) {
+   private void IsThereATreeViolation(Node h)
+   {
       //PrintTree();
       //UnityEngine.Debug.Log("!!!!!!!!!!INSIDE IsThereATreeViolation!!!!!!!!!");
       /*
@@ -219,12 +227,12 @@ public class RedBlackBST : IRedBlackBST
       */
       if (h == null) return; // er på leaf node
 
-     // UnityEngine.Debug.Log("Node value inside IsThereATreeViolation: " + h.Value);
+      // UnityEngine.Debug.Log("Node value inside IsThereATreeViolation: " + h.Value);
 
       // add operation to queue
       if (IsRed(h.Right) && !IsRed(h.Left))
       {
-       //  UnityEngine.Debug.Log("RotationLeft - Red violation found at node " + h.Key + " with right child " + h.Right.Key);
+         //  UnityEngine.Debug.Log("RotationLeft - Red violation found at node " + h.Key + " with right child " + h.Right.Key);
          Operations.Enqueue(new Operation(h, OperationType.RotateLeft)); // var h.Right
       }
       if (IsRed(h.Left) && IsRed(h.Left.Left))
@@ -241,7 +249,7 @@ public class RedBlackBST : IRedBlackBST
       // go to children
       IsThereATreeViolation(h.Left);
       IsThereATreeViolation(h.Right);
-   
+
    }
 
    private bool IsRed(Node x)
@@ -270,7 +278,7 @@ public class RedBlackBST : IRedBlackBST
 
       // Maybe wrong when we have a lot of nodes
       //if (parent == null) Root = x;
-      
+
       return x;
    }
 
@@ -278,11 +286,11 @@ public class RedBlackBST : IRedBlackBST
 
    private Node RotateRight(Node h)
    {
-     
+
       Node x = h.Left;
       Node parent = h.Parent;
       h.Left = x.Right; // vores jar animation
-      if (x.Right != null) x.Right.Parent = h;      
+      if (x.Right != null) x.Right.Parent = h;
       x.Right = h;
       x.Color = h.Color;
       h.Color = RED;
@@ -311,21 +319,9 @@ public class RedBlackBST : IRedBlackBST
 
 
    // When using our delete method, the node will always be at a leaf node, as the user has just placed it and not balanced the tree yet
-   // Get the node and delete the parents link to it
-   public void Delete(int key)
+   public void Delete(Node nodeToDelete)
    {
-      // Find node with given value in the tree
-      Node nodeToDelete = Get(Root, key);
-      Unity.Engine.Debug.Log("Node to delete is: " + nodeToDelete.Key + " | " + nodeToDelete.Value + " | " + (nodeToDelete.Color ? "RED" : "BLACK"));
-
-      // Should not happen if Get works
-      if (nodeToDelete == null)
-      {
-         UnityEngine.Debug.LogError("Node to delete not found.");
-      }
-
-
-      // Delete parents link to the node
+      // Delete the parent's link to nodeToDelete
       if (nodeToDelete.Parent.Left == nodeToDelete)
       {
          nodeToDelete.Parent.Left = null;
@@ -334,12 +330,7 @@ public class RedBlackBST : IRedBlackBST
       {
          nodeToDelete.Parent.Right = null;
       }
-
-      // Clear queue
-      Operations.Clear();
    }
-
-
 
    private int Size(Node x)
    {
@@ -360,7 +351,7 @@ public class RedBlackBST : IRedBlackBST
 
       //UnityEngine.Debug.Log("Executing next operation...");
       Operation op = Operations.Dequeue();
-     //UnityEngine.Debug.Log("Operation type: " + op.OperationType);
+      //UnityEngine.Debug.Log("Operation type: " + op.OperationType);
 
       switch (op.OperationType)
       {
@@ -375,7 +366,7 @@ public class RedBlackBST : IRedBlackBST
             break;
          case OperationType.FlipColors:
             //UnityEngine.Debug.Log("*******************I am calling FlipColors with the node " + op.Node.Key + " as the argument.*******************");
-            UpdateRootAfterFlipColors(op.Node); 
+            UpdateRootAfterFlipColors(op.Node);
             break;
       }
 
@@ -386,7 +377,7 @@ public class RedBlackBST : IRedBlackBST
 
    public void PrintTree()
    {
-     // UnityEngine.Debug.Log("Root is: " + Root.Key + " | " + Root.Value + " | " + (Root.Color ? "RED" : "BLACK"));
+      // UnityEngine.Debug.Log("Root is: " + Root.Key + " | " + Root.Value + " | " + (Root.Color ? "RED" : "BLACK"));
       PrintTree(Root, 0);
    }
 

@@ -6,8 +6,9 @@ using UnityEngine.UI;
 
 public class NullCircleSpawner : MonoBehaviour
 {
-    [SerializeField] private GameObject nullCirclePrefab;
-    [SerializeField] private Canvas uiCanvas; // Reference to the Canvas where the nullCircles will be parented
+    [SerializeField] private GameObject _nullCirclePrefab;
+    [SerializeField] private Canvas _uiCanvas; // Reference to the Canvas where the nullCircles will be parented
+    [SerializeField] private LineRendererManager _lineRendererManager;
     public Dictionary<int, GameObject> NullCircles { get; } = new Dictionary<int, GameObject>();
     public GameObject Root { get; set; }
 
@@ -20,87 +21,87 @@ public class NullCircleSpawner : MonoBehaviour
     public void SpawnNullCircles()
     {
         // Instantiate the nullCircles
-        GameObject nullCircle0 = Instantiate(nullCirclePrefab, new Vector3(440, 239, 0), Quaternion.identity);
+        GameObject nullCircle0 = Instantiate(_nullCirclePrefab, new Vector3(440, 239, 0), Quaternion.identity);
         Root = nullCircle0;
 
-        GameObject nullCircle1 = Instantiate(nullCirclePrefab, new Vector3(195, 117, 0), Quaternion.identity);
-        GameObject nullCircle2 = Instantiate(nullCirclePrefab, new Vector3(685, 117, 0), Quaternion.identity);
+        GameObject nullCircle1 = Instantiate(_nullCirclePrefab, new Vector3(195, 117, 0), Quaternion.identity);
+        GameObject nullCircle2 = Instantiate(_nullCirclePrefab, new Vector3(685, 117, 0), Quaternion.identity);
 
-        GameObject nullCircle3 = Instantiate(nullCirclePrefab, new Vector3(72, -40, 0), Quaternion.identity);
-        GameObject nullCircle4 = Instantiate(nullCirclePrefab, new Vector3(317, -40, 0), Quaternion.identity);
+        GameObject nullCircle3 = Instantiate(_nullCirclePrefab, new Vector3(72, -40, 0), Quaternion.identity);
+        GameObject nullCircle4 = Instantiate(_nullCirclePrefab, new Vector3(317, -40, 0), Quaternion.identity);
 
-        GameObject nullCircle5 = Instantiate(nullCirclePrefab, new Vector3(562, -40, 0), Quaternion.identity);
-        GameObject nullCircle6 = Instantiate(nullCirclePrefab, new Vector3(807, -40, 0), Quaternion.identity);
+        GameObject nullCircle5 = Instantiate(_nullCirclePrefab, new Vector3(562, -40, 0), Quaternion.identity);
+        GameObject nullCircle6 = Instantiate(_nullCirclePrefab, new Vector3(807, -40, 0), Quaternion.identity);
 
-        GameObject nullCircle7 = Instantiate(nullCirclePrefab, new Vector3(11, -200, 0), Quaternion.identity);
-        GameObject nullCircle8 = Instantiate(nullCirclePrefab, new Vector3(133, -200, 0), Quaternion.identity);
+        GameObject nullCircle7 = Instantiate(_nullCirclePrefab, new Vector3(11, -200, 0), Quaternion.identity);
+        GameObject nullCircle8 = Instantiate(_nullCirclePrefab, new Vector3(133, -200, 0), Quaternion.identity);
 
-        GameObject nullCircle9 = Instantiate(nullCirclePrefab, new Vector3(256, -200, 0), Quaternion.identity);
-        GameObject nullCircle10 = Instantiate(nullCirclePrefab, new Vector3(378, -200, 0), Quaternion.identity);
+        GameObject nullCircle9 = Instantiate(_nullCirclePrefab, new Vector3(256, -200, 0), Quaternion.identity);
+        GameObject nullCircle10 = Instantiate(_nullCirclePrefab, new Vector3(378, -200, 0), Quaternion.identity);
 
-        GameObject nullCircle11 = Instantiate(nullCirclePrefab, new Vector3(501, -200, 0), Quaternion.identity);
-        GameObject nullCircle12 = Instantiate(nullCirclePrefab, new Vector3(623, -200, 0), Quaternion.identity);
+        GameObject nullCircle11 = Instantiate(_nullCirclePrefab, new Vector3(501, -200, 0), Quaternion.identity);
+        GameObject nullCircle12 = Instantiate(_nullCirclePrefab, new Vector3(623, -200, 0), Quaternion.identity);
 
-        GameObject nullCircle13 = Instantiate(nullCirclePrefab, new Vector3(746, -200, 0), Quaternion.identity);
-        GameObject nullCircle14 = Instantiate(nullCirclePrefab, new Vector3(868, -200, 0), Quaternion.identity);
+        GameObject nullCircle13 = Instantiate(_nullCirclePrefab, new Vector3(746, -200, 0), Quaternion.identity);
+        GameObject nullCircle14 = Instantiate(_nullCirclePrefab, new Vector3(868, -200, 0), Quaternion.identity);
 
-        GameObject nullCircle15 = Instantiate(nullCirclePrefab, new Vector3(-19, -322, 0), Quaternion.identity);
-        GameObject nullCircle16 = Instantiate(nullCirclePrefab, new Vector3(41, -322, 0), Quaternion.identity);
+        GameObject nullCircle15 = Instantiate(_nullCirclePrefab, new Vector3(-19, -322, 0), Quaternion.identity);
+        GameObject nullCircle16 = Instantiate(_nullCirclePrefab, new Vector3(41, -322, 0), Quaternion.identity);
 
-        GameObject nullCircle17 = Instantiate(nullCirclePrefab, new Vector3(102, -322, 0), Quaternion.identity);
-        GameObject nullCircle18 = Instantiate(nullCirclePrefab, new Vector3(164, -322, 0), Quaternion.identity);
+        GameObject nullCircle17 = Instantiate(_nullCirclePrefab, new Vector3(102, -322, 0), Quaternion.identity);
+        GameObject nullCircle18 = Instantiate(_nullCirclePrefab, new Vector3(164, -322, 0), Quaternion.identity);
 
-        GameObject nullCircle19 = Instantiate(nullCirclePrefab, new Vector3(225, -322, 0), Quaternion.identity);
-        GameObject nullCircle20 = Instantiate(nullCirclePrefab, new Vector3(287, -322, 0), Quaternion.identity);
+        GameObject nullCircle19 = Instantiate(_nullCirclePrefab, new Vector3(225, -322, 0), Quaternion.identity);
+        GameObject nullCircle20 = Instantiate(_nullCirclePrefab, new Vector3(287, -322, 0), Quaternion.identity);
 
-        GameObject nullCircle21 = Instantiate(nullCirclePrefab, new Vector3(348, -322, 0), Quaternion.identity);
-        GameObject nullCircle22 = Instantiate(nullCirclePrefab, new Vector3(410, -322, 0), Quaternion.identity);
+        GameObject nullCircle21 = Instantiate(_nullCirclePrefab, new Vector3(348, -322, 0), Quaternion.identity);
+        GameObject nullCircle22 = Instantiate(_nullCirclePrefab, new Vector3(410, -322, 0), Quaternion.identity);
 
-        GameObject nullCircle23 = Instantiate(nullCirclePrefab, new Vector3(471, -322, 0), Quaternion.identity);
-        GameObject nullCircle24 = Instantiate(nullCirclePrefab, new Vector3(533, -322, 0), Quaternion.identity);
+        GameObject nullCircle23 = Instantiate(_nullCirclePrefab, new Vector3(471, -322, 0), Quaternion.identity);
+        GameObject nullCircle24 = Instantiate(_nullCirclePrefab, new Vector3(533, -322, 0), Quaternion.identity);
 
-        GameObject nullCircle25 = Instantiate(nullCirclePrefab, new Vector3(594, -322, 0), Quaternion.identity);
-        GameObject nullCircle26 = Instantiate(nullCirclePrefab, new Vector3(656, -322, 0), Quaternion.identity);
+        GameObject nullCircle25 = Instantiate(_nullCirclePrefab, new Vector3(594, -322, 0), Quaternion.identity);
+        GameObject nullCircle26 = Instantiate(_nullCirclePrefab, new Vector3(656, -322, 0), Quaternion.identity);
 
-        GameObject nullCircle27 = Instantiate(nullCirclePrefab, new Vector3(717, -322, 0), Quaternion.identity);
-        GameObject nullCircle28 = Instantiate(nullCirclePrefab, new Vector3(779, -322, 0), Quaternion.identity);
+        GameObject nullCircle27 = Instantiate(_nullCirclePrefab, new Vector3(717, -322, 0), Quaternion.identity);
+        GameObject nullCircle28 = Instantiate(_nullCirclePrefab, new Vector3(779, -322, 0), Quaternion.identity);
 
-        GameObject nullCircle29 = Instantiate(nullCirclePrefab, new Vector3(840, -322, 0), Quaternion.identity);
-        GameObject nullCircle30 = Instantiate(nullCirclePrefab, new Vector3(902, -322, 0), Quaternion.identity);
+        GameObject nullCircle29 = Instantiate(_nullCirclePrefab, new Vector3(840, -322, 0), Quaternion.identity);
+        GameObject nullCircle30 = Instantiate(_nullCirclePrefab, new Vector3(902, -322, 0), Quaternion.identity);
 
         // Hidden nullCircles in bottom - Should never be shown!! To avoid nullPointerExceptions
-        GameObject nullCircle31 = Instantiate(nullCirclePrefab);
-        GameObject nullCircle32 = Instantiate(nullCirclePrefab);
-        GameObject nullCircle33 = Instantiate(nullCirclePrefab);
-        GameObject nullCircle34 = Instantiate(nullCirclePrefab);
-        GameObject nullCircle35 = Instantiate(nullCirclePrefab);
-        GameObject nullCircle36 = Instantiate(nullCirclePrefab);
-        GameObject nullCircle37 = Instantiate(nullCirclePrefab);
-        GameObject nullCircle38 = Instantiate(nullCirclePrefab);
-        GameObject nullCircle39 = Instantiate(nullCirclePrefab);
-        GameObject nullCircle40 = Instantiate(nullCirclePrefab);
-        GameObject nullCircle41 = Instantiate(nullCirclePrefab);
-        GameObject nullCircle42 = Instantiate(nullCirclePrefab);
-        GameObject nullCircle43 = Instantiate(nullCirclePrefab);
-        GameObject nullCircle44 = Instantiate(nullCirclePrefab);
-        GameObject nullCircle45 = Instantiate(nullCirclePrefab);
-        GameObject nullCircle46 = Instantiate(nullCirclePrefab);
-        GameObject nullCircle47 = Instantiate(nullCirclePrefab);
-        GameObject nullCircle48 = Instantiate(nullCirclePrefab);
-        GameObject nullCircle49 = Instantiate(nullCirclePrefab);
-        GameObject nullCircle50 = Instantiate(nullCirclePrefab);
-        GameObject nullCircle51 = Instantiate(nullCirclePrefab);
-        GameObject nullCircle52 = Instantiate(nullCirclePrefab);
-        GameObject nullCircle53 = Instantiate(nullCirclePrefab);
-        GameObject nullCircle54 = Instantiate(nullCirclePrefab);
-        GameObject nullCircle55 = Instantiate(nullCirclePrefab);
-        GameObject nullCircle56 = Instantiate(nullCirclePrefab);
-        GameObject nullCircle57 = Instantiate(nullCirclePrefab);
-        GameObject nullCircle58 = Instantiate(nullCirclePrefab);
-        GameObject nullCircle59 = Instantiate(nullCirclePrefab);
-        GameObject nullCircle60 = Instantiate(nullCirclePrefab);
-        GameObject nullCircle61 = Instantiate(nullCirclePrefab);
-        GameObject nullCircle62 = Instantiate(nullCirclePrefab);
+        GameObject nullCircle31 = Instantiate(_nullCirclePrefab);
+        GameObject nullCircle32 = Instantiate(_nullCirclePrefab);
+        GameObject nullCircle33 = Instantiate(_nullCirclePrefab);
+        GameObject nullCircle34 = Instantiate(_nullCirclePrefab);
+        GameObject nullCircle35 = Instantiate(_nullCirclePrefab);
+        GameObject nullCircle36 = Instantiate(_nullCirclePrefab);
+        GameObject nullCircle37 = Instantiate(_nullCirclePrefab);
+        GameObject nullCircle38 = Instantiate(_nullCirclePrefab);
+        GameObject nullCircle39 = Instantiate(_nullCirclePrefab);
+        GameObject nullCircle40 = Instantiate(_nullCirclePrefab);
+        GameObject nullCircle41 = Instantiate(_nullCirclePrefab);
+        GameObject nullCircle42 = Instantiate(_nullCirclePrefab);
+        GameObject nullCircle43 = Instantiate(_nullCirclePrefab);
+        GameObject nullCircle44 = Instantiate(_nullCirclePrefab);
+        GameObject nullCircle45 = Instantiate(_nullCirclePrefab);
+        GameObject nullCircle46 = Instantiate(_nullCirclePrefab);
+        GameObject nullCircle47 = Instantiate(_nullCirclePrefab);
+        GameObject nullCircle48 = Instantiate(_nullCirclePrefab);
+        GameObject nullCircle49 = Instantiate(_nullCirclePrefab);
+        GameObject nullCircle50 = Instantiate(_nullCirclePrefab);
+        GameObject nullCircle51 = Instantiate(_nullCirclePrefab);
+        GameObject nullCircle52 = Instantiate(_nullCirclePrefab);
+        GameObject nullCircle53 = Instantiate(_nullCirclePrefab);
+        GameObject nullCircle54 = Instantiate(_nullCirclePrefab);
+        GameObject nullCircle55 = Instantiate(_nullCirclePrefab);
+        GameObject nullCircle56 = Instantiate(_nullCirclePrefab);
+        GameObject nullCircle57 = Instantiate(_nullCirclePrefab);
+        GameObject nullCircle58 = Instantiate(_nullCirclePrefab);
+        GameObject nullCircle59 = Instantiate(_nullCirclePrefab);
+        GameObject nullCircle60 = Instantiate(_nullCirclePrefab);
+        GameObject nullCircle61 = Instantiate(_nullCirclePrefab);
+        GameObject nullCircle62 = Instantiate(_nullCirclePrefab);
 
 
 
@@ -136,7 +137,7 @@ public class NullCircleSpawner : MonoBehaviour
         nullCircle13.GetComponent<NullCircle>().RightChild = nullCircle28;
         nullCircle14.GetComponent<NullCircle>().LeftChild = nullCircle29;
         nullCircle14.GetComponent<NullCircle>().RightChild = nullCircle30;
-        // Hidden. Never ever show these nullCircles. Only meant to avoid nullPointerExceptions
+        // Hidden.
         nullCircle15.GetComponent<NullCircle>().LeftChild = nullCircle31;
         nullCircle15.GetComponent<NullCircle>().RightChild = nullCircle32;
         nullCircle16.GetComponent<NullCircle>().LeftChild = nullCircle33;
@@ -170,7 +171,6 @@ public class NullCircleSpawner : MonoBehaviour
         nullCircle30.GetComponent<NullCircle>().LeftChild = nullCircle61;
         nullCircle30.GetComponent<NullCircle>().RightChild = nullCircle62;
 
-
         // Set the parent of each nullCircle
         nullCircle0.GetComponent<NullCircle>().Parent = null;
         nullCircle1.GetComponent<NullCircle>().Parent = nullCircle0;
@@ -203,6 +203,7 @@ public class NullCircleSpawner : MonoBehaviour
         nullCircle28.GetComponent<NullCircle>().Parent = nullCircle13;
         nullCircle29.GetComponent<NullCircle>().Parent = nullCircle14;
         nullCircle30.GetComponent<NullCircle>().Parent = nullCircle14;
+        // Hidden
         nullCircle31.GetComponent<NullCircle>().Parent = nullCircle15;
         nullCircle32.GetComponent<NullCircle>().Parent = nullCircle15;
         nullCircle33.GetComponent<NullCircle>().Parent = nullCircle16;
@@ -267,7 +268,40 @@ public class NullCircleSpawner : MonoBehaviour
         NullCircles.Add(27, nullCircle27);
         NullCircles.Add(28, nullCircle28);
         NullCircles.Add(29, nullCircle29);
+        // Hidden
         NullCircles.Add(30, nullCircle30);
+        NullCircles.Add(31, nullCircle31);
+        NullCircles.Add(32, nullCircle32);
+        NullCircles.Add(33, nullCircle33);
+        NullCircles.Add(34, nullCircle34);
+        NullCircles.Add(35, nullCircle35);
+        NullCircles.Add(36, nullCircle36);
+        NullCircles.Add(37, nullCircle37);
+        NullCircles.Add(38, nullCircle38);
+        NullCircles.Add(39, nullCircle39);
+        NullCircles.Add(40, nullCircle40);
+        NullCircles.Add(41, nullCircle41);
+        NullCircles.Add(42, nullCircle42);
+        NullCircles.Add(43, nullCircle43);
+        NullCircles.Add(44, nullCircle44);
+        NullCircles.Add(45, nullCircle45);
+        NullCircles.Add(46, nullCircle46);
+        NullCircles.Add(47, nullCircle47);
+        NullCircles.Add(48, nullCircle48);
+        NullCircles.Add(49, nullCircle49);
+        NullCircles.Add(50, nullCircle50);
+        NullCircles.Add(51, nullCircle51);
+        NullCircles.Add(52, nullCircle52);
+        NullCircles.Add(53, nullCircle53);
+        NullCircles.Add(54, nullCircle54);
+        NullCircles.Add(55, nullCircle55);
+        NullCircles.Add(56, nullCircle56);
+        NullCircles.Add(57, nullCircle57);
+        NullCircles.Add(58, nullCircle58);
+        NullCircles.Add(59, nullCircle59);
+        NullCircles.Add(60, nullCircle60);
+        NullCircles.Add(61, nullCircle61);
+        NullCircles.Add(62, nullCircle62);
 
         // Spawns the lines and assigns them to the nullCircles
         nullCircle1.GetComponent<NullCircle>().LineToParent = SpawnLinesToParent(nullCircle1, nullCircle0);
@@ -300,7 +334,7 @@ public class NullCircleSpawner : MonoBehaviour
         nullCircle28.GetComponent<NullCircle>().LineToParent = SpawnLinesToParent(nullCircle28, nullCircle13);
         nullCircle29.GetComponent<NullCircle>().LineToParent = SpawnLinesToParent(nullCircle29, nullCircle14);
         nullCircle30.GetComponent<NullCircle>().LineToParent = SpawnLinesToParent(nullCircle30, nullCircle14);
-        // Should still have a line to parent, but this line represents a null link, and is just a small line from parent and a little down
+        // Hidden but should still have a line to parent, but this line represents a null link, and is just a small line from parent and a little down
         nullCircle31.GetComponent<NullCircle>().LineToParent = SpawnNullLinkLine(nullCircle15);
         nullCircle32.GetComponent<NullCircle>().LineToParent = SpawnNullLinkLine(nullCircle15);
         nullCircle33.GetComponent<NullCircle>().LineToParent = SpawnNullLinkLine(nullCircle16);
@@ -335,25 +369,30 @@ public class NullCircleSpawner : MonoBehaviour
         nullCircle62.GetComponent<NullCircle>().LineToParent = SpawnNullLinkLine(nullCircle30);
 
 
-        // Hide all linderenders to begin with
-        UpdateLineRenderers();
-
+        /*********************************************
+        Hide all linderenders to begin with
+        *********************************************/
+        _lineRendererManager.UpdateLineRenderers();
 
         for (int i = 0; i < NullCircles.Count; i++)
         {
             NullCircles[i].GetComponent<NullCircle>().Index = i;
         }
 
-
-        // Deactivate all nullCircles
-        // Set the parent of all nullCircles to the uiCanvas
+        /*********************************************
+        Hide all nullCircles
+        Set the parent of all nullCircles to the uiCanvas
+        *********************************************/
         foreach (GameObject c in NullCircles.Values)
         {
             HideNullCircle(c.GetComponent<NullCircle>());
-            c.transform.SetParent(uiCanvas.transform, false);
+            c.transform.SetParent(_uiCanvas.transform, false);
         }
 
-        // Activate the root nullCircle
+
+        /*********************************************
+        Activate the root nullCircle
+        *********************************************/
         ShowNullCircle(nullCircle0.GetComponent<NullCircle>());
     }
 
@@ -372,19 +411,17 @@ public class NullCircleSpawner : MonoBehaviour
     }
 
 
-
-
-    /// <summary>
-    /// Recursively updates the IsActive property of NullCircles.
-    /// Recursively checks if there is a ingredient places onto the nullcircle, if not, the nullcircle is active.
-    /// </summary>
-    public void UpdateActiveNullCirclesAndShow()
+    /*********************************************
+    Recursively updates the IsActive property of NullCircles.
+    Recursively checks if there is a ingredient places onto the nullcircle, if not, the nullcircle is active.
+    *********************************************/
+    public void ShowAllChildrenNullCircles()
     {
 
-        UpdateActiveNullCirclesAndShow(Root.GetComponent<NullCircle>());
+        ShowAllChildrenNullCircles(Root.GetComponent<NullCircle>());
     }
 
-    private void UpdateActiveNullCirclesAndShow(NullCircle nullCircle)
+    private void ShowAllChildrenNullCircles(NullCircle nullCircle)
     {
         if (nullCircle == null) return;
 
@@ -392,22 +429,53 @@ public class NullCircleSpawner : MonoBehaviour
         // but we don't need to check its children because they would be beyond the current "border" of values.
         if (nullCircle.Ingredient == null)
         {
-            nullCircle.IsActive = true;
+            //nullCircle.IsActive = true;
             ShowNullCircle(nullCircle);
         }
         else
         {
-            nullCircle.IsActive = false;
+            //nullCircle.IsActive = false;
             HideNullCircle(nullCircle);
             // If this nullCircle has a value, its children might need to be activated,
             // so we recursively check them.
             NullCircle leftChild = nullCircle.LeftChild?.GetComponent<NullCircle>();
             NullCircle rightChild = nullCircle.RightChild?.GetComponent<NullCircle>();
 
-            UpdateActiveNullCirclesAndShow(leftChild);
-            UpdateActiveNullCirclesAndShow(rightChild);
+            ShowAllChildrenNullCircles(leftChild);
+            ShowAllChildrenNullCircles(rightChild);
         }
     }
+
+    public void HideAllNullCircles()
+    {
+
+        HideAllNullCircles(Root.GetComponent<NullCircle>());
+    }
+
+    private void HideAllNullCircles(NullCircle nullCircle)
+    {
+        if (nullCircle == null) return;
+
+        // If the current nullCircle has no value, it should be active,
+        // but we don't need to check its children because they would be beyond the current "border" of values.
+        if (nullCircle.Ingredient == null)
+        {
+            HideNullCircle(nullCircle);
+        }
+        else
+        {
+            
+            HideNullCircle(nullCircle);
+            // If this nullCircle has a value, its children might need to be activated,
+            // so we recursively check them.
+            NullCircle leftChild = nullCircle.LeftChild?.GetComponent<NullCircle>();
+            NullCircle rightChild = nullCircle.RightChild?.GetComponent<NullCircle>();
+
+            HideAllNullCircles(leftChild);
+            HideAllNullCircles(rightChild);
+        }
+    }
+
 
     public void setNullCircleToDefault(NullCircle nullCircle)
     {
@@ -452,76 +520,7 @@ public class NullCircleSpawner : MonoBehaviour
         DeactivateAllNullCirclesInSubtree(rightChild);
     }
 
-    public void UpdateLineRenderers()
-    {
-        UpdateLineRenderers(Root.GetComponent<NullCircle>());
-    }
-
-    private void UpdateLineRenderers(NullCircle nullCircle)
-    {
-        //Debug.Log("I am in UpdateLineRenderers");
-
-        // In leaf
-        if (nullCircle == null) return;
-
-        // Recursively update and draw the line renderers for the children
-        NullCircle leftChild = nullCircle.LeftChild?.GetComponent<NullCircle>();
-        NullCircle rightChild = nullCircle.RightChild?.GetComponent<NullCircle>();
-        UpdateLineRenderers(leftChild);
-        UpdateLineRenderers(rightChild);
-
-        // At root
-        if (nullCircle.Parent == null) return;
-
-        // Set color of the line
-        if (nullCircle.IsRed)
-        {
-            //Debug.Log("I am in UpdateLineRenderers and the nullcircle is red and its index is" + nullCircle.Index);
-            nullCircle.LineToParent.GetComponent<LineRenderer>().startColor = Color.red;
-            nullCircle.LineToParent.GetComponent<LineRenderer>().endColor = Color.red;
-
-        }
-        if (!nullCircle.IsRed)
-        {
-            //Debug.Log("I am in UpdateLineRenderers and the nullcircle is black and its index is" + nullCircle.Index);
-            nullCircle.LineToParent.GetComponent<LineRenderer>().startColor = Color.black;
-            nullCircle.LineToParent.GetComponent<LineRenderer>().endColor = Color.black;
-        }
-
-        // If the parent has a value, draw the line renderer from nullcircle to parent
-        if (nullCircle.Parent.GetComponent<NullCircle>().Ingredient != null)
-        {
-            ShowLineRender(nullCircle);
-        }
-        else
-        {
-            HideLineRenderer(nullCircle);
-        }
-    }
-
-    public void ShowLineRender(NullCircle nullCircle)
-    {
-        if (nullCircle == null) return;
-
-        // Show the line on the screen
-        LineRenderer lineRenderer = nullCircle.LineToParent.GetComponent<LineRenderer>();
-        if (lineRenderer != null)
-        {
-            lineRenderer.enabled = true;
-        }
-    }
-
-    public void HideLineRenderer(NullCircle nullCircle)
-    {
-        if (nullCircle == null) return;
-
-        // Hide the line on the screen
-        LineRenderer lineRenderer = nullCircle.LineToParent.GetComponent<LineRenderer>();
-        if (lineRenderer != null)
-        {
-            lineRenderer.enabled = false;
-        }
-    }
+   
 
     /// <summary>
     /// Finds a NullCircle based on its position in the scene.
@@ -628,44 +627,7 @@ public class NullCircleSpawner : MonoBehaviour
     }
 
 
-    /// <summary>
-    /// Iterates throught a dictionary of NullCircles and shows the visual representation of the NullCircles that are active, by calling ShowNullCircle.
-    /// </summary>
-
-    public void ShowNullCircles()
-    {
-        foreach (KeyValuePair<int, GameObject> nullCirclePair in NullCircles)
-        {
-            NullCircle nullCircle = nullCirclePair.Value.GetComponent<NullCircle>();
-
-            if (nullCircle != null && nullCircle.IsActive) // Checking if component is not null and IsActive is true
-            {
-                //nullCirclePair.Value.SetActive(true); // Activate the GameObject
-                ShowNullCircle(nullCircle);
-            }
-
-        }
-
-    }
-
-    /// <summary>
-    /// Iterates throught a dictionary of NullCircles and hides the visual representation of the NullCircles that are not active, by calling HideNullCircle.
-    /// </summary>
-
-    public void HideNullCircles()
-    {
-        foreach (KeyValuePair<int, GameObject> nullCirclePair in NullCircles)
-        {
-            NullCircle nullCircle = nullCirclePair.Value.GetComponent<NullCircle>();
-
-            // If the NullCircle component is found and IsActive is false, deactivate the GameObject
-            if (nullCircle != null && nullCircle.IsActive) // Checking if component is not null and IsActive is false
-            {
-                //nullCirclePair.Value.SetActive(false); // Deactivate the GameObject
-                HideNullCircle(nullCircle);
-            }
-        }
-    }
+  
 
     /// <summary>
     /// Hides the visual representation of one NullCircle and prevents interaction with it.
@@ -720,8 +682,10 @@ public class NullCircleSpawner : MonoBehaviour
     // For the bottom "invinsible" nullCircles, they should have a small line below them to indicate a null link
     public GameObject SpawnNullLinkLine(GameObject parent)
     {
+        Debug.Log("I am in SpawnNullLinkLine and the parent is " + parent.transform.position.x + " " + parent.transform.position.y + " " + parent.transform.position.z);
         Vector3 startPosition = parent.transform.position;
-        Vector3 endPosition = new Vector3(startPosition.x, startPosition.y - 0.5f, startPosition.z);  // Adjust length here
+        Vector3 endPosition = new Vector3(startPosition.x, startPosition.y - 1.0f, startPosition.z);  // Adjust length here
+        Debug.Log("I am in SpawnNullLinkLine and the Vector3 end position is " + endPosition.x + " " + endPosition.y + " " + endPosition.z);
 
         return CreateLineRenderer(parent.transform, endPositionVector: endPosition);
     }
@@ -748,8 +712,10 @@ public class NullCircleSpawner : MonoBehaviour
         // For the bottom "invinsible" null circles, the line should end at a fixed place and therefore be of type Vector3
         else if (endPositionVector.HasValue)
         {
+
             GameObject endPositionObject = new GameObject("TemporaryEndPosition");
             endPositionObject.transform.position = endPositionVector.Value;
+            Debug.Log("I am in CreateLineRenderer and the end position is " + endPositionObject.transform.position.x + " " + endPositionObject.transform.position.y + " " + endPositionObject.transform.position.z);
             endPosition = endPositionObject.transform;
         }
         else
@@ -850,10 +816,6 @@ public class NullCircleSpawner : MonoBehaviour
         }
     }
 
-    public void copyNullCircleToNewValue(GameObject t)
-    {
-
-    }
 
     public void destroyNullCircleAndAllDescendants(GameObject nullCircle)
     {
@@ -875,3 +837,43 @@ public class NullCircleSpawner : MonoBehaviour
 
 
 }
+
+/*************************************** OLD METHOD IF WE FUCK UP************************************************/
+/*  /// <summary>
+    /// Iterates throught a dictionary of NullCircles and shows the visual representation of the NullCircles that are active, by calling ShowNullCircle.
+    /// </summary>
+
+    public void ShowNullCircles()
+    {
+        foreach (KeyValuePair<int, GameObject> nullCirclePair in NullCircles)
+        {
+            NullCircle nullCircle = nullCirclePair.Value.GetComponent<NullCircle>();
+
+            if (nullCircle != null && nullCircle.IsActive) // Checking if component is not null and IsActive is true
+            {
+                //nullCirclePair.Value.SetActive(true); // Activate the GameObject
+                ShowNullCircle(nullCircle);
+            }
+
+        }
+
+    }
+
+    /// <summary>
+    /// Iterates throught a dictionary of NullCircles and hides the visual representation of the NullCircles that are not active, by calling HideNullCircle.
+    /// </summary>
+
+    public void HideNullCircles()
+    {
+        foreach (KeyValuePair<int, GameObject> nullCirclePair in NullCircles)
+        {
+            NullCircle nullCircle = nullCirclePair.Value.GetComponent<NullCircle>();
+
+            // If the NullCircle component is found and IsActive is false, deactivate the GameObject
+            if (nullCircle != null && nullCircle.IsActive) // Checking if component is not null and IsActive is false
+            {
+                //nullCirclePair.Value.SetActive(false); // Deactivate the GameObject
+                HideNullCircle(nullCircle);
+            }
+        }
+    }*/

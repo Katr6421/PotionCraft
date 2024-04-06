@@ -7,6 +7,7 @@ using UnityEngine;
 public class LeftRotationVisualization : MonoBehaviour {
     [SerializeField] private NullCircleSpawner _nullCircleSpawner;
     [SerializeField] private VisualizationHelper _visualizationHelper;
+    [SerializeField] private LineRendererManager _lineRendererManager;
 
 
     public IEnumerator RotateLeftAnimation(GameObject parent, GameObject rightChild, NullCircle parentNullCircle){
@@ -18,17 +19,24 @@ public class LeftRotationVisualization : MonoBehaviour {
         */
 
         // Find the new positions
-        Vector3 parentNewPosition = parentNullCircle.GetComponent<NullCircle>().LeftChild.transform.position;
-        Vector3 rightChildNewPosition = parentNullCircle.transform.position;
+        GameObject parentNewPosition = parentNullCircle.GetComponent<NullCircle>().LeftChild;
+        GameObject rightChildNewPosition = parentNullCircle.gameObject;
 
         // Find nullcircles
         GameObject rightChildNullCircle = parentNullCircle.GetComponent<NullCircle>().RightChild;
+        
 
+/*
         // Move 
         // Move the parent and everything on left side of tree
         yield return StartCoroutine(MoveLeftSubtreeAndAllDescendants(parentNullCircle, parentNewPosition, 1.0f, () => {}));
         // Move everything on left side of tree
         yield return StartCoroutine(MoveRightSubtreeAndAllDescendants(rightChildNullCircle, rightChildNewPosition, 1.0f, () => {}));
+*/
+
+
+        yield return StartCoroutine(_visualizationHelper.RotateTree(true, true, parentNullCircle.gameObject, parentNewPosition, 1.0f, () => { }));
+        yield return StartCoroutine(_visualizationHelper.RotateTree(false, false, rightChildNullCircle, rightChildNewPosition, 1.0f, () => { }));
     }
 
     IEnumerator MoveLeftSubtreeAndAllDescendants(NullCircle startingNode, Vector3 newPosition, float duration, Action onComplete) {
@@ -94,7 +102,7 @@ public class LeftRotationVisualization : MonoBehaviour {
             _nullCircleSpawner.setNullCircleToDefault(RightChild);
            
             //Update the line renderers 
-            _nullCircleSpawner.UpdateLineRenderers();
+            _lineRendererManager.UpdateLineRenderers();
 
             //Destroy the copied nullCircles
             _nullCircleSpawner.destroyNullCircleAndAllDescendants(copyRootOfSubTree.gameObject);
@@ -142,7 +150,7 @@ public class LeftRotationVisualization : MonoBehaviour {
             _nullCircleSpawner.setNullCircleToDefault(LeftChild);
 
             // Update the line renderers 
-            _nullCircleSpawner.UpdateLineRenderers();
+            _lineRendererManager.UpdateLineRenderers();
 
             //Destroy the copied nullCircles
             _nullCircleSpawner.destroyNullCircleAndAllDescendants(copyRootOfSubTree.gameObject);
