@@ -35,7 +35,7 @@ public class TreeManager : MonoBehaviour, ITreeManager
         RedBlackTree.Put(key, value);
     }
 
-
+    // Checks if the clicked null circles parent is the same as the nodes parent in the tree
     public bool ValidateNodePlacement(GameObject clickedNullCircle)
     {
 
@@ -91,7 +91,6 @@ public class TreeManager : MonoBehaviour, ITreeManager
         }
 
         //Debug.Log("Incorrect placement: The clicked null circle is incorrect identified as a " + (isLeftChild ? "left" : "right") + " child of its parent.");
-        
         return false;
     }
 
@@ -178,7 +177,7 @@ public class TreeManager : MonoBehaviour, ITreeManager
                 case OperationType.RotateRight:
                 // If we rotate right, we need to check if the selected node and the parent node and the grandparent node is the correct nodes
                  // We get the Node and its left child and thats left child from the node we flaged inside our red-black tree put method, that is stored in RedBlackTree.Operations
-                    {
+                    
                     correctNodesInTree = new HashSet<Node>
                     {
                         TheCurrentCorrectOperation.Node,
@@ -188,7 +187,7 @@ public class TreeManager : MonoBehaviour, ITreeManager
                     
                     ExecuteOperationIfCorrectNodesSelected(correctNodesInTree, OperationType.RotateRight);
 
-                    }
+                    
                     break;
                     
                 case OperationType.FlipColors:
@@ -207,12 +206,15 @@ public class TreeManager : MonoBehaviour, ITreeManager
         }
         else
         {
-            //Debug.Log("Incorrect operationButton clicked");
-            // TO DO!!!!!!!! FejlHåndtering!!!!
+            Debug.Log("Incorrect operationButton clicked");
+            // TODO: FejlHåndtering!!!!
             // Update hint
             // shake the button
-            // make sure the operation is still in the queue
-            // make sure that the user can not click on the ingredient. The user should only be able to click on the operation buttons
+            
+            
+            // Make sure the operation is still in the queue
+            
+            // Make sure that the user can not click on the ingredient. The user should only be able to click on the operation buttons
         }
 
     }
@@ -265,9 +267,6 @@ public class TreeManager : MonoBehaviour, ITreeManager
                    // Debug.Log("!!!!!!!!!!!!!*****The current state of all the null circles AFTER a visulize rotation: *****!!!!!!!!!!");
                     //_nullCircleSpawner.PrintNullCircles();
                     
-                   
-
-
                 // Kalde en metode der håndtere næste operation i køen
                 if (RedBlackTree.Operations.Count > 0)
                 {
@@ -275,7 +274,7 @@ public class TreeManager : MonoBehaviour, ITreeManager
                 }
                 else
                 {
-                    //Debug.Log("*****No more operations in the queue! The tree is in balance! Insert next ingredient! *****");
+                    Debug.Log("*****No more operations in the queue! The tree is in balance! Insert next ingredient! *****");
                  
                     // Update whitch null circles are visible, based on if they now have a ingredient or not
                     _nullCircleSpawner.UpdateActiveNullCirclesAndShow();
@@ -286,6 +285,7 @@ public class TreeManager : MonoBehaviour, ITreeManager
                     //RedBlackTree.PrintTree();
 
 
+                    // TODO: 
                     // The tree is balanced!! Ready to insert the next ingredient
 
                     // Activate null circles again
@@ -299,7 +299,8 @@ public class TreeManager : MonoBehaviour, ITreeManager
         }     
         else
         {
-            //Debug.Log("Incorrect nodes selected");
+            Debug.Log("Incorrect nodes selected");
+            // TODO: FejlHåndtering!!!!
 
             // Update hint
             // Kan klikke igen
@@ -322,8 +323,6 @@ public class TreeManager : MonoBehaviour, ITreeManager
         return RedBlackTree.GetColor(value);
     }
 
-
-
     public bool ShouldDrawNullCircles()
     {
         // If the queue is empty, the tree is balanced and the null circles should be drawn
@@ -332,15 +331,10 @@ public class TreeManager : MonoBehaviour, ITreeManager
 
       public void HandleNextOperation()
     {
+        // TODO: 
         // update hint
         // gøre så man kan klikke på alt igen
-
-
     }
-
-   
-
-    
 
     public void SetCurrentHint()
     {

@@ -17,14 +17,6 @@ Summary: Everyting that happens when a NullCircle is clicked.
 *********************************************/
 
 
-
-
-
-
-
-
-
-
 public class TreeVisualizationManager : MonoBehaviour
 {
 
@@ -39,8 +31,8 @@ public class TreeVisualizationManager : MonoBehaviour
     [SerializeField] private LeftRotationVisualization _leftRotationVisualization; // Need this to make left rotation animations
     [SerializeField] private FlipColorVisualization _flipColorVisualization; // Need this to make left rotation animations
     [SerializeField] private JarVisualization _jarVisualization; // Need this to make left rotation animations
-    [SerializeField] private Spline _spline;
     [SerializeField] private VisualizationHelper _visualizationHelper;
+    [SerializeField] private SplineToJar _splineToJar;
 
     private GameObject _currentIngredient; // Reference to the current Ingredient that the user must insert in the RedBlackTree
     private GameObject _currentNullCircle; // Reference to the latest NullCircle that the user has clicked on
@@ -86,7 +78,7 @@ public class TreeVisualizationManager : MonoBehaviour
         setNextIngredientForPlacement();
 
         /*********************************************
-        Set the current state of the Red-Black BST tree
+        Insert the value as a node in the Red-Black BST tree
         *********************************************/
         var currentIngredientValue = int.Parse(_currentIngredient.GetComponentInChildren<TextMeshProUGUI>().text);
         //Debug.Log("I am inserting the node with the value: " + currentIngredientValue + " into the tree.");
@@ -97,7 +89,9 @@ public class TreeVisualizationManager : MonoBehaviour
         *********************************************/
         bool isRightPlacement = _treeManager.ValidateNodePlacement(_currentNullCircle);
 
-        // If the ingredient is placed right
+        /*********************************************
+        If the ingredient is placed right, we can continue with the visualization
+        *********************************************/
         if (_currentIngredient != null && isRightPlacement)
         {
              // Prepare the next ingredient for placement. Update the index in the list of ingredients, that we need to place. 
@@ -148,10 +142,17 @@ public class TreeVisualizationManager : MonoBehaviour
                 }
             }));
         }
-        // If the ingredient is placed wrong
+        /*********************************************
+        If the ingredient is placed wrong
+        *********************************************/
         else {
-            Debug.Log("Wrong null circle. You placede the ingredient wrong, try again");
-            // update hint 
+            Debug.Log("Wrong null circle. You placed the ingredient wrong, try again");
+            // TODO: Fejlhåndtering - Hannah working on it
+            // Delete the node from the Red-Black BST tree
+            
+
+
+            // Update hint 
         }
     }
 
@@ -202,7 +203,7 @@ public class TreeVisualizationManager : MonoBehaviour
                 /*********************************************
                 Check if the rightChild's leftChild is null -> Bag animation
                 *********************************************/
-                if (rightChildLeftChildNullCircle.Ingredient != null){
+        if (rightChildLeftChildNullCircle.Ingredient != null){
                     //Debug.Log("**********Jeg har et leftChild, og derfor skal mit subtree op i bagen**********");
 
                     /*********************************************
@@ -239,8 +240,10 @@ public class TreeVisualizationManager : MonoBehaviour
                     *********************************************/
                     foreach (GameObject ingredient in ingredientsToJar)
                     {
-                        _spline.ChangeFirstKnotPosition(ingredient.transform.position);
-                        yield return StartCoroutine(_spline.FollowSplineToJar(ingredient));
+                        //_spline.ChangeFirstVector3Position(ingredient.transform.position);
+                        //yield return StartCoroutine(_spline.FollowPointsToJar(ingredient));
+                        _splineToJar.ChangeFirstKnot(ingredient.transform.position);
+                        yield return StartCoroutine(_splineToJar.FollowSplineToJar(ingredient));
                         
                     }
                     
@@ -339,8 +342,10 @@ public class TreeVisualizationManager : MonoBehaviour
                     *********************************************/
                     foreach (GameObject ingredient in ingredientsToJar)
                     {
-                        _spline.ChangeFirstKnotPosition(ingredient.transform.position);
-                        yield return StartCoroutine(_spline.FollowSplineToJar(ingredient));
+                        //_spline.ChangeFirstVector3Position(ingredient.transform.position);
+                        //yield return StartCoroutine(_spline.FollowPointsToJar(ingredient));
+                        _splineToJar.ChangeFirstKnot(ingredient.transform.position);
+                        yield return StartCoroutine(_splineToJar.FollowSplineToJar(ingredient));
                     }
 
 

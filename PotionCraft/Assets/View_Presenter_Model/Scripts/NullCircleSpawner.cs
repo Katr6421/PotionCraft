@@ -101,9 +101,9 @@ public class NullCircleSpawner : MonoBehaviour
         GameObject nullCircle60 = Instantiate(nullCirclePrefab);
         GameObject nullCircle61 = Instantiate(nullCirclePrefab);
         GameObject nullCircle62 = Instantiate(nullCirclePrefab);
-        
 
-        
+
+
 
         //Set the children of each nullCircle
         nullCircle0.GetComponent<NullCircle>().LeftChild = nullCircle1;
@@ -300,38 +300,40 @@ public class NullCircleSpawner : MonoBehaviour
         nullCircle28.GetComponent<NullCircle>().LineToParent = SpawnLinesToParent(nullCircle28, nullCircle13);
         nullCircle29.GetComponent<NullCircle>().LineToParent = SpawnLinesToParent(nullCircle29, nullCircle14);
         nullCircle30.GetComponent<NullCircle>().LineToParent = SpawnLinesToParent(nullCircle30, nullCircle14);
-        nullCircle31.GetComponent<NullCircle>().LineToParent = SpawnLinesToParent(nullCircle31, nullCircle15);
-        nullCircle32.GetComponent<NullCircle>().LineToParent = SpawnLinesToParent(nullCircle32, nullCircle15);
-        nullCircle33.GetComponent<NullCircle>().LineToParent = SpawnLinesToParent(nullCircle33, nullCircle16);
-        nullCircle34.GetComponent<NullCircle>().LineToParent = SpawnLinesToParent(nullCircle34, nullCircle16);
-        nullCircle35.GetComponent<NullCircle>().LineToParent = SpawnLinesToParent(nullCircle35, nullCircle17);
-        nullCircle36.GetComponent<NullCircle>().LineToParent = SpawnLinesToParent(nullCircle36, nullCircle17);
-        nullCircle37.GetComponent<NullCircle>().LineToParent = SpawnLinesToParent(nullCircle37, nullCircle18);
-        nullCircle38.GetComponent<NullCircle>().LineToParent = SpawnLinesToParent(nullCircle38, nullCircle18);
-        nullCircle39.GetComponent<NullCircle>().LineToParent = SpawnLinesToParent(nullCircle39, nullCircle19);
-        nullCircle40.GetComponent<NullCircle>().LineToParent = SpawnLinesToParent(nullCircle40, nullCircle19);
-        nullCircle41.GetComponent<NullCircle>().LineToParent = SpawnLinesToParent(nullCircle41, nullCircle20);
-        nullCircle42.GetComponent<NullCircle>().LineToParent = SpawnLinesToParent(nullCircle42, nullCircle20);
-        nullCircle43.GetComponent<NullCircle>().LineToParent = SpawnLinesToParent(nullCircle43, nullCircle21);
-        nullCircle44.GetComponent<NullCircle>().LineToParent = SpawnLinesToParent(nullCircle44, nullCircle21);
-        nullCircle45.GetComponent<NullCircle>().LineToParent = SpawnLinesToParent(nullCircle45, nullCircle22);
-        nullCircle46.GetComponent<NullCircle>().LineToParent = SpawnLinesToParent(nullCircle46, nullCircle22);
-        nullCircle47.GetComponent<NullCircle>().LineToParent = SpawnLinesToParent(nullCircle47, nullCircle23);
-        nullCircle48.GetComponent<NullCircle>().LineToParent = SpawnLinesToParent(nullCircle48, nullCircle23);
-        nullCircle49.GetComponent<NullCircle>().LineToParent = SpawnLinesToParent(nullCircle49, nullCircle24);
-        nullCircle50.GetComponent<NullCircle>().LineToParent = SpawnLinesToParent(nullCircle50, nullCircle24);
-        nullCircle51.GetComponent<NullCircle>().LineToParent = SpawnLinesToParent(nullCircle51, nullCircle25);
-        nullCircle52.GetComponent<NullCircle>().LineToParent = SpawnLinesToParent(nullCircle52, nullCircle25);
-        nullCircle53.GetComponent<NullCircle>().LineToParent = SpawnLinesToParent(nullCircle53, nullCircle26);
-        nullCircle54.GetComponent<NullCircle>().LineToParent = SpawnLinesToParent(nullCircle54, nullCircle26);
-        nullCircle55.GetComponent<NullCircle>().LineToParent = SpawnLinesToParent(nullCircle55, nullCircle27);
-        nullCircle56.GetComponent<NullCircle>().LineToParent = SpawnLinesToParent(nullCircle56, nullCircle27);
-        nullCircle57.GetComponent<NullCircle>().LineToParent = SpawnLinesToParent(nullCircle57, nullCircle28);
-        nullCircle58.GetComponent<NullCircle>().LineToParent = SpawnLinesToParent(nullCircle58, nullCircle28);
-        nullCircle59.GetComponent<NullCircle>().LineToParent = SpawnLinesToParent(nullCircle59, nullCircle29);
-        nullCircle60.GetComponent<NullCircle>().LineToParent = SpawnLinesToParent(nullCircle60, nullCircle29);
-        nullCircle61.GetComponent<NullCircle>().LineToParent = SpawnLinesToParent(nullCircle61, nullCircle30);
-        nullCircle62.GetComponent<NullCircle>().LineToParent = SpawnLinesToParent(nullCircle62, nullCircle30);
+        // Should still have a line to parent, but this line represents a null link, and is just a small line from parent and a little down
+        nullCircle31.GetComponent<NullCircle>().LineToParent = SpawnNullLinkLine(nullCircle15);
+        nullCircle32.GetComponent<NullCircle>().LineToParent = SpawnNullLinkLine(nullCircle15);
+        nullCircle33.GetComponent<NullCircle>().LineToParent = SpawnNullLinkLine(nullCircle16);
+        nullCircle34.GetComponent<NullCircle>().LineToParent = SpawnNullLinkLine(nullCircle16);
+        nullCircle35.GetComponent<NullCircle>().LineToParent = SpawnNullLinkLine(nullCircle17);
+        nullCircle36.GetComponent<NullCircle>().LineToParent = SpawnNullLinkLine(nullCircle17);
+        nullCircle37.GetComponent<NullCircle>().LineToParent = SpawnNullLinkLine(nullCircle18);
+        nullCircle38.GetComponent<NullCircle>().LineToParent = SpawnNullLinkLine(nullCircle18);
+        nullCircle39.GetComponent<NullCircle>().LineToParent = SpawnNullLinkLine(nullCircle19);
+        nullCircle40.GetComponent<NullCircle>().LineToParent = SpawnNullLinkLine(nullCircle19);
+        nullCircle41.GetComponent<NullCircle>().LineToParent = SpawnNullLinkLine(nullCircle20);
+        nullCircle42.GetComponent<NullCircle>().LineToParent = SpawnNullLinkLine(nullCircle20);
+        nullCircle43.GetComponent<NullCircle>().LineToParent = SpawnNullLinkLine(nullCircle21);
+        nullCircle44.GetComponent<NullCircle>().LineToParent = SpawnNullLinkLine(nullCircle21);
+        nullCircle45.GetComponent<NullCircle>().LineToParent = SpawnNullLinkLine(nullCircle22);
+        nullCircle46.GetComponent<NullCircle>().LineToParent = SpawnNullLinkLine(nullCircle22);
+        nullCircle47.GetComponent<NullCircle>().LineToParent = SpawnNullLinkLine(nullCircle23);
+        nullCircle48.GetComponent<NullCircle>().LineToParent = SpawnNullLinkLine(nullCircle23);
+        nullCircle49.GetComponent<NullCircle>().LineToParent = SpawnNullLinkLine(nullCircle24);
+        nullCircle50.GetComponent<NullCircle>().LineToParent = SpawnNullLinkLine(nullCircle24);
+        nullCircle51.GetComponent<NullCircle>().LineToParent = SpawnNullLinkLine(nullCircle25);
+        nullCircle52.GetComponent<NullCircle>().LineToParent = SpawnNullLinkLine(nullCircle25);
+        nullCircle53.GetComponent<NullCircle>().LineToParent = SpawnNullLinkLine(nullCircle26);
+        nullCircle54.GetComponent<NullCircle>().LineToParent = SpawnNullLinkLine(nullCircle26);
+        nullCircle55.GetComponent<NullCircle>().LineToParent = SpawnNullLinkLine(nullCircle27);
+        nullCircle56.GetComponent<NullCircle>().LineToParent = SpawnNullLinkLine(nullCircle27);
+        nullCircle57.GetComponent<NullCircle>().LineToParent = SpawnNullLinkLine(nullCircle28);
+        nullCircle58.GetComponent<NullCircle>().LineToParent = SpawnNullLinkLine(nullCircle28);
+        nullCircle59.GetComponent<NullCircle>().LineToParent = SpawnNullLinkLine(nullCircle29);
+        nullCircle60.GetComponent<NullCircle>().LineToParent = SpawnNullLinkLine(nullCircle29);
+        nullCircle61.GetComponent<NullCircle>().LineToParent = SpawnNullLinkLine(nullCircle30);
+        nullCircle62.GetComponent<NullCircle>().LineToParent = SpawnNullLinkLine(nullCircle30);
+
 
         // Hide all linderenders to begin with
         UpdateLineRenderers();
@@ -342,7 +344,7 @@ public class NullCircleSpawner : MonoBehaviour
             NullCircles[i].GetComponent<NullCircle>().Index = i;
         }
 
-        
+
         // Deactivate all nullCircles
         // Set the parent of all nullCircles to the uiCanvas
         foreach (GameObject c in NullCircles.Values)
@@ -378,10 +380,10 @@ public class NullCircleSpawner : MonoBehaviour
     /// </summary>
     public void UpdateActiveNullCirclesAndShow()
     {
-        
+
         UpdateActiveNullCirclesAndShow(Root.GetComponent<NullCircle>());
     }
-    
+
     private void UpdateActiveNullCirclesAndShow(NullCircle nullCircle)
     {
         if (nullCircle == null) return;
@@ -407,7 +409,8 @@ public class NullCircleSpawner : MonoBehaviour
         }
     }
 
-    public void setNullCircleToDefault(NullCircle nullCircle) {
+    public void setNullCircleToDefault(NullCircle nullCircle)
+    {
         // Reset properties of the current node
         nullCircle.Value = 0;
         nullCircle.IsActive = false;
@@ -427,9 +430,9 @@ public class NullCircleSpawner : MonoBehaviour
         {
             var rightNullCircle = nullCircle.RightChild.GetComponent<NullCircle>();
             setNullCircleToDefault(rightNullCircle);
-            
+
         }
-        
+
         return;
     }
 
@@ -453,7 +456,7 @@ public class NullCircleSpawner : MonoBehaviour
     {
         UpdateLineRenderers(Root.GetComponent<NullCircle>());
     }
-    
+
     private void UpdateLineRenderers(NullCircle nullCircle)
     {
         //Debug.Log("I am in UpdateLineRenderers");
@@ -471,13 +474,15 @@ public class NullCircleSpawner : MonoBehaviour
         if (nullCircle.Parent == null) return;
 
         // Set color of the line
-        if(nullCircle.IsRed ){
+        if (nullCircle.IsRed)
+        {
             //Debug.Log("I am in UpdateLineRenderers and the nullcircle is red and its index is" + nullCircle.Index);
             nullCircle.LineToParent.GetComponent<LineRenderer>().startColor = Color.red;
             nullCircle.LineToParent.GetComponent<LineRenderer>().endColor = Color.red;
 
         }
-        if(!nullCircle.IsRed){
+        if (!nullCircle.IsRed)
+        {
             //Debug.Log("I am in UpdateLineRenderers and the nullcircle is black and its index is" + nullCircle.Index);
             nullCircle.LineToParent.GetComponent<LineRenderer>().startColor = Color.black;
             nullCircle.LineToParent.GetComponent<LineRenderer>().endColor = Color.black;
@@ -534,15 +539,15 @@ public class NullCircleSpawner : MonoBehaviour
         //Debug.Log("!!!!!!!! and the current nullcircle that i am looking at has this posistion" + nullCircle.transform.position );
         if (nullCircle == null) return null;
 
-        
+
         // Consider using a small threshold for comparison to handle floating-point imprecision
         float positionThreshold = 0.5f; // This threshold can be adjusted based on your needs
         if (Vector3.Distance(nullCircle.transform.position, newPosition) <= positionThreshold)
         {
-            
+
             //Debug.Log("I have found the nullcircle that has this position" + nullCircle.transform.position);
             return nullCircle; // Found the matching NullCircle
-            
+
         }
 
         // Recursively check the left child
@@ -565,7 +570,8 @@ public class NullCircleSpawner : MonoBehaviour
         return null;
     }
 
-    public NullCircle CopyNullCircleSubtree(NullCircle root) {
+    public NullCircle CopyNullCircleSubtree(NullCircle root)
+    {
         if (root == null) return null;
 
         // Instantiate a new NullCircle GameObject as a copy of the root
@@ -577,10 +583,12 @@ public class NullCircleSpawner : MonoBehaviour
         copyNullCircle.RightChild = root.RightChild == null ? null : CopyNullCircleSubtree(root.RightChild.GetComponent<NullCircle>()).gameObject;
 
         // If this copy has children, set their parent to this new copy
-        if (copyNullCircle.LeftChild != null) {
+        if (copyNullCircle.LeftChild != null)
+        {
             copyNullCircle.LeftChild.GetComponent<NullCircle>().Parent = copyNullCircle.gameObject;
         }
-        if (copyNullCircle.RightChild != null) {
+        if (copyNullCircle.RightChild != null)
+        {
             copyNullCircle.RightChild.GetComponent<NullCircle>().Parent = copyNullCircle.gameObject;
         }
 
@@ -629,7 +637,7 @@ public class NullCircleSpawner : MonoBehaviour
         foreach (KeyValuePair<int, GameObject> nullCirclePair in NullCircles)
         {
             NullCircle nullCircle = nullCirclePair.Value.GetComponent<NullCircle>();
-            
+
             if (nullCircle != null && nullCircle.IsActive) // Checking if component is not null and IsActive is true
             {
                 //nullCirclePair.Value.SetActive(true); // Activate the GameObject
@@ -639,7 +647,7 @@ public class NullCircleSpawner : MonoBehaviour
         }
 
     }
-    
+
     /// <summary>
     /// Iterates throught a dictionary of NullCircles and hides the visual representation of the NullCircles that are not active, by calling HideNullCircle.
     /// </summary>
@@ -682,10 +690,10 @@ public class NullCircleSpawner : MonoBehaviour
         }
     }
 
-       
+
     public void ShowNullCircle(NullCircle nullCircle)
     {
-        if(nullCircle == null) return;
+        if (nullCircle == null) return;
 
         // Re-enable the Image component
         Image image = nullCircle.GetComponent<Image>();
@@ -702,18 +710,63 @@ public class NullCircleSpawner : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Spawn lindeRenderer between one NullCircle and its parent
-    /// </summary>
     public GameObject SpawnLinesToParent(GameObject nullcircle, GameObject parent)
     {
-        //Debug.Log("inde i DrawLinesToChildren");
-        //Debug.Log("parent pos " + parent.transform.position);
         // Create a line renderer for the connection from parent to left child
-        return CreateLineRenderer(nullcircle.transform, parent.transform);
-        
+        return CreateLineRenderer(nullcircle.transform, endPositionTransform: parent.transform);
+
     }
 
+    // For the bottom "invinsible" nullCircles, they should have a small line below them to indicate a null link
+    public GameObject SpawnNullLinkLine(GameObject parent)
+    {
+        Vector3 startPosition = parent.transform.position;
+        Vector3 endPosition = new Vector3(startPosition.x, startPosition.y - 0.5f, startPosition.z);  // Adjust length here
+
+        return CreateLineRenderer(parent.transform, endPositionVector: endPosition);
+    }
+
+    // Takes either a Transform or a Vector3 as the end position
+    private GameObject CreateLineRenderer(Transform startPosition, Vector3? endPositionVector = null, Transform endPositionTransform = null)
+    {
+        GameObject lineGameObject = new GameObject("LineRendererObject");
+        LineRenderer lineRenderer = lineGameObject.AddComponent<LineRenderer>();
+
+        lineRenderer.material = new Material(Shader.Find("Legacy Shaders/Particles/Alpha Blended Premultiply"));
+        lineRenderer.startWidth = 0.05f;
+        lineRenderer.endWidth = 0.05f;
+        lineRenderer.startColor = Color.black;
+        lineRenderer.endColor = Color.black;
+
+        // Find end position based on the provided type
+        Transform endPosition;
+        // For nullcircle 1-30, the end position is another nullcircle and therefore type Transform
+        if (endPositionTransform != null)
+        {
+            endPosition = endPositionTransform;
+        }
+        // For the bottom "invinsible" null circles, the line should end at a fixed place and therefore be of type Vector3
+        else if (endPositionVector.HasValue)
+        {
+            GameObject endPositionObject = new GameObject("TemporaryEndPosition");
+            endPositionObject.transform.position = endPositionVector.Value;
+            endPosition = endPositionObject.transform;
+        }
+        else
+        {
+            throw new System.ArgumentException("An end position must be provided either as a Transform or a Vector3");
+        }
+
+        // Set up the LineController with points
+        LineController lineController = lineGameObject.AddComponent<LineController>();
+        List<Transform> linePoints = new List<Transform> { startPosition, endPosition };
+        lineController.SetUpLine(linePoints);
+
+        return lineGameObject;
+    }
+
+
+    /**************** Delete if above CreateLineRenderer method works ******************
     private GameObject CreateLineRenderer(Transform startPosition, Transform endPosition)
     {
         // Create a new GameObject with a name indicating it's a line renderer
@@ -745,6 +798,39 @@ public class NullCircleSpawner : MonoBehaviour
         return lineGameObject;
     }
 
+    **************** Delete if above CreateLineRenderer method works ******************
+    private GameObject CreateLineRendererNullLinks(Transform startPosition, Vector3 endPosition)
+    {
+        GameObject lineGameObject = new GameObject("LineRendererObject");
+        LineRenderer lineRenderer = lineGameObject.AddComponent<LineRenderer>();
+
+        lineRenderer.material = new Material(Shader.Find("Legacy Shaders/Particles/Alpha Blended Premultiply"));
+        lineRenderer.startWidth = 0.05f;
+        lineRenderer.endWidth = 0.05f;
+        lineRenderer.startColor = Color.black;
+        lineRenderer.endColor = Color.black;
+
+        lineRenderer.positionCount = 2; // Sets line point count
+        lineRenderer.SetPosition(0, startPosition.position);
+        lineRenderer.SetPosition(1, endPosition);
+
+        // Create a temporary GameObject for the end position, since it needs to be type Transform
+        GameObject endPositionObject = new GameObject("TemporaryEndPosition");
+        endPositionObject.transform.position = endPosition;
+
+        // Add your LineController script to the new GameObject
+        LineController lineController = lineGameObject.AddComponent<LineController>();
+        List<Transform> linePoints = new List<Transform>();
+        linePoints.Add(startPosition); // Start point
+        linePoints.Add(endPositionObject.transform); // Temporary end point
+
+        // Set up the line using the LineController script
+        lineController.SetUpLine(linePoints);
+
+        return lineGameObject;
+    }
+    */
+
     public void PrintNullCircles()
     {
 
@@ -753,7 +839,7 @@ public class NullCircleSpawner : MonoBehaviour
         {
             NullCircle nullCircle = nullCirclePair.Value.GetComponent<NullCircle>();
             Debug.Log("NullCircleIndex " + nullCircle.Index + " | isActive " + nullCircle.IsActive + " | Value " + nullCircle.Value + " Color " + nullCircle.IsRed);
-            if(nullCircle.Ingredient != null)
+            if (nullCircle.Ingredient != null)
             {
                 Debug.Log("and has a ingredient: " + nullCircle.Ingredient + " attached to it with the value" + nullCircle.Ingredient.GetComponentInChildren<TextMeshProUGUI>().text.ToString());
             }
@@ -763,12 +849,14 @@ public class NullCircleSpawner : MonoBehaviour
             }
         }
     }
-    
-    public void copyNullCircleToNewValue(GameObject t) {
+
+    public void copyNullCircleToNewValue(GameObject t)
+    {
 
     }
 
-    public void destroyNullCircleAndAllDescendants(GameObject nullCircle) {
+    public void destroyNullCircleAndAllDescendants(GameObject nullCircle)
+    {
         if (nullCircle == null) return;
 
         NullCircle nc = nullCircle.GetComponent<NullCircle>();

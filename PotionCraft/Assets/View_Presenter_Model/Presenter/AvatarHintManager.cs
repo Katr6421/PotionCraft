@@ -38,6 +38,13 @@ public class AvatarHintManager : MonoBehaviour, IAvatarHintManager
   {
       return HintsDict[avatarEnum];
   } 
+
+  public void SetHint(AvatarHint avatarEnum)
+  {
+      //etEllerandet UI = HintsDict[avatarEnum]
+  }
+
+
 }
 
 

@@ -199,8 +199,6 @@ public class RedBlackBST : IRedBlackBST
 
    }
 
-
-
    
    public void IsThereATreeViolation()
    {
@@ -310,6 +308,38 @@ public class RedBlackBST : IRedBlackBST
       h.Left.Color = BLACK;
       h.Right.Color = BLACK;
    }
+
+
+   // When using our delete method, the node will always be at a leaf node, as the user has just placed it and not balanced the tree yet
+   // Get the node and delete the parents link to it
+   public void Delete(int key)
+   {
+      // Find node with given value in the tree
+      Node nodeToDelete = Get(Root, key);
+      Unity.Engine.Debug.Log("Node to delete is: " + nodeToDelete.Key + " | " + nodeToDelete.Value + " | " + (nodeToDelete.Color ? "RED" : "BLACK"));
+
+      // Should not happen if Get works
+      if (nodeToDelete == null)
+      {
+         UnityEngine.Debug.LogError("Node to delete not found.");
+      }
+
+
+      // Delete parents link to the node
+      if (nodeToDelete.Parent.Left == nodeToDelete)
+      {
+         nodeToDelete.Parent.Left = null;
+      }
+      else
+      {
+         nodeToDelete.Parent.Right = null;
+      }
+
+      // Clear queue
+      Operations.Clear();
+   }
+
+
 
    private int Size(Node x)
    {

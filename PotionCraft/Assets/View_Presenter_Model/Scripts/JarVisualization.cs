@@ -7,7 +7,7 @@ using UnityEngine;
 public class JarVisualization : MonoBehaviour
 {
     [SerializeField] private VisualizationHelper _visualizationHelper;
-    [SerializeField] private Spline _spline;
+    [SerializeField] private SplineFromJar _splineFromJar;
     private Vector3 jarPosition = new Vector3(0, 0, 0);
     private float duration = 2f;
 
@@ -83,8 +83,10 @@ public class JarVisualization : MonoBehaviour
 
         // If the node has an ingredient, move it.
         if (nodeToMove.Ingredient != null) {
-            _spline.ChangeLastKnotPosition(newPosition.transform.position);
-            yield return StartCoroutine(_spline.FollowSplineFromJar(nodeToMove.Ingredient));
+           _splineFromJar.ChangeLastKnot(newPosition.transform.position);
+            yield return StartCoroutine(_splineFromJar.FollowSplineFromJar(nodeToMove.Ingredient));
+            //_spline.ChangeLastVector3Position(newPosition.transform.position);
+            //yield return StartCoroutine(_spline.FollowPointsFromJar(nodeToMove.Ingredient));
             _visualizationHelper.UpdateNullCircleWithIngredient(newPosition.transform.position, nodeToMove); 
         }
         onComplete?.Invoke();
