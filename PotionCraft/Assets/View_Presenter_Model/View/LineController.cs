@@ -18,7 +18,7 @@ public class LineController : MonoBehaviour
        
     }
 
-    // Set points so the linrender knows how many lines it need to draw 
+    // Set points so the linerender knows how many lines it need to draw 
 
     public void SetUpLine(List<Transform> points)
     {
