@@ -26,6 +26,9 @@ public class AvatarHintManager : MonoBehaviour, IAvatarHintManager
             instance = this;
             DontDestroyOnLoad(this);
         }
+
+        // Hides the hint box from start. 
+        HideAvatarHintBoks();
     }
   
   public AvatarHintManager()
@@ -34,27 +37,43 @@ public class AvatarHintManager : MonoBehaviour, IAvatarHintManager
       HintsDict.Add(AvatarHint.SelectedRightPlacementAndInBalance, "Perfect placement! You have selected the right placement for the ingredient and the tree is balanced");
       HintsDict.Add(AvatarHint.SelectedRightPlacementButNeedsToSelectThreeNodes, "You have selected the right placement for the ingredient, but it causes the tree to become unbalanced. You need to select three nodes");
       HintsDict.Add(AvatarHint.SelectedRightPlacementButNeedsToSelectTwoNodes, "You have selected the right placement for the ingredient, but it causes the tree to become unbalanced. You need to select two nodes");
-      HintsDict.Add(AvatarHint.SelectedWrongButton, "You have selected the wrong button. Please try again");
-      HintsDict.Add(AvatarHint.SelectedRightButton, "Good job! You have selected the right button");
+      HintsDict.Add(AvatarHint.SelectedRightIngredientsButWrongButton, "You have selected the wrong button, but the right ingredients. Please try again");
+      HintsDict.Add(AvatarHint.SelectedRightIngredientsAndButton, "Good job! You have selected the right button and ingredients");
       HintsDict.Add(AvatarHint.SelectedRightButtonButNeedsToSelectThreeNodes, "You have selected the right button, but the tree is still unbalanced. You need to select three nodes");
       HintsDict.Add(AvatarHint.SelectedRightButtonButNeedsToSelectTwoNodes, "You have selected the right button, but the tree is still unbalanced. You need to select two nodes");
       HintsDict.Add(AvatarHint.NodeInTheJar, "A subtree has been put in the bag and need to be replaced in the tree");
       HintsDict.Add(AvatarHint.PotionBrewed, "The potion is finished being brewed");
       HintsDict.Add(AvatarHint.SelectedRightPlacementButNeedToFlipColor, "You have selected the right placement for the ingredient, but it causes the tree to become unbalanced. You need to flip the color");
+      HintsDict.Add(AvatarHint.SelectedRightButtonButWrongIngredients, "You have selected the correct button but you selected the wrong ingredients. Try again");
+      HintsDict.Add(AvatarHint.SelectedWrongIngredientsAndButton, "You selected the wrong button and ingredients. Try again!");
+      HintsDict.Add(AvatarHint.NeedsToSelectThreeNodes, "The tree is still unbalanced, you need to select three nodes to do a rotation");
+      HintsDict.Add(AvatarHint.NeedsToSelectTwoNodes, "The tree is still unbalanced, you need to select two nodes to do a rotaiton");
+      HintsDict.Add(AvatarHint.NeedsToSelectTwoNodesToFlipColor, "The tree is still in unbalance. Look at its color. Do you see a color violation?");
+      HintsDict.Add(AvatarHint.InBalance, "Wuhu! You have balanced the tree. Now it is time to insert a new ingredient");
+
   }
 
 // Call this method with "correct" or "hint" and the corresponding enum
   public void UpdateHint(String spriteName, AvatarHint avatarEnum)
   {
+
       ChangeAvatarHintBoxSprinte(spriteName);
       SetHint(avatarEnum);
+
+      // If the user inserts a ingredient correct and the tree is in balance
       if(spriteName.Equals("correct")){
         StartCoroutine(ShowSpriteTemporarily(_avatarHintBoks, 10f)); // Call the coroutine with 10 seconds
       }
+
+      //if the user selects something total wrong
+      else if(spriteName.Equals("wrong")){
+        
+        ShowAvatarHintBoks();
+        StartCoroutine(TriggerShake(1.0f, 1.0f));
+      }
+      // If the user select something correct but that lead to the tree is unblancede 
       else{
         ShowAvatarHintBoks();
-        StartCoroutine(Shake(1.0f, 1.0f));
-        
       }
   }
 
@@ -70,10 +89,6 @@ public class AvatarHintManager : MonoBehaviour, IAvatarHintManager
       _avatarHintText.text = HintsDict[avatarEnum];
   }
 
-  public void TriggerShake(){
-    //_avatarHintBoks.TriggerShake();
-  }
-
 
   public void HideAvatarHintBoks()
   {
@@ -82,6 +97,10 @@ public class AvatarHintManager : MonoBehaviour, IAvatarHintManager
       {
           spriteRenderer.enabled = false; // This hides the sprite
       }
+
+      HideText();
+
+
   }
 
 public void ShowAvatarHintBoks()
@@ -91,6 +110,8 @@ public void ShowAvatarHintBoks()
       {
           spriteRenderer.enabled = true; // This shows the sprite
       }
+
+      ShowText();
   }
 
   public IEnumerator ShowSpriteTemporarily(GameObject spriteObject, float duration)
@@ -110,19 +131,22 @@ public void ShowAvatarHintBoks()
     SpriteRenderer spriteRenderer = _avatarHintBoks.GetComponent<SpriteRenderer>();
     if (spriteRenderer != null)
     {
-        if (spriteName == "hint")
+        if (spriteName.Equals("hint"))
         {
             spriteRenderer.sprite = _avatarHintSprites[0];
         }
-        else if (spriteName == "correct")
+        else if (spriteName.Equals("correct"))
         {
             spriteRenderer.sprite = _avatarHintSprites[1];
+        }
+        else if(spriteName.Equals("wrong")){
+            spriteRenderer.sprite = _avatarHintSprites[2];
         }
     }
   
   }
 
-  private IEnumerator Shake(float duration, float magnitude)
+  private IEnumerator TriggerShake(float duration, float magnitude)
     {
         Vector3 originalPosition = _avatarHintBoks.transform.localPosition;
         float elapsed = 0.0f;
@@ -140,6 +164,24 @@ public void ShowAvatarHintBoks()
 
         _avatarHintBoks.transform.localPosition = originalPosition;
     }
+
+    public void HideText()
+{
+    MeshRenderer renderer = _avatarHintText.GetComponent<MeshRenderer>();
+    if (renderer != null)
+    {
+        renderer.enabled = false; // This hides the TextMesh
+    }
+}
+
+public void ShowText()
+{
+    MeshRenderer renderer = _avatarHintText.GetComponent<MeshRenderer>();
+    if (renderer != null)
+    {
+        renderer.enabled = true; // This shows the TextMesh
+    }
+}
 
 
 }

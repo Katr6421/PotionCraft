@@ -15,6 +15,7 @@ public class Ingredient : MonoBehaviour
     [SerializeField] private Sprite[] _waterFlowerSprite;
     [SerializeField] private Sprite[] _katnissSprite;
     private Image imageComponent;
+    public GameObject LineToParent { get; set; } // Saves a referens to the line that goes to the parent of this ingredient
 
     void Awake()
     {

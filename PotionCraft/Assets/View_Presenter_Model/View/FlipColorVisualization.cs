@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class FlipColorVisualization : MonoBehaviour
 {
-    [SerializeField] private NullCircleSpawner _nullCircleSpawner;
+    [SerializeField] private NullCircleManager _nullCircleManager;
     [SerializeField] private LineRendererManager _lineRendererManager;
     public IEnumerator FlipColorAnimation(NullCircle parentNullCircle)
     {
@@ -22,6 +22,6 @@ public class FlipColorVisualization : MonoBehaviour
         rightChildNullCircle.IsRed = false;
         _lineRendererManager.UpdateLineRenderers();
 
-        yield return null; 
+        yield return null;
     }
 }

@@ -24,14 +24,14 @@ public class TreeVisualizationManager : MonoBehaviour
     [SerializeField] private Canvas _uiCanvas; // Reference to the Canvas where the nodes will be parented
     [SerializeField] private NodeSpawner _nodeSpawner; // Need this to access the list of node GameObjects
     [SerializeField] private LevelUIController _levelUIController; // Need this to access the CircleMarker
-    [SerializeField] private NullCircleSpawner _nullCircleSpawner; // Need this to access the list of NullCircles
+    [SerializeField] private NullCircleManager _nullCircleManager; // Need this to access the list of NullCircles
     [SerializeField] private RightRotationVisualization _rightRotationVisualization; // Need this to make right rotation animations
     [SerializeField] private LeftRotationVisualization _leftRotationVisualization; // Need this to make left rotation animations
     [SerializeField] private FlipColorVisualization _flipColorVisualization; // Need this to make left rotation animations
     [SerializeField] private JarVisualization _jarVisualization; // Need this to make left rotation animations
     [SerializeField] private VisualizationHelper _visualizationHelper;
     [SerializeField] private SplineToJar _splineToJar;
-    [SerializeField] private AvatarHintManager _avatarHintManager; 
+    [SerializeField] private AvatarHintManager _avatarHintManager;
     [SerializeField] private LineRendererManager _lineRendererManager;
 
 
@@ -39,7 +39,7 @@ public class TreeVisualizationManager : MonoBehaviour
     private GameObject _currentNullCircle; // Reference to the latest NullCircle that the user has clicked on
     private int _currectIngredientIndex = 0;     // Index of the current ingredient in the list of ingredients.
     private List<GameObject> _currentInstantiatedNullCircles = new List<GameObject>();
-    
+
 
 
 
@@ -54,7 +54,7 @@ public class TreeVisualizationManager : MonoBehaviour
     private void SpawnRoot()
     {
         // Viser den første nullCircle
-        _nullCircleSpawner.NullCircles[0].SetActive(true);
+        _nullCircleManager.NullCircles[0].SetActive(true);
     }
 
     // Passer ikke helt mere
@@ -104,7 +104,7 @@ public class TreeVisualizationManager : MonoBehaviour
             // Needs to be a coroutine to be able to wait for the movement to finish before deactivating the NullCircle
             StartCoroutine(MoveAndHide(_currentIngredient, _currentNullCircle.transform.position, 0.5f, () =>
             {
-            
+
 
                 /*********************************************
                 Update _currentNullCircle with the placed ingredient
@@ -122,6 +122,11 @@ public class TreeVisualizationManager : MonoBehaviour
                 Draw lines between nullCircles
                 *********************************************/
                 _lineRendererManager.UpdateLineRenderers();
+                //_lineRendererManager.SpawnLinesToParent(_currentNullCircle.GetComponent<NullCircle>().LeftChild, _currentIngredient);
+                //_lineRendererManager.SpawnLinesToParent(_currentNullCircle.GetComponent<NullCircle>().RightChild, _currentIngredient);
+                //_lineRendererManager.ShowLineRender(_currentNullCircle.GetComponent<NullCircle>().LeftChild);
+                //_lineRendererManager.ShowLineRender(_currentNullCircle.GetComponent<NullCircle>().RightChild);
+
 
                 /*********************************************
                 Check if the tree is unbalanced (something is in the operation queue) after we have inserted the ingredient
@@ -130,14 +135,14 @@ public class TreeVisualizationManager : MonoBehaviour
                 bool isTreeInBalanced = _treeManager.IsTreeInBalanced();
                 if (isTreeInBalanced)
                 {
-                    _nullCircleSpawner.ShowAllChildrenNullCircles();
+                    _nullCircleManager.ShowAllChildrenNullCircles();
                     // The user has placed the ingredient in the right place and the tree is in balance
                     _avatarHintManager.UpdateHint("correct", AvatarHint.SelectedRightPlacementAndInBalance);
 
                 }
                 else
                 {
-                    _nullCircleSpawner.HideAllNullCircles();
+                    _nullCircleManager.HideAllNullCircles();
 
                     /********************************************
                     The user has placed the ingredient in the right place, but the tree is unbalanced
@@ -170,11 +175,11 @@ public class TreeVisualizationManager : MonoBehaviour
             Debug.Log("Wrong null circle. You placed the ingredient wrong, try again");
             // Delete the node from the Red-Black BST tree and clear the operation queue
             _treeManager.DeleteNodeAndClearOperations(currentIngredientValue);
-        
+
             // TODO: Update hint 
 
             // Allow user to click on the nullCircles
-            _nullCircleSpawner.ShowAllChildrenNullCircles();
+            _nullCircleManager.ShowAllChildrenNullCircles();
         }
     }
 
@@ -208,7 +213,7 @@ public class TreeVisualizationManager : MonoBehaviour
 
         // Find parentNullcircle, so our left and right rotation always takes the right nullcircle into account
         Vector3 parentPosition = parent.transform.position;
-        NullCircle parentNullCircle = _nullCircleSpawner.FindNullCircleBasedOnPosition(parentPosition);
+        NullCircle parentNullCircle = _nullCircleManager.FindNullCircleBasedOnPosition(parentPosition);
         //GameObject parentNullCircle = _currentNullCircle.GetComponent<NullCircle>().Parent;
 
 
@@ -233,19 +238,19 @@ public class TreeVisualizationManager : MonoBehaviour
                     /*********************************************
                     Make a copy of all the nullCircles and instantiate them with the ingredients' values
                     *********************************************/
-                    NullCircle copyRootOfSubTree = _nullCircleSpawner.CopyNullCircleSubtree(rightChildLeftChildNullCircle);
+                    NullCircle copyRootOfSubTree = _nullCircleManager.CopyNullCircleSubtree(rightChildLeftChildNullCircle);
 
 
                     /*********************************************
                     Store all the ingredients in the subtree in a list
                     *********************************************/
-                    List<GameObject> ingredientsToJar = _nullCircleSpawner.CollectIngredients(rightChildLeftChildNullCircle, new List<GameObject>());
+                    List<GameObject> ingredientsToJar = _nullCircleManager.CollectIngredients(rightChildLeftChildNullCircle, new List<GameObject>());
 
 
                     /*********************************************
                     Update the nullCircles to default value after we have copied them
                     *********************************************/
-                    _nullCircleSpawner.setNullCircleToDefault(rightChildLeftChildNullCircle);
+                    _nullCircleManager.setNullCircleToDefault(rightChildLeftChildNullCircle);
 
 
                     /*********************************************
@@ -305,7 +310,7 @@ public class TreeVisualizationManager : MonoBehaviour
                     /*********************************************
                     Destroy the copied nullCircles
                     *********************************************/
-                    _nullCircleSpawner.destroyNullCircleAndAllDescendants(copyRootOfSubTree.gameObject);
+                    _nullCircleManager.destroyNullCircleAndAllDescendants(copyRootOfSubTree.gameObject);
                 }
                 else
                 {
@@ -341,17 +346,17 @@ public class TreeVisualizationManager : MonoBehaviour
                     /*********************************************
                     Make a copy of all the nullCircles and instantiate them with the ingredients' values
                     *********************************************/
-                    NullCircle copyRootOfSubTree = _nullCircleSpawner.CopyNullCircleSubtree(rightChildNullCircle);
+                    NullCircle copyRootOfSubTree = _nullCircleManager.CopyNullCircleSubtree(rightChildNullCircle);
 
                     /*********************************************
                     Store all the ingredients in the subtree in a list
                     *********************************************/
-                    List<GameObject> ingredientsToJar = _nullCircleSpawner.CollectIngredients(rightChildNullCircle, new List<GameObject>());
+                    List<GameObject> ingredientsToJar = _nullCircleManager.CollectIngredients(rightChildNullCircle, new List<GameObject>());
 
                     /*********************************************
                     Update the nullCircles to default value after we have copied them
                     *********************************************/
-                    _nullCircleSpawner.setNullCircleToDefault(rightChildNullCircle);
+                    _nullCircleManager.setNullCircleToDefault(rightChildNullCircle);
 
                     /*********************************************
                     Update the line renderers after we have sat the nullCircles to default
@@ -399,7 +404,7 @@ public class TreeVisualizationManager : MonoBehaviour
                     /*********************************************
                     Destroy the copied nullCircles
                     *********************************************/
-                    _nullCircleSpawner.destroyNullCircleAndAllDescendants(copyRootOfSubTree.gameObject);
+                    _nullCircleManager.destroyNullCircleAndAllDescendants(copyRootOfSubTree.gameObject);
                 }
                 else
                 {
@@ -428,9 +433,6 @@ public class TreeVisualizationManager : MonoBehaviour
                 break;
 
 
-
-
-
             default:
                 Debug.LogError("Invalid operation type. Eller vi glemte at give den en operationtype med");
                 throw new ArgumentOutOfRangeException();
@@ -454,11 +456,10 @@ public class TreeVisualizationManager : MonoBehaviour
         objectToMove.transform.position = destination; // Ensure it reaches the destination
 
 
-        // Now that the movement is complete, destroy the NullCircle GameObject
-        //_currentNullCircle.SetActive(false);
-        _nullCircleSpawner.HideNullCircle(_currentNullCircle.GetComponent<NullCircle>());
+        // Now that the movement is complete, hide the NullCircle GameObject
+        _nullCircleManager.HideNullCircle(_currentNullCircle.GetComponent<NullCircle>());
         _currentNullCircle.GetComponent<NullCircle>().IsActive = false;
-        // Invoke the callback to continue with the rest of the method's logic
+        
         onComplete?.Invoke();
     }
 

@@ -172,7 +172,7 @@ MonoBehaviour:
   _uiCanvas: {fileID: 620487765}
   _nodeSpawner: {fileID: 1513720697}
   _levelUIController: {fileID: 1654093617}
-  _nullCircleSpawner: {fileID: 769144078}
+  _nullCircleManager: {fileID: 769144078}
   _rightRotationVisualization: {fileID: 1147364488}
   _leftRotationVisualization: {fileID: 355132313}
   _flipColorVisualization: {fileID: 716256337}
@@ -180,6 +180,7 @@ MonoBehaviour:
   _visualizationHelper: {fileID: 1755271417}
   _splineToJar: {fileID: 761936350}
   _avatarHintManager: {fileID: 669722328}
+  _lineRendererManager: {fileID: 1590804489}
 --- !u!1 &107009967
 GameObject:
   m_ObjectHideFlags: 0
@@ -192,7 +193,7 @@ GameObject:
   - component: {fileID: 107009972}
   - component: {fileID: 107009971}
   - component: {fileID: 107009970}
-  - component: {fileID: 107009969}
+  - component: {fileID: 107009973}
   m_Layer: 5
   m_Name: RotateRightButton
   m_TagString: Untagged
@@ -219,18 +220,6 @@ RectTransform:
   m_AnchoredPosition: {x: 797, y: -394}
   m_SizeDelta: {x: 225, y: 101}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &107009969
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 107009967}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0861c94012d4c4e0d9cdc013ea7b40d5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &107009970
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -275,8 +264,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 107009969}
-        m_TargetAssemblyTypeName: RotateRightClickHandler, Assembly-CSharp
+      - m_Target: {fileID: 107009973}
+        m_TargetAssemblyTypeName: RotateRightClickHandler, View
         m_MethodName: OnClickRotateRight
         m_Mode: 1
         m_Arguments:
@@ -325,6 +314,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 107009967}
   m_CullTransparentMesh: 1
+--- !u!114 &107009973
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 107009967}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f55b5d13b1b400642bb14962aa7f0925, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &130390312
 GameObject:
   m_ObjectHideFlags: 0
@@ -10574,6 +10575,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _visualizationHelper: {fileID: 1755271417}
   _splineFromJar: {fileID: 132091228}
+  _nullCircleManager: {fileID: 769144078}
 --- !u!4 &261952717
 Transform:
   m_ObjectHideFlags: 0
@@ -10618,8 +10620,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 451f5883587b84cb0861734434e23d41, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _nullCircleSpawner: {fileID: 769144078}
+  _nullCircleManager: {fileID: 769144078}
   _visualizationHelper: {fileID: 1755271417}
+  _lineRendererManager: {fileID: 1590804489}
 --- !u!4 &355132314
 Transform:
   m_ObjectHideFlags: 0
@@ -10860,7 +10863,7 @@ GameObject:
   - component: {fileID: 537657804}
   - component: {fileID: 537657803}
   - component: {fileID: 537657802}
-  - component: {fileID: 537657801}
+  - component: {fileID: 537657805}
   m_Layer: 5
   m_Name: RotateLeftButton
   m_TagString: Untagged
@@ -10887,18 +10890,6 @@ RectTransform:
   m_AnchoredPosition: {x: 45, y: -405}
   m_SizeDelta: {x: 225, y: 101}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &537657801
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 537657799}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 168da58e25d7146b5b1ddf1c12d3009e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &537657802
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10943,8 +10934,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 537657801}
-        m_TargetAssemblyTypeName: RotateLeftClickHandler, Assembly-CSharp
+      - m_Target: {fileID: 537657805}
+        m_TargetAssemblyTypeName: RotateLeftClickHandler, View
         m_MethodName: OnClickRotateLeft
         m_Mode: 1
         m_Arguments:
@@ -10993,6 +10984,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 537657799}
   m_CullTransparentMesh: 1
+--- !u!114 &537657805
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 537657799}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a3eee05d5ddbfdf43b979a26e73ffb83, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &592938126
 GameObject:
   m_ObjectHideFlags: 0
@@ -20908,7 +20911,7 @@ GameObject:
   - component: {fileID: 694510293}
   - component: {fileID: 694510292}
   - component: {fileID: 694510291}
-  - component: {fileID: 694510290}
+  - component: {fileID: 694510294}
   m_Layer: 5
   m_Name: FlipColoursButton
   m_TagString: Untagged
@@ -20935,18 +20938,6 @@ RectTransform:
   m_AnchoredPosition: {x: 426, y: -401}
   m_SizeDelta: {x: 225, y: 101}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &694510290
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 694510288}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b48803808f83e4c26851682a8773d9ae, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &694510291
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20991,8 +20982,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 694510290}
-        m_TargetAssemblyTypeName: FlipColourClickHandler, Assembly-CSharp
+      - m_Target: {fileID: 694510294}
+        m_TargetAssemblyTypeName: FlipColourClickHandler, View
         m_MethodName: OnClickFlipColour
         m_Mode: 1
         m_Arguments:
@@ -21041,6 +21032,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 694510288}
   m_CullTransparentMesh: 1
+--- !u!114 &694510294
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 694510288}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef2c2eaeef4950d4f92d34f46baf5453, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &716256336
 GameObject:
   m_ObjectHideFlags: 0
@@ -21070,7 +21073,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b6e7c8354bab45d29b891b67551e226, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _nullCircleSpawner: {fileID: 769144078}
+  _nullCircleManager: {fileID: 769144078}
+  _lineRendererManager: {fileID: 1590804489}
 --- !u!4 &716256338
 Transform:
   m_ObjectHideFlags: 0
@@ -21328,7 +21332,7 @@ GameObject:
   - component: {fileID: 769144079}
   - component: {fileID: 769144078}
   m_Layer: 0
-  m_Name: NullCircleSpawner
+  m_Name: NullCircleManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -21346,8 +21350,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6cea55333aac04d38880c987dad54978, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nullCirclePrefab: {fileID: 9033406132478758472, guid: 01c4774bbde6f40588961cbedf116ada, type: 3}
-  uiCanvas: {fileID: 620487765}
+  _nullCirclePrefab: {fileID: 9033406132478758472, guid: 01c4774bbde6f40588961cbedf116ada, type: 3}
+  _uiCanvas: {fileID: 620487765}
+  _lineRendererManager: {fileID: 1590804489}
+  _treeManager: {fileID: 1750167745}
 --- !u!4 &769144079
 Transform:
   m_ObjectHideFlags: 0
@@ -26391,8 +26397,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d088818696073487e9874e21068c496b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _nullCircleSpawner: {fileID: 769144078}
+  _nullCircleManager: {fileID: 769144078}
   _visualizationHelper: {fileID: 1755271417}
+  _lineRendererManager: {fileID: 1590804489}
 --- !u!4 &1147364489
 Transform:
   m_ObjectHideFlags: 0
@@ -31553,6 +31560,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4751fd524827f420485c130970b703a1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _nullCircleManager: {fileID: 769144078}
 --- !u!4 &1590804490
 Transform:
   m_ObjectHideFlags: 0
@@ -31849,7 +31857,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _treeVisualizerManager: {fileID: 76209058}
-  _nullCircleSpawner: {fileID: 769144078}
+  _nullCircleManager: {fileID: 769144078}
+  _avatarHintManager: {fileID: 669722328}
 --- !u!4 &1750167746
 Transform:
   m_ObjectHideFlags: 0
@@ -31894,7 +31903,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5714287e61ad94046b83b3460d0a52d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _nullCircleSpawner: {fileID: 769144078}
+  _nullCircleManager: {fileID: 769144078}
   _treeManager: {fileID: 1750167745}
   _spline:
     m_EditModeType: 1
@@ -31909,6 +31918,7 @@ MonoBehaviour:
       m_Data: []
     m_ObjectData:
       m_Data: []
+  _lineRendererManager: {fileID: 1590804489}
 --- !u!4 &1755271418
 Transform:
   m_ObjectHideFlags: 0

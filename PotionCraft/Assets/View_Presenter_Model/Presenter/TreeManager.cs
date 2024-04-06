@@ -5,7 +5,8 @@ using UnityEngine;
 public class TreeManager : MonoBehaviour, ITreeManager
 {
     [SerializeField] private TreeVisualizationManager _treeVisualizerManager;
-    [SerializeField] private NullCircleSpawner _nullCircleSpawner;
+    [SerializeField] private NullCircleManager _nullCircleManager;
+    [SerializeField] private AvatarHintManager _avatarHintManager;
     public RedBlackBST RedBlackTree { get; set; } = new RedBlackBST();
     public static TreeManager instance { get; private set; }
     private HashSet<Node> currentSelctedNodes = new HashSet<Node>();
@@ -123,9 +124,11 @@ public class TreeManager : MonoBehaviour, ITreeManager
         //// FlipColors: can only select 3 nodes - så længe størrelsen på set'et er mindre end 3
     }
 
-    public void HandleOperationButtonClick(OperationType selectedOperationType){
+    public void HandleOperationButtonClick(OperationType selectedOperationType)
+    {
         // If there is no operations in the queue to perform, do nothing. The user is supposed to insert a new ingredient instead
-        if (IsTreeInBalanced()){
+        if (IsTreeInBalanced())
+        {
             Debug.Log("There are no more operations in the queue. The tree is in balance. Insert next ingredient.");
         }
 
@@ -141,13 +144,18 @@ public class TreeManager : MonoBehaviour, ITreeManager
             // Correct ingredients and correct operation
             if (userSelectedCorrectOperation)
             {
+                // Updates hint to Green Sprite, Shows for some secunds. The ingredients and operation were both correct, execute the operation
+                // Idea: Could be nice to convert the correctOperation to string and add it to the hint
+                _avatarHintManager.UpdateHint("correct", AvatarHint.SelectedRightIngredientsAndButton);
                 ExecuteNextOperation(correctNodesInTree, nextCorrectOperation.OperationType);
-                // TODO: Update hint? - The ingredients and operation were both correct, execute the operation
+                
             }
             // Correct ingredients but wrong operation
             else
             {
-                // TODO: Update hint - The ingredients were correct but not the operation
+                // The ingredients were correct but not the operation.
+                // Updates hint to Red Sprite, and keep showing
+                _avatarHintManager.UpdateHint("wrong", AvatarHint.SelectedRightIngredientsButWrongButton);
             }
 
         }
@@ -156,12 +164,14 @@ public class TreeManager : MonoBehaviour, ITreeManager
             // Wrong ingredients but correct operation
             if (userSelectedCorrectOperation)
             {
-                // TODO: Update hint - The operation was correct but not the ingredients
+                // TODO: Update hint - The operation was correct but not the ingredients. Red Sprite is shown, until you select something right
+                _avatarHintManager.UpdateHint("wrong", AvatarHint.SelectedRightButtonButWrongIngredients);
             }
             // Wrong ingredients and wrong operation
             else
             {
-                // TODO: Update hint - The ingredients and operation were both wrong
+                // Update hint - The ingredients and operation were both wrong. Red Sprite is shown, until you select something right
+                _avatarHintManager.UpdateHint("wrong", AvatarHint.SelectedWrongIngredientsAndButton);
             }
         }
     }
@@ -246,7 +256,7 @@ public class TreeManager : MonoBehaviour, ITreeManager
         {
             //Debug.Log("*************** Print all nullcircles AFTER VISUALIZE ROTATION in ExecuteOperation ***********");
             //_nullCircleSpawner.PrintNullCircles();
-            
+
             // Change the image of the selected ingredients to the correct image
             ChangeIngredientImageToDefault();
 
@@ -264,10 +274,11 @@ public class TreeManager : MonoBehaviour, ITreeManager
             // There are no more operations to perform - The tree is in balance
             else
             {
-                // TODO: Update hint - Wuhuu the tree is in balance. Insert next ingredient
+                // Update hint - Wuhuu the tree is in balance. Insert next ingredient. Green hint
+                _avatarHintManager.UpdateHint("correct", AvatarHint.InBalance);
 
                 // Show nullcircles to allow for new ingredients to be inserted
-                _nullCircleSpawner.ShowAllChildrenNullCircles();
+                _nullCircleManager.ShowAllChildrenNullCircles();
             }
         }));
 
@@ -303,13 +314,16 @@ public class TreeManager : MonoBehaviour, ITreeManager
         switch (nextCorrectOperation)
         {
             case OperationType.RotateLeft:
-                // TODO: Update hint - Need to rotate left
+                // Update hint - Need to rotate left
+                _avatarHintManager.UpdateHint("hint", AvatarHint.NeedsToSelectThreeNodes);
                 break;
             case OperationType.RotateRight:
-                // TODO: Update hint - Need to rotate right
+                // Update hint - Need to rotate right
+                _avatarHintManager.UpdateHint("hint", AvatarHint.NeedsToSelectTwoNodes);
                 break;
             case OperationType.FlipColors:
-                // TODO: Update hint - Need to flip colors
+                // Update hint - Need to flip colors
+                _avatarHintManager.UpdateHint("hint", AvatarHint.NeedsToSelectTwoNodesToFlipColor);
                 break;
             default:
                 break;
@@ -333,7 +347,8 @@ public class TreeManager : MonoBehaviour, ITreeManager
     }
 
     // See what the next operation is in the queue
-    public OperationType GetOperationType(){
+    public OperationType GetOperationType()
+    {
         return RedBlackTree.Operations.Peek().OperationType;
     }
 
