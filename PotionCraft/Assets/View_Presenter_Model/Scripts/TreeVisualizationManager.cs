@@ -17,6 +17,14 @@ Summary: Everyting that happens when a NullCircle is clicked.
 *********************************************/
 
 
+
+
+
+
+
+
+
+
 public class TreeVisualizationManager : MonoBehaviour
 {
 
@@ -30,6 +38,9 @@ public class TreeVisualizationManager : MonoBehaviour
     [SerializeField] private RightRotationVisualization _rightRotationVisualization; // Need this to make right rotation animations
     [SerializeField] private LeftRotationVisualization _leftRotationVisualization; // Need this to make left rotation animations
     [SerializeField] private FlipColorVisualization _flipColorVisualization; // Need this to make left rotation animations
+    [SerializeField] private JarVisualization _jarVisualization; // Need this to make left rotation animations
+    [SerializeField] private Spline _spline;
+    [SerializeField] private VisualizationHelper _visualizationHelper;
 
     private GameObject _currentIngredient; // Reference to the current Ingredient that the user must insert in the RedBlackTree
     private GameObject _currentNullCircle; // Reference to the latest NullCircle that the user has clicked on
@@ -67,7 +78,7 @@ public class TreeVisualizationManager : MonoBehaviour
     {
         // The nullcircle that was clicked - Do we need to update this after rotations?
         _currentNullCircle = UnityEngine.EventSystems.EventSystem.current.currentSelectedGameObject;
-        Debug.Log("!!!!! _currentNullCircle !!!!! - I just clicked on the nullCircle with the index: " + _currentNullCircle.GetComponent<NullCircle>().Index);
+        //Debug.Log("!!!!! _currentNullCircle !!!!! - I just clicked on the nullCircle with the index: " + _currentNullCircle.GetComponent<NullCircle>().Index);
 
         /*********************************************
         Set _currentIngredient and _currentNullCircle.Value
@@ -78,7 +89,7 @@ public class TreeVisualizationManager : MonoBehaviour
         Set the current state of the Red-Black BST tree
         *********************************************/
         var currentIngredientValue = int.Parse(_currentIngredient.GetComponentInChildren<TextMeshProUGUI>().text);
-        Debug.Log("I am inserting the node with the value: " + currentIngredientValue + " into the tree.");
+        //Debug.Log("I am inserting the node with the value: " + currentIngredientValue + " into the tree.");
         _treeManager.InsertNode(currentIngredientValue, currentIngredientValue);
 
         /*********************************************
@@ -169,7 +180,7 @@ public class TreeVisualizationManager : MonoBehaviour
         GameObject leftChild;
         WhoIsWho(operationType, ingredientsToRotate, out grandparent, out parent, out rightChild, out leftChild);
 
-        Debug.Log("");
+        //Debug.Log("");
 
         // Find parentNullcircle, so our left and right rotation always takes the right nullcircle into account
         Vector3 parentPosition = parent.transform.position;
@@ -177,8 +188,8 @@ public class TreeVisualizationManager : MonoBehaviour
         //GameObject parentNullCircle = _currentNullCircle.GetComponent<NullCircle>().Parent;
 
 
-        Debug.Log("I am in VisualizeRotation. _currentNullCircle is index " + _currentNullCircle.GetComponent<NullCircle>().Index);
-        Debug.Log("I am in VisualizeRotation. My parentNullCircle is index " + parentNullCircle.GetComponent<NullCircle>().Index);
+        //Debug.Log("I am in VisualizeRotation. _currentNullCircle is index " + _currentNullCircle.GetComponent<NullCircle>().Index);
+        //Debug.Log("I am in VisualizeRotation. My parentNullCircle is index " + parentNullCircle.GetComponent<NullCircle>().Index);
 
         switch (operationType)
         {
@@ -188,53 +199,208 @@ public class TreeVisualizationManager : MonoBehaviour
                 //GameObject leftChildNullCircle  =  _currentNullCircle.GetComponent<NullCircle>().LeftChild;
                 NullCircle rightChildLeftChildNullCircle = parentNullCircle.GetComponent<NullCircle>().RightChild.GetComponent<NullCircle>().LeftChild.GetComponent<NullCircle>();
                 
-                //Check if the rightChild is  null
+                /*********************************************
+                Check if the rightChild's leftChild is null -> Bag animation
+                *********************************************/
                 if (rightChildLeftChildNullCircle.Ingredient != null){
-                    // Debug.Log("Jeg har et leftChild, og derfor skal mit subtree op i bagen");
+                    //Debug.Log("**********Jeg har et leftChild, og derfor skal mit subtree op i bagen**********");
 
-                    // Bag animation
-                    //NullCircle subtreeTmpRootNullCircle = Instantiate(_nullCirclePrefab, new Vector(0,0,0), Quaternion.identity).getComponent<NullCircle>();
-                    //subtreeTmpRootNullCircle.Ingredient = rightChildLeftChildNullCircle.Ingredient;
-                    //subtreeTmpRootNullCircle.Value = rightChildLeftChildNullCircle.Value;
+                    /*********************************************
+                    Make a copy of all the nullCircles and instantiate them with the ingredients' values
+                    *********************************************/
+                    NullCircle copyRootOfSubTree = _nullCircleSpawner.CopyNullCircleSubtree(rightChildLeftChildNullCircle);
+                    
+                    
+                    /*********************************************
+                    Store all the ingredients in the subtree in a list
+                    *********************************************/
+                    List<GameObject> ingredientsToJar = _nullCircleSpawner.CollectIngredients(rightChildLeftChildNullCircle, new List<GameObject>());
                     
 
-                    
-                    // rotate animation
-                    // move parent to leftChild
-                    // move rightChild to parent
+                    /*********************************************
+                    Update the nullCircles to default value after we have copied them
+                    *********************************************/
+                    _nullCircleSpawner.setNullCircleToDefault(rightChildLeftChildNullCircle);
 
-                }
-                else {
-                    // Debug.Log("Jeg har ikke et leftChild, og derfor skal jeg bare rotere");
-                    Debug.Log("Jeg starter RotateLeftAnimation");
+
+                    /*********************************************
+                    Update the line renderers after we have sat the nullCircles to default
+                    *********************************************/
+                    _nullCircleSpawner.UpdateLineRenderers();
+                    
+
+
+                    // MÅSKE UDNØDVENDIGT MED AT SHRINK
+                    //yield return StartCoroutine(_jarVisualization.ShrinkMultiple(ingredientsToJar, () => {}));
+                    
+                    
+                    /*********************************************
+                    Move the ingredients to the jar (visually)
+                    *********************************************/
+                    foreach (GameObject ingredient in ingredientsToJar)
+                    {
+                        _spline.ChangeFirstKnotPosition(ingredient.transform.position);
+                        yield return StartCoroutine(_spline.FollowSplineToJar(ingredient));
+                        
+                    }
+                    
+                    /*********************************************
+                    Start the left rotation animation
+                    *********************************************/
                     yield return StartCoroutine(_leftRotationVisualization.RotateLeftAnimation(parent, rightChild, parentNullCircle));
+                    
+                    
+                    // MÅSKE UDNØDVENDIGT MED AT SHRINK
+                    // yield return (_jarAnimation.GrowAndMove(yourGameObject, pathPoints, finalPosition, totalAnimationDuration));
+                    //Debug.Log("Jeg har kopieret nullcircle og nu er jeg blevet nulstillet og mine lijer er blevet opdateret");
+                    //_nullCircleSpawner.PrintNullCircles();
+                    
+
+
+                    /*********************************************
+                    Move the ingredients back to the tree (both visually and on the nullCircles)
+                    *********************************************/
+                    NullCircle rootToPlaceSubtree = parentNullCircle.GetComponent<NullCircle>().LeftChild.GetComponent<NullCircle>().RightChild.GetComponent<NullCircle>();
+                    yield return StartCoroutine( _jarVisualization.MoveNodeAndAllDescendantsJar(copyRootOfSubTree, rootToPlaceSubtree, 1.0f, ()=>{}));
+                    
+
+                    /*********************************************
+                    Update the line renderers after we have updated the nullCircles to their current ingredients
+                    *********************************************/
+                    _nullCircleSpawner.UpdateLineRenderers();
+
+
+
+                    //Debug.Log("PRINTER ALL NULLCIRCLES!!!!!!");
+                    //_nullCircleSpawner.PrintNullCircles();
+                
+
+                    /*********************************************
+                    Destroy the copied nullCircles
+                    *********************************************/
+                    _nullCircleSpawner.destroyNullCircleAndAllDescendants(copyRootOfSubTree.gameObject);
+                }
+                else
+                {
+                    // Debug.Log("Jeg har ikke et leftChild, og derfor skal jeg bare rotere");
+                    //Debug.Log("Jeg starter RotateLeftAnimation");
+
+                    /*********************************************
+                    Start the left rotation animation
+                    *********************************************/
+                    yield return StartCoroutine(_leftRotationVisualization.RotateLeftAnimation(parent, rightChild, parentNullCircle));
+            
+                    
                 }
                 break;
 
 
             case OperationType.RotateRight:
                 //h node = grandparent
-                GameObject rightChildNullCircle  =  parentNullCircle.GetComponent<NullCircle>().RightChild;
+                NullCircle rightChildNullCircle  =  parentNullCircle.GetComponent<NullCircle>().RightChild.GetComponent<NullCircle>();
                 
-                 //check if parent right child er null
-                if (rightChildNullCircle.GetComponent<NullCircle>().Ingredient != null){
+                /*********************************************
+                Check if the rightChild is null -> Bag animation
+                *********************************************/
+                if (rightChildNullCircle.Ingredient != null){
                     // Debug.Log("Jeg har et rightChild, og derfor skal mit subtree op i bagen");
                     // Bag animation
                     // rotate animation
                     // move parent to leftChild
                     // move rightChild to parent
+
+
+                    /*********************************************
+                    Make a copy of all the nullCircles and instantiate them with the ingredients' values
+                    *********************************************/
+                    NullCircle copyRootOfSubTree = _nullCircleSpawner.CopyNullCircleSubtree(rightChildNullCircle);
+
+                    /*********************************************
+                    Store all the ingredients in the subtree in a list
+                    *********************************************/
+                    List<GameObject> ingredientsToJar = _nullCircleSpawner.CollectIngredients(rightChildNullCircle, new List<GameObject>());
+
+                    /*********************************************
+                    Update the nullCircles to default value after we have copied them
+                    *********************************************/
+                    _nullCircleSpawner.setNullCircleToDefault(rightChildNullCircle);
+
+                    /*********************************************
+                    Update the line renderers after we have sat the nullCircles to default
+                    *********************************************/
+                    _nullCircleSpawner.UpdateLineRenderers();
+
+                    // MÅSKE UDNØDVENDIGT MED AT SHRINK
+                    //yield return StartCoroutine(_jarVisualization.ShrinkMultiple(ingredientsToJar, () => {}));
+
+
+                    /*********************************************
+                    Move the ingredients to the jar (visually)
+                    *********************************************/
+                    foreach (GameObject ingredient in ingredientsToJar)
+                    {
+                        _spline.ChangeFirstKnotPosition(ingredient.transform.position);
+                        yield return StartCoroutine(_spline.FollowSplineToJar(ingredient));
+                    }
+
+
+                    /*********************************************
+                    Start the right rotation animation
+                    *********************************************/
+                    yield return StartCoroutine(_rightRotationVisualization.RotateRightAnimation(leftChild, parent, grandparent, parentNullCircle));
+
+                    // MÅSKE UDNØDVENDIGT MED AT SHRINK
+                    // yield return (_jarAnimation.GrowAndMove(yourGameObject, pathPoints, finalPosition, totalAnimationDuration));
+
+
+                    /*********************************************
+                    Move the ingredients back to the tree (both visually and on the nullCircles)
+                    *********************************************/
+
+                    // Parent Parent Rightchild
+                    NullCircle rootToPlaceSubtree = parentNullCircle.GetComponent<NullCircle>().Parent.GetComponent<NullCircle>().RightChild.GetComponent<NullCircle>().LeftChild.GetComponent<NullCircle>();
+                    yield return StartCoroutine( _jarVisualization.MoveNodeAndAllDescendantsJar(copyRootOfSubTree, rootToPlaceSubtree, 1.0f, ()=>{}));
+
+                    /*********************************************
+                    Update the line renderers after we have updated the nullCircles to their current ingredients
+                    *********************************************/
+                    _nullCircleSpawner.UpdateLineRenderers();
+
+                    /*********************************************
+                    Destroy the copied nullCircles
+                    *********************************************/
+                    _nullCircleSpawner.destroyNullCircleAndAllDescendants(copyRootOfSubTree.gameObject);
                 }
-                else {
+                else
+                {
                     // Debug.Log("Jeg har ikke et rightChild, og derfor skal jeg bare rotere");
-                    Debug.Log("Jeg starter RotateRightAnimation");
+                    //Debug.Log("Jeg starter RotateRightAnimation");
+
+                    /*********************************************
+                    Start the right rotation animation
+                    *********************************************/
                     yield return StartCoroutine(_rightRotationVisualization.RotateRightAnimation(leftChild, parent, grandparent, parentNullCircle));
                 }                
                 break;
+
+
+
+
+
             case OperationType.FlipColors:
                 // h node = parent
-                Debug.Log("Jeg starter FlipColorAnimation");
+                //Debug.Log("Jeg starter FlipColorAnimation");
+
+                /*********************************************
+                Start the flip colors rotation animation
+                *********************************************/
                 yield return StartCoroutine(_flipColorVisualization.FlipColorAnimation(parentNullCircle));
                 break;
+
+
+
+
+
             default:
                 Debug.LogError("Invalid operation type. Eller vi glemte at give den en operationtype med");
                 throw new ArgumentOutOfRangeException();

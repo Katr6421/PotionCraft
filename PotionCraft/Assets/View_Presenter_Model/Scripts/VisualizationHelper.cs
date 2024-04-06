@@ -2,13 +2,16 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using TreeEditor;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Splines;
 
 public class VisualizationHelper : MonoBehaviour
 {
     [SerializeField] private  NullCircleSpawner _nullCircleSpawner;
     [SerializeField] private  TreeManager _treeManager;
+    [SerializeField] private Spline _spline;
 
 
     public Vector3 WorldToCanvasPosition(Canvas canvas, Vector3 worldPosition)
@@ -41,53 +44,80 @@ public class VisualizationHelper : MonoBehaviour
     }
 
 
-    public IEnumerator MoveNodeAndAllDescendants(GameObject nodeToMove, Vector3 newPosition, float duration, Action onComplete) {
-        NullCircle nullCircle = nodeToMove.GetComponent<NullCircle>();
+    public IEnumerator MoveNodeAndAllDescendants(NullCircle nullCircle, Vector3 newPosition, float duration, Action onComplete) {
+        //Debug.Log("Calling MoveNodeAndAllDescendants");
+        //NullCircle nullCircle = nodeToMove.GetComponent<NullCircle>();
+
+        // Recursively move the left subtree if it exists.
+        if (nullCircle.LeftChild.GetComponent<NullCircle>().Ingredient != null) {
+            //Debug.Log("Jeg har et venstre barn");
+            NullCircle leftChild = nullCircle.LeftChild.GetComponent<NullCircle>();
+            //Debug.Log("Leftchild index: " + leftChild.GetComponent<NullCircle>().Index);
+            Vector3 newLeftChildPosition = leftChild.GetComponent<NullCircle>().LeftChild.transform.position;
+            //Debug.Log("newleftchildPosistion index:" + leftChild.GetComponent<NullCircle>().LeftChild.GetComponent<NullCircle>().Index);
+
+            //Vector3 leftChildNewPosition = newPosition - (nodeToMove.transform.position - leftChild.transform.position);
+            //leftChild.transform.position
+            yield return StartCoroutine(MoveNodeAndAllDescendants(leftChild, newLeftChildPosition, duration, () => {}));
+        }
+
+        // Recursively move the right subtree if it exists.
+        if (nullCircle.RightChild.GetComponent<NullCircle>().Ingredient != null) {
+            NullCircle rightChild = nullCircle.RightChild.GetComponent<NullCircle>();
+            Vector3 newRightChildPosition = rightChild.GetComponent<NullCircle>().RightChild.transform.position;
+            //Vector3 rightChildNewPosition = newPosition - (nodeToMove.transform.position - rightChild.transform.position);
+            // SHOULD MAYBE BE A DIFFERENT METHOD
+            yield return StartCoroutine(MoveNodeAndAllDescendants(rightChild, newRightChildPosition, duration, () => {}));
+        }
+
 
         // If the node has an ingredient, move it.
         if (nullCircle.Ingredient != null) {
             yield return StartCoroutine(MoveNode(nullCircle.Ingredient, newPosition, duration, nullCircle, () => {
                 _nullCircleSpawner.DeactivateAllNullCirclesInSubtree(nullCircle);
-              
+                UpdateNullCircleWithIngredient(newPosition, nullCircle);
             }));
-
-            yield return StartCoroutine(UpdateNullCircleWithIngredient(newPosition, nullCircle, ()=>{}));
+           
         }
 
-        // Recursively move the left subtree if it exists.
-        if (nullCircle.LeftChild.GetComponent<NullCircle>().Ingredient != null) {
-            GameObject leftChild = nullCircle.LeftChild;
-            Vector3 leftChildNewPosition = newPosition - (nodeToMove.transform.position - leftChild.transform.position);
-            yield return StartCoroutine(MoveNodeAndAllDescendants(leftChild, leftChildNewPosition, duration, () => {}));
-        }
-
-        // Recursively move the right subtree if it exists.
-        if (nullCircle.RightChild.GetComponent<NullCircle>().Ingredient != null) {
-            GameObject rightChild = nullCircle.RightChild;
-            Vector3 rightChildNewPosition = newPosition - (nodeToMove.transform.position - rightChild.transform.position);
-            yield return StartCoroutine(MoveNodeAndAllDescendants(rightChild, rightChildNewPosition, duration, () => {}));
-        }
+        
         onComplete?.Invoke();
     }
 
-    public IEnumerator UpdateNullCircleWithIngredient(Vector3 newPosition, NullCircle nullCircle, Action onComplete) {
+
+////////////////////****************************************************************
+  /// CHECK THIS TOMMORROW <summary>
+    /// CHECK THIS TOMMORROW////////////////////****************************************************************
+    /// ////////////////////****************************************************************
+    /// ////////////////////****************************************************************
+    /// ////////////////////****************************************************************
+    /// ////////////////////****************************************************************
+    ///     WHEN WE ROTATE WITH SUBTREES IT GOES WRONG
+    /// </summary>
+    /// <param name="newPosition"></param>
+    /// <param name="nullCircle"></param>  
+
+
+    public void UpdateNullCircleWithIngredient(Vector3 newPosition, NullCircle nullCircle) {
+        //Debug.Log("I am in UpdateNullCircleWithIngredient");
         NullCircle foundNullCircle = _nullCircleSpawner.FindNullCircleBasedOnPosition(newPosition);
         if (foundNullCircle != null)
         {
-            Debug.Log("Found NullCircle with index: " + foundNullCircle.Index + "and updated it with ingredient " + nullCircle.Ingredient.GetComponentInChildren<TextMeshProUGUI>().text);
+            //Debug.Log("Found NullCircle with index: " + foundNullCircle.Index + "and updated it with ingredient " + nullCircle.Ingredient.GetComponentInChildren<TextMeshProUGUI>().text);
             // Update the found null circle with its new ingredient
             foundNullCircle.Ingredient = nullCircle.Ingredient;
             // Update the value of the found null circle with the value of the ingredient. 
             foundNullCircle.Value = int.Parse(nullCircle.Ingredient.GetComponentInChildren<TextMeshProUGUI>().text);
 
             // Update the color based on the nodes in our tree. We look up in our RedBlaackBST to get the node that the ingredients value corresponds to. Then we return the nodes color
-            Debug.Log("Now I am chaning the colors of the foundnullcircle at index" + foundNullCircle.Index);
+            //Debug.Log("Now I am chaning the colors of the foundnullcircle at index" + foundNullCircle.Index);
 
-            //Debug.Log("The value of the found null circle is: " + foundNullCircle.Value);
-            foundNullCircle.IsRed = _treeManager.GetColor(foundNullCircle.Value);
+            //Debug.Log("FoundNullCircleValue " + foundNullCircle.Value + " | FoundNullCircleIndex " + foundNullCircle.Index);
+            
+            foundNullCircle.IsRed = _treeManager.GetColor(foundNullCircle.Value);            
 
             // Only set null circle to null if the child is also null. Then we know that there will not be any more ingredients in the subtree.
-            if (nullCircle.LeftChild.GetComponent<NullCircle>().Ingredient == null && nullCircle.RightChild.GetComponent<NullCircle>().Ingredient == null) {
+            if (nullCircle.LeftChild.GetComponent<NullCircle>().Ingredient == null && nullCircle.RightChild.GetComponent<NullCircle>().Ingredient == null ) {
                 //Debug.Log("Setting nullcircle ingredient to null" + nullCircle.Index);
                 nullCircle.Ingredient = null; // the null circle where the ingredient was earlier now has no ingredient
                 nullCircle.Value = 0; // the value of the null circle where the ingredient was earlier now has no value
@@ -99,11 +129,18 @@ public class VisualizationHelper : MonoBehaviour
         }
         else
         {
-            Debug.Log("NullCircle not found at position: " + newPosition);
+            //Debug.Log("NullCircle not found at position: " + newPosition);
         }
         
-        yield return null;
-        onComplete?.Invoke();
+        
+        //yield return null;
+        //onComplete?.Invoke();
     }
+
+    public void MoveSubtreeToNewPosition(NullCircle rootOfSubtree, GameObject rootToPlaceSubtree) {
+        // flyt root til ny position
+        // recursive flyt 
+    }
+ 
 
 }

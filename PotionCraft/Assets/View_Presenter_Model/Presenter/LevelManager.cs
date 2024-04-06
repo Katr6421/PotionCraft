@@ -21,9 +21,9 @@ public class LevelManager : MonoBehaviour, ILevelManager
             DontDestroyOnLoad(gameObject);
         }
 
-        Debug.Log("Awake i LevelManager. Iam initializing levels now.");
+        //Debug.Log("Awake i LevelManager. Iam initializing levels now.");
         InitializeLevels();
-         Debug.Log("LevelManager. I have initialized levels now.");
+        //Debug.Log("LevelManager. I have initialized levels now.");
     }
 
     public void InitializeLevels()
@@ -76,9 +76,15 @@ public class LevelManager : MonoBehaviour, ILevelManager
         nodesLevel2.Add(node5);
         nodesLevel2.Add(node6);
 
-          List<Node> testLeftRotation = new List<Node>();
-          testLeftRotation.Add(node1);
-          testLeftRotation.Add(node2);
+        List<Node> testLeftRotation = new List<Node>();
+        testLeftRotation.Add(node1);
+        testLeftRotation.Add(node2);
+
+        List<Node> testLeftRotationShort = new List<Node>();
+        testLeftRotationShort.Add(node1);
+        testLeftRotationShort.Add(node5);
+        testLeftRotationShort.Add(node8);
+        testLeftRotationShort.Add(node3);
 
 
         // Add levels to the list of levels. Hardcoded for each level
@@ -98,7 +104,7 @@ public class LevelManager : MonoBehaviour, ILevelManager
     //Get the value of the node based on a index
     public string GetPotionName(int levelIndex)
     {
-        Debug.Log(Levels[levelIndex].PotionName);
+        //Debug.Log(Levels[levelIndex].PotionName);
         return Levels[levelIndex].PotionName;
     }
 
