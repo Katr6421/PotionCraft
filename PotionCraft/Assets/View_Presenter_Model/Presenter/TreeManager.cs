@@ -234,8 +234,7 @@ public class TreeManager : MonoBehaviour, ITreeManager
             //Debug.Log("!!!!!!!!!!!!!!!Current state of the tree after rotation!!!!!! **********************" + operationType);
             //RedBlackTree.PrintTree();
             Debug.Log("***************Færdig med at printe træet i ExecuteOperationIfCorrectNodesSelected***********");
-            Debug.Log("***************PRINTER ALL NULLCIRCLES IN ExecuteOperationIfCorrectNodesSelected***********");
-            _nullCircleSpawner.PrintNullCircles();
+       
             
             // Clear the selected nodes the user has selected
             currentSelctedNodes.Clear();
@@ -246,9 +245,14 @@ public class TreeManager : MonoBehaviour, ITreeManager
             //Debug.Log("!!!!!!!!!!!!!*****The current state of all the null circles BEFORE a visulize rotation: *****!!!!!!!!!!");
             //_nullCircleSpawner.PrintNullCircles();
 
+            Debug.Log("***************PRINTER ALL NULLCIRCLES BEFORE VISUALIZE ROTATION IN ExecuteOperationIfCorrectNodesSelected***********");
+            _nullCircleSpawner.PrintNullCircles();
+
             // Call TreeVisualizerManager to visualize the operation. The rest of the code will wait for the visualization to finish before continuing
             StartCoroutine(_treeVisualizerManager.VisualizeRotation(operationType, CurrentSelectedIngredients, () => {
-                
+                 Debug.Log("***************VisualizeRotation DONE ***********");
+                 Debug.Log("***************PRINTER ALL NULLCIRCLES BEFORE VISUALIZE ROTATION IN ExecuteOperationIfCorrectNodesSelected***********");
+                _nullCircleSpawner.PrintNullCircles();
                 // Change the image of the ingredients to the correct image
                 // Change the image of the selected ingredients to default imange
                 ChangeIngredientImageToDefault();

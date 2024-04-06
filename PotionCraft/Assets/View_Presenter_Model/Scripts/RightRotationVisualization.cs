@@ -118,80 +118,57 @@ public class RightRotationVisualization : MonoBehaviour
         onComplete?.Invoke();
     }
 
-    // Down
+
+
+    /// ************************************************************************************************************************************************************************************
+     // DER ER TO METHODER DER HEDDER PRÆCIS DET SAMME OG JEG TROR VI HAR BLANDET DEM SAMMEN!!!!!!
+  
     public IEnumerator RightRotationMoveRightSubTreeAndAllDescendants(GameObject nodeToMove, Vector3 newPosition, float duration, Action onComplete) {
         //Debug.Log("Calling MoveNodeAndAllDescendants");
         NullCircle nullCircle = nodeToMove.GetComponent<NullCircle>();
 
-        // Recursively move the left subtree if it exists.
-        if (nullCircle.LeftChild.GetComponent<NullCircle>().Ingredient != null) {
-        Debug.Log("I " + nullCircle.Index + " have a left child");
-        Debug.Log("Left child index: " + nullCircle.LeftChild.GetComponent<NullCircle>().Index);
-        
-
-         /*********************************************
-        Make a copy of all the nullCircles and instantiate them with the ingredients' values
-        *********************************************/
-        NullCircle LeftChild = nullCircle.LeftChild.GetComponent<NullCircle>();
-
-
-        NullCircle copyRootOfSubTree = _nullCircleSpawner.CopyNullCircleSubtree(LeftChild);
-
-                    
-
-        /*********************************************
-        Update the nullCircles to default value after we have copied them
-        *********************************************/
-
-        //Måske heller ikke
-        //_nullCircleSpawner.setNullCircleToDefault(LeftChild);
-
-                  
-
-
-        // right left
-        NullCircle rootToPlaceSubtree = nullCircle.GetComponent<NullCircle>().RightChild.GetComponent<NullCircle>().LeftChild.GetComponent<NullCircle>();
-
-        //Måske ikke nullcircle her
-        yield return StartCoroutine( _visualizationHelper.MoveNode(LeftChild.Ingredient, rootToPlaceSubtree.transform.position, 1.0f, nullCircle, ()=>{}));
-
-        /*********************************************
-        Update the line renderers after we have updated the nullCircles to their current ingredients
-        *********************************************/
-        _nullCircleSpawner.UpdateLineRenderers();
-
-        /*********************************************
-        Destroy the copied nullCircles
-        *********************************************/
-        _nullCircleSpawner.destroyNullCircleAndAllDescendants(copyRootOfSubTree.gameObject);
-
-
-
-
-
-
-
-        /* //Debug.Log("Jeg har et venstre barn");
-            GameObject leftChild = nullCircle.LeftChild;
-            //Debug.Log("Leftchild index: " + leftChild.GetComponent<NullCircle>().Index);
-            Vector3 newLeftChildPosition = leftChild.GetComponent<NullCircle>().LeftChild.transform.position;
-            //Debug.Log("newleftchildPosistion index:" + leftChild.GetComponent<NullCircle>().LeftChild.GetComponent<NullCircle>().Index);
-
-            //Vector3 leftChildNewPosition = newPosition - (nodeToMove.transform.position - leftChild.transform.position);
-            //leftChild.transform.position
-            yield return StartCoroutine(RightRotationMoveNodeAndAllDescendants(leftChild, newLeftChildPosition, duration, () => {}));
-        */
-        }
-
         // Recursively move the right subtree if it exists.
-        if (nullCircle.RightChild.GetComponent<NullCircle>().Ingredient != null) {
+        if (nullCircle.RightChild.GetComponent<NullCircle>().Ingredient != null)
+        {
             GameObject rightChild = nullCircle.RightChild;
             Vector3 newRightChildPosition = rightChild.GetComponent<NullCircle>().RightChild.transform.position;
             //Vector3 rightChildNewPosition = newPosition - (nodeToMove.transform.position - rightChild.transform.position);
             // SHOULD MAYBE BE A DIFFERENT METHOD
-            yield return StartCoroutine(RightRotationMoveRightSubTreeAndAllDescendants(rightChild, newRightChildPosition, duration, () => {}));
+            yield return StartCoroutine(RightRotationMoveRightSubTreeAndAllDescendants(rightChild, newRightChildPosition, duration, () => { }));
         }
 
+
+        // Recursively move the left subtree if it exists.
+        if (nullCircle.LeftChild.GetComponent<NullCircle>().Ingredient != null) {
+        
+        
+            NullCircle LeftChild = nullCircle.LeftChild.GetComponent<NullCircle>();
+            NullCircle copyRootOfSubTree = _nullCircleSpawner.CopyNullCircleSubtree(LeftChild);
+
+
+            // parent right left
+            NullCircle rootToPlaceSubtree = nullCircle.GetComponent<NullCircle>().RightChild.GetComponent<NullCircle>().LeftChild.GetComponent<NullCircle>();
+
+             //Flytter hele subtræet til den nye position
+            yield return StartCoroutine( _visualizationHelper.MoveNodeAndAllDescendants(copyRootOfSubTree, rootToPlaceSubtree.transform.position, 1.0f, ()=>{}));
+
+            /*********************************************
+            Update the nullCircles to default value after we have copied them
+            *********************************************/
+            Debug.Log("Now resetting the nullcircles to default value at the subtree i just moved and coty");
+            _nullCircleSpawner.setNullCircleToDefault(LeftChild);
+
+            /*********************************************
+            Update the line renderers after we have updated the nullCircles to their current ingredients
+            *********************************************/
+            _nullCircleSpawner.UpdateLineRenderers();
+
+            /*********************************************
+            Destroy the copied nullCircles
+            *********************************************/
+            _nullCircleSpawner.destroyNullCircleAndAllDescendants(copyRootOfSubTree.gameObject);
+
+        }
 
         // If the node has an ingredient, move it.
         if (nullCircle.Ingredient != null) {
@@ -206,71 +183,6 @@ public class RightRotationVisualization : MonoBehaviour
         onComplete?.Invoke();
     }
 
-    public IEnumerator LeftRotationMoveRightSubTreeAndAllDescendants(GameObject nodeToMove, Vector3 newPosition, float duration, Action onComplete)
-    {
-        //Debug.Log("Calling MoveNodeAndAllDescendants");
-        NullCircle nullCircle = nodeToMove.GetComponent<NullCircle>();
-
-        // Recursively move the right subtree if it exists.
-        if (nullCircle.RightChild.GetComponent<NullCircle>().Ingredient != null)
-        {
-
-            GameObject RightChild = nullCircle.RightChild;
-            //Debug.Log("Leftchild index: " + leftChild.GetComponent<NullCircle>().Index);
-            Vector3 newRightChildPosition = RightChild.GetComponent<NullCircle>().Parent.transform.position;
-
-            yield return StartCoroutine(LeftRotationMoveRightSubTreeAndAllDescendants(RightChild, newRightChildPosition, duration, () => { }));
-        }
-
-        // Recursively move the left subtree if it exists.
-        if (nullCircle.LeftChild.GetComponent<NullCircle>().Ingredient != null)
-        {
-                
-            Debug.Log("I " + nullCircle.Index + " have a right child");
-            Debug.Log("Leftchild child index: " + nullCircle.LeftChild.GetComponent<NullCircle>().Index);
-            
-
-            /*********************************************
-            Make a copy of all the nullCircles and instantiate them with the ingredients' values
-            *********************************************/
-            NullCircle LeftChild = nullCircle.LeftChild.GetComponent<NullCircle>();
-
-            NullCircle copyRootOfSubTree = _nullCircleSpawner.CopyNullCircleSubtree(LeftChild);
-
-            // I should go to my parents left
-            NullCircle rootToPlaceSubtree = nullCircle.GetComponent<NullCircle>().Parent.GetComponent<NullCircle>().LeftChild.GetComponent<NullCircle>();
-
-            
-            yield return StartCoroutine( _visualizationHelper.MoveNode(LeftChild.Ingredient, rootToPlaceSubtree.transform.position, 1.0f, nullCircle, ()=>{}));
-
-            /*********************************************
-            Update the line renderers after we have updated the nullCircles to their current ingredients
-            *********************************************/
-            _nullCircleSpawner.UpdateLineRenderers();
-
-            /*********************************************
-            Destroy the copied nullCircles
-            *********************************************/
-            _nullCircleSpawner.destroyNullCircleAndAllDescendants(copyRootOfSubTree.gameObject);
-         
-        }
-
-
-        // If the node has an ingredient, move it.
-        if (nullCircle.Ingredient != null)
-        {
-            yield return StartCoroutine(_visualizationHelper.MoveNode(nullCircle.Ingredient, newPosition, duration, nullCircle, () =>
-            {
-                _nullCircleSpawner.DeactivateAllNullCirclesInSubtree(nullCircle);
-                _visualizationHelper.UpdateNullCircleWithIngredient(newPosition, nullCircle);
-            }));
-
-        }
-
-
-        onComplete?.Invoke();
-    }
-
     // up
     public IEnumerator RightRotationMoveLeftSubTreeAndAllDescendants(GameObject nodeToMove, Vector3 newPosition, float duration, Action onComplete)
     {
@@ -280,23 +192,15 @@ public class RightRotationVisualization : MonoBehaviour
         // If the node has an ingredient, move it.
         if (nullCircle.Ingredient != null)
         {
+            Debug.Log("Nullcircle: " + nullCircle.Index + " | Ingredient: " + nullCircle.Ingredient);
             yield return StartCoroutine(_visualizationHelper.MoveNode(nullCircle.Ingredient, newPosition, duration, nullCircle, () =>
             {
                 _nullCircleSpawner.DeactivateAllNullCirclesInSubtree(nullCircle);
                 _visualizationHelper.UpdateNullCircleWithIngredient(newPosition, nullCircle);
             }));
         }
-
-        //|| nullCircle.RightChild == null
-        if (nullCircle.LeftChild == null ) 
-        {
-            Debug.Log("!!!!!!!!!!!!!!!!!NodeToMove index: " + nullCircle.Index);
-            Debug.Log("!!!!!!!!!!!!!!!! Leftchild is null !!!!!!!!!!!");
-            yield return null;
-        }
         
         // Recursively move the left subtree if it exists.
-
         if(nullCircle.RightChild.GetComponent<NullCircle>().Ingredient != null){
             
             Debug.Log("I " + nullCircle.Index + " have a right child");
@@ -306,15 +210,21 @@ public class RightRotationVisualization : MonoBehaviour
             /*********************************************
             Make a copy of all the nullCircles and instantiate them with the ingredients' values
             *********************************************/
-            NullCircle RighChild = nullCircle.RightChild.GetComponent<NullCircle>();
+            NullCircle RightChild = nullCircle.RightChild.GetComponent<NullCircle>();
 
-            NullCircle copyRootOfSubTree = _nullCircleSpawner.CopyNullCircleSubtree(RighChild);
+            NullCircle copyRootOfSubTree = _nullCircleSpawner.CopyNullCircleSubtree(RightChild);
 
             // I should go to my parents rught
             NullCircle rootToPlaceSubtree = nullCircle.GetComponent<NullCircle>().Parent.GetComponent<NullCircle>().RightChild.GetComponent<NullCircle>();
 
             
-            yield return StartCoroutine( _visualizationHelper.MoveNode(RighChild.Ingredient, rootToPlaceSubtree.transform.position, 1.0f, nullCircle, ()=>{}));
+            yield return StartCoroutine( _visualizationHelper.MoveNodeAndAllDescendants(copyRootOfSubTree, rootToPlaceSubtree.transform.position, 1.0f, ()=>{}));
+
+            /*********************************************
+            Update the nullCircles to default value after we have copied them
+            *********************************************/
+            //Debug.Log("Now resetting the nullcircles to default value at the subtree i just moved and coty");
+            _nullCircleSpawner.setNullCircleToDefault(RightChild);
 
             /*********************************************
             Update the line renderers after we have updated the nullCircles to their current ingredients
@@ -328,21 +238,16 @@ public class RightRotationVisualization : MonoBehaviour
          
         }
         
+        // Recursively move the right subtree if it exists.
+        if (nullCircle.LeftChild.GetComponent<NullCircle>().Ingredient != null)
+        {
 
+            GameObject LeftChild = nullCircle.LeftChild;
+            // Move leftchild to its parent
+            Vector3 newLeftChildPosition = nullCircle.transform.position;
 
-            // Recursively move the right subtree if it exists.
-            if (nullCircle.LeftChild.GetComponent<NullCircle>().Ingredient != null)
-            {
-
-                GameObject LeftChild = nullCircle.LeftChild;
-                //Debug.Log("Leftchild index: " + leftChild.GetComponent<NullCircle>().Index);
-
-                // Move leftchild to its parent
-                //Vector3 newLeftChildPosition = LeftChild.GetComponent<NullCircle>().Parent.transform.position;
-                Vector3 newLeftChildPosition = nullCircle.transform.position;
-
-                yield return StartCoroutine(RightRotationMoveLeftSubTreeAndAllDescendants(LeftChild, newLeftChildPosition, duration, () => { }));
-            }
+            yield return StartCoroutine(RightRotationMoveLeftSubTreeAndAllDescendants(LeftChild, newLeftChildPosition, duration, () => { }));
+        }
         
         
         onComplete?.Invoke();

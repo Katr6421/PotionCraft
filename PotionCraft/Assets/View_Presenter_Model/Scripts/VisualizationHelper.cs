@@ -44,14 +44,14 @@ public class VisualizationHelper : MonoBehaviour
     }
 
 
-    public IEnumerator MoveNodeAndAllDescendants(GameObject nodeToMove, Vector3 newPosition, float duration, Action onComplete) {
+    public IEnumerator MoveNodeAndAllDescendants(NullCircle nullCircle, Vector3 newPosition, float duration, Action onComplete) {
         //Debug.Log("Calling MoveNodeAndAllDescendants");
-        NullCircle nullCircle = nodeToMove.GetComponent<NullCircle>();
+        //NullCircle nullCircle = nodeToMove.GetComponent<NullCircle>();
 
         // Recursively move the left subtree if it exists.
         if (nullCircle.LeftChild.GetComponent<NullCircle>().Ingredient != null) {
             //Debug.Log("Jeg har et venstre barn");
-            GameObject leftChild = nullCircle.LeftChild;
+            NullCircle leftChild = nullCircle.LeftChild.GetComponent<NullCircle>();
             //Debug.Log("Leftchild index: " + leftChild.GetComponent<NullCircle>().Index);
             Vector3 newLeftChildPosition = leftChild.GetComponent<NullCircle>().LeftChild.transform.position;
             //Debug.Log("newleftchildPosistion index:" + leftChild.GetComponent<NullCircle>().LeftChild.GetComponent<NullCircle>().Index);
@@ -63,7 +63,7 @@ public class VisualizationHelper : MonoBehaviour
 
         // Recursively move the right subtree if it exists.
         if (nullCircle.RightChild.GetComponent<NullCircle>().Ingredient != null) {
-            GameObject rightChild = nullCircle.RightChild;
+            NullCircle rightChild = nullCircle.RightChild.GetComponent<NullCircle>();
             Vector3 newRightChildPosition = rightChild.GetComponent<NullCircle>().RightChild.transform.position;
             //Vector3 rightChildNewPosition = newPosition - (nodeToMove.transform.position - rightChild.transform.position);
             // SHOULD MAYBE BE A DIFFERENT METHOD

@@ -289,11 +289,10 @@ public class TreeVisualizationManager : MonoBehaviour
                     Start the left rotation animation
                     *********************************************/
                     yield return StartCoroutine(_leftRotationVisualization.RotateLeftAnimation(parent, rightChild, parentNullCircle));
+            
+                    
                 }
                 break;
-
-
-
 
 
             case OperationType.RotateRight:

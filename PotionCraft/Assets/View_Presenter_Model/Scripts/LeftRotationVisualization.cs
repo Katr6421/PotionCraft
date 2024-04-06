@@ -8,6 +8,11 @@ public class LeftRotationVisualization : MonoBehaviour {
     [SerializeField] private NullCircleSpawner _nullCircleSpawner;
     [SerializeField] private VisualizationHelper _visualizationHelper;
 
+
+    public void Start() {
+    //    _test = findObjectOfType<test>();
+    }
+
     public IEnumerator RotateLeftAnimation(GameObject parent, GameObject rightChild, NullCircle parentNullCircle){
         /*
             Move parent to leftChild
@@ -46,6 +51,7 @@ public class LeftRotationVisualization : MonoBehaviour {
         //Debug.Log("Now we move the right subtree");
         yield return StartCoroutine(MoveRightSubtreeAndAllDescendants(rightChildNullCircle, rightChildNewPosition, 1.0f, () => {}));
         
+
 
         //Debug.Log("MoveNodeWithSubtree done and now we update active null circles");
         
@@ -143,18 +149,18 @@ public class LeftRotationVisualization : MonoBehaviour {
 
             NullCircle copyRootOfSubTree = _nullCircleSpawner.CopyNullCircleSubtree(RightChild);
 
-            /*********************************************
-            Update the nullCircles to default value after we have copied them
-            *********************************************/
-
-            //Måske heller ikke
-            //_nullCircleSpawner.setNullCircleToDefault(LeftChild);
-
             // left right
             NullCircle rootToPlaceSubtree = nullCircle.GetComponent<NullCircle>().LeftChild.GetComponent<NullCircle>().RightChild.GetComponent<NullCircle>();
 
             //Måske ikke nullcircle her
-            yield return StartCoroutine( _visualizationHelper.MoveNode(RightChild.Ingredient, rootToPlaceSubtree.transform.position, 1.0f, nullCircle, ()=>{}));
+              yield return StartCoroutine( _visualizationHelper.MoveNodeAndAllDescendants(copyRootOfSubTree, rootToPlaceSubtree.transform.position, 1.0f, ()=>{}));
+            //yield return StartCoroutine( _visualizationHelper.MoveNode(RightChild.Ingredient, rootToPlaceSubtree.transform.position, 1.0f, nullCircle, ()=>{}));
+
+            /*********************************************
+            Update the nullCircles to default value after we have copied them
+            *********************************************/
+            Debug.Log("Now resetting the nullcircles to default value at the subtree i just moved and coty");
+            _nullCircleSpawner.setNullCircleToDefault(RightChild);
 
             /*********************************************
             Update the line renderers after we have updated the nullCircles to their current ingredients
@@ -216,7 +222,13 @@ public class LeftRotationVisualization : MonoBehaviour {
             NullCircle rootToPlaceSubtree = nullCircle.GetComponent<NullCircle>().Parent.GetComponent<NullCircle>().LeftChild.GetComponent<NullCircle>();
 
             
-            yield return StartCoroutine( _visualizationHelper.MoveNode(LeftChild.Ingredient, rootToPlaceSubtree.transform.position, 1.0f, nullCircle, ()=>{}));
+             yield return StartCoroutine( _visualizationHelper.MoveNodeAndAllDescendants(copyRootOfSubTree, rootToPlaceSubtree.transform.position, 1.0f, ()=>{}));
+
+            /*********************************************
+            Update the nullCircles to default value after we have copied them
+            *********************************************/
+            Debug.Log("Now resetting the nullcircles to default value at the subtree i just moved and coty");
+            _nullCircleSpawner.setNullCircleToDefault(LeftChild);
 
             /*********************************************
             Update the line renderers after we have updated the nullCircles to their current ingredients
