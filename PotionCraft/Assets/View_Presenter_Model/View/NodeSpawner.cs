@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using log4net.Core;
 
 //This is a gameobject on the scene. It is responsible for spawning the nodes as GameObjects and positioning them on the screen.
 
@@ -60,7 +61,7 @@ public class NodeSpawner : MonoBehaviour
     public void Start()
     {
         // When the scene starts, we call the DisplayNodes method to create and position the nodes
-        SpawnNodes(LevelManager.Instance.GetIngredients(LevelSelector.selectedLevel));
+        SpawnNodes(LevelManager.Instance.GetIngredients());
     }
 
     /*********************************************

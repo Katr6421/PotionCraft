@@ -31411,7 +31411,7 @@ GameObject:
   - component: {fileID: 1513270543}
   - component: {fileID: 1513270542}
   m_Layer: 0
-  m_Name: PotionDescription
+  m_Name: PotionDescriptionText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -31674,7 +31674,7 @@ GameObject:
   - component: {fileID: 1640898813}
   - component: {fileID: 1640898812}
   m_Layer: 0
-  m_Name: PotionToMake
+  m_Name: PotionToMakeSprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -31861,8 +31861,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _uiCanvas: {fileID: 620487765}
-  _selectedLevelText: {fileID: 928122708}
+  _selectedLevelNumberText: {fileID: 928122708}
   _selectedLevelPotionName: {fileID: 189113979}
+  _selectedLevelPotionDescription: {fileID: 1513270542}
   _circleMarkerPrefab: {fileID: 7789355497186854038, guid: 46d8d98cac71c41788d223457de20bfb, type: 3}
 --- !u!4 &1654093618
 Transform:

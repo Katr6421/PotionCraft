@@ -18,20 +18,25 @@ public class LevelUIController : MonoBehaviour
 {
 
     [SerializeField] private Canvas _uiCanvas;
-    [SerializeField] private TextMeshProUGUI _selectedLevelText;
-
+    [SerializeField] private TextMeshProUGUI _selectedLevelNumberText;
     [SerializeField] private TextMeshProUGUI _selectedLevelPotionName;
+    [SerializeField] private TextMeshProUGUI _selectedLevelPotionDescription;
+    //[SerializeField] private Image _selectedLevelPotionSprite;
     [SerializeField] private GameObject _circleMarkerPrefab;
-
+    LevelManager _levelManager;
     public GameObject CircleMarker { get; set; }
     private Vector3 _circleStartPosition = new Vector3(-0.57f, 3.79f, 0);
 
 
     public void Start()
     {
-        //When the scene starts, we update the recipe text.
-        _selectedLevelText.text = "" + LevelSelector.selectedLevel;
-        _selectedLevelPotionName.text = LevelSelector.potionName;
+        _levelManager = LevelManager.Instance;
+
+        //When the scene starts, we update the recipe text.        
+        _selectedLevelNumberText.text = "" + _levelManager.CurrentLevelIndex;
+        _selectedLevelPotionName.text = "" + _levelManager.GetPotionName();
+        _selectedLevelPotionDescription.text = "" + _levelManager.GetPotionDescription();
+        //_selectedLevelPotionSprite.sprite = _levelManager.potionSprite;
 
         // When the scene starts, we instantiate the CircleMarker
         SpawnCircleMarker();
