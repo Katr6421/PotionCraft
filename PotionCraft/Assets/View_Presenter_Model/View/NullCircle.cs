@@ -17,8 +17,6 @@ public class NullCircle : MonoBehaviour
 
     public GameObject LineToParent { get; set; } // Saves a referens to the line that goes to the parent
     public bool IsRed { get; set; } = false;
-
-    
     
     void Start()
     {

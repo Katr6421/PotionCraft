@@ -14,8 +14,6 @@ public class LevelSelector : MonoBehaviour
     // Fields to store the selected level and potion name. UniversalLevelManager will use these fields to display the selected level and potion name
     public static int selectedLevel;
     public static string potionName;
-
-
     
 
     private void Start(){

@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class NextButton : MonoBehaviour
 {
+   
     public void UnLockNextLevel(){
 
         if (SceneManager.GetActiveScene().buildIndex >= PlayerPrefs.GetInt("ReachedIndex"))

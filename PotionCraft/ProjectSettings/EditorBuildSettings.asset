@@ -13,8 +13,11 @@ EditorBuildSettings:
     guid: aa4c24e9a52ff4f749c4005e5b1ea4e8
   - enabled: 1
     path: Assets/Scenes/Level2.unity
-    guid: fc8d365967c11419a9ceb1e75ab3d918
+    guid: 22f3cf0d3d07244a0a08d1e250d04ef6
   - enabled: 1
     path: Assets/Scenes/StartScene.unity
     guid: 2cda990e2423bbf4892e6590ba056729
+  - enabled: 1
+    path: Assets/Scenes/PopUpScene.unity
+    guid: 59a8aa7debb364a3091fa99ae2f36a44
   m_configObjects: {}

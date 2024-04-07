@@ -7,23 +7,28 @@ public class TreeManager : MonoBehaviour, ITreeManager
     [SerializeField] private TreeVisualizationManager _treeVisualizerManager;
     [SerializeField] private NullCircleManager _nullCircleManager;
     [SerializeField] private AvatarHintManager _avatarHintManager;
+    [SerializeField] private NodeSpawner _nodeSpawner;
+    [SerializeField] private PopUpManager _popUpManager;
     public RedBlackBST RedBlackTree { get; set; } = new RedBlackBST();
     public static TreeManager instance { get; private set; }
     private HashSet<Node> currentSelctedNodes = new HashSet<Node>();
     public List<GameObject> CurrentSelectedIngredients { get; set; } = new List<GameObject>();
 
-    private void Awake()
+   private void Awake()
     {
         // Singleton pattern
         if (instance != null && instance != this)
         {
-            Destroy(this);
+            Debug.Log("Destroying the tree manager");
+           // Destroy(gameObject);
         }
         else
         {
+            Debug.Log("Setting the instance of the tree manager");
             instance = this;
-            DontDestroyOnLoad(this);
+            DontDestroyOnLoad(gameObject);
         }
+        
     }
 
     void Start()
@@ -164,7 +169,7 @@ public class TreeManager : MonoBehaviour, ITreeManager
             // Wrong ingredients but correct operation
             if (userSelectedCorrectOperation)
             {
-                // TODO: Update hint - The operation was correct but not the ingredients. Red Sprite is shown, until you select something right
+                //  Update hint - The operation was correct but not the ingredients. Red Sprite is shown, until you select something right
                 _avatarHintManager.UpdateHint("wrong", AvatarHint.SelectedRightButtonButWrongIngredients);
             }
             // Wrong ingredients and wrong operation
@@ -251,6 +256,9 @@ public class TreeManager : MonoBehaviour, ITreeManager
         //Debug.Log("*************** Print all nullcircles BEFORE VISUALIZE ROTATION in ExecuteOperation **********");
         //_nullCircleSpawner.PrintNullCircles();
 
+        // Make it impossible to select the ingredients while the rotation is visualized
+        _nodeSpawner.MakeAllPlacedIngredientsInteractable(false, _treeVisualizerManager.CurrectIngredientIndex);
+
         // Call TreeVisualizerManager to visualize the operation. The rest of the code will wait for the visualization to finish before continuing
         StartCoroutine(_treeVisualizerManager.VisualizeRotation(operationType, CurrentSelectedIngredients, () =>
         {
@@ -269,6 +277,9 @@ public class TreeManager : MonoBehaviour, ITreeManager
             // There are still more operations to perform
             if (!IsTreeInBalanced())
             {
+                // Make it possible to select the ingredients again
+                _nodeSpawner.MakeAllPlacedIngredientsInteractable(true, _treeVisualizerManager.CurrectIngredientIndex);
+                // Update hint
                 HandleNextOperation();
             }
             // There are no more operations to perform - The tree is in balance
@@ -276,6 +287,9 @@ public class TreeManager : MonoBehaviour, ITreeManager
             {
                 // Update hint - Wuhuu the tree is in balance. Insert next ingredient. Green hint
                 _avatarHintManager.UpdateHint("correct", AvatarHint.InBalance);
+                 
+                // check om vi er færdige med levellet
+                CheckIfCompletedLevel();
 
                 // Show nullcircles to allow for new ingredients to be inserted
                 _nullCircleManager.ShowAllChildrenNullCircles();
@@ -307,19 +321,18 @@ public class TreeManager : MonoBehaviour, ITreeManager
 
     public void HandleNextOperation()
     {
-        // TODO: Hint. Something in the tree is unbalanced and the user needs to do something
-        // Fælles hint, eller specifikke hints for de forskellige operationer?
-
+        
         OperationType nextCorrectOperation = GetOperationType();
+        Debug.Log(nextCorrectOperation);
         switch (nextCorrectOperation)
         {
             case OperationType.RotateLeft:
                 // Update hint - Need to rotate left
-                _avatarHintManager.UpdateHint("hint", AvatarHint.NeedsToSelectThreeNodes);
+                _avatarHintManager.UpdateHint("hint", AvatarHint.NeedsToSelectTwoNodes);
                 break;
             case OperationType.RotateRight:
                 // Update hint - Need to rotate right
-                _avatarHintManager.UpdateHint("hint", AvatarHint.NeedsToSelectTwoNodes);
+                _avatarHintManager.UpdateHint("hint", AvatarHint.NeedsToSelectThreeNodes);
                 break;
             case OperationType.FlipColors:
                 // Update hint - Need to flip colors
@@ -327,6 +340,16 @@ public class TreeManager : MonoBehaviour, ITreeManager
                 break;
             default:
                 break;
+        }
+    }
+
+    public void CheckIfCompletedLevel(){
+        // If the current ingredient index is equal to the number of ingredients (we are on the last ingredient to insert) and there are no more operations in the queue, then the user has completed the level
+        if(_treeVisualizerManager.CurrectIngredientIndex == _nodeSpawner.GetNodeObjects().Count && RedBlackTree.Operations.Count == 0)
+        {
+            Debug.Log("There are no more ingredients to insert. There are no more operation, meaning The tree is in balance. You have completed the level.");
+            // If the user has completed the level, load the pop-up scene
+            _popUpManager.LoadPopUpScene(); 
         }
     }
 

@@ -9,23 +9,26 @@ public class AvatarHintManager : MonoBehaviour, IAvatarHintManager
   [SerializeField] TextMeshProUGUI _avatarHintText;  // This is the text that will be displayed in the hint box
   [SerializeField] private GameObject _avatarHintBoks; // The Script that is attached to the hint box
   [SerializeField] private Sprite[] _avatarHintSprites; // The sprites that will be displayed in the hint box
+  [SerializeField] private AnimationCurve shakeCurve; 
 
 
   public Dictionary<AvatarHint, string> HintsDict { get; set; } = new Dictionary<AvatarHint, string>();
   public static AvatarHintManager instance { get; private set; }
+  private string currentAvatarState;
+
 
     private void Awake()
     {
         // Singleton pattern
-        if (instance != null && instance != this)
+        /*if (instance != null && instance != this)
         {
-            Destroy(this);
+            //Destroy(this);
         }
         else
         {
             instance = this;
-            DontDestroyOnLoad(this);
-        }
+            DontDestroyOnLoad(gameObject);
+        }*/
 
         // Hides the hint box from start. 
         HideAvatarHintBoks();
@@ -33,13 +36,11 @@ public class AvatarHintManager : MonoBehaviour, IAvatarHintManager
   
   public AvatarHintManager()
   {
-      HintsDict.Add(AvatarHint.SelectedWrongPlacementForIngredient, "Hmm, you have selected the wrong placement for that ingredient");
+      HintsDict.Add(AvatarHint.SelectedWrongPlacementForIngredient, "Hmm, you have selected the wrong placement for that ingredient. ");
       HintsDict.Add(AvatarHint.SelectedRightPlacementAndInBalance, "Perfect placement! You have selected the right placement for the ingredient and the tree is balanced");
-      HintsDict.Add(AvatarHint.SelectedRightPlacementButNeedsToSelectThreeNodes, "You have selected the right placement for the ingredient, but it causes the tree to become unbalanced. You need to select three nodes");
       HintsDict.Add(AvatarHint.SelectedRightPlacementButNeedsToSelectTwoNodes, "You have selected the right placement for the ingredient, but it causes the tree to become unbalanced. You need to select two nodes");
       HintsDict.Add(AvatarHint.SelectedRightIngredientsButWrongButton, "You have selected the wrong button, but the right ingredients. Please try again");
       HintsDict.Add(AvatarHint.SelectedRightIngredientsAndButton, "Good job! You have selected the right button and ingredients");
-      HintsDict.Add(AvatarHint.SelectedRightButtonButNeedsToSelectThreeNodes, "You have selected the right button, but the tree is still unbalanced. You need to select three nodes");
       HintsDict.Add(AvatarHint.SelectedRightButtonButNeedsToSelectTwoNodes, "You have selected the right button, but the tree is still unbalanced. You need to select two nodes");
       HintsDict.Add(AvatarHint.NodeInTheJar, "A subtree has been put in the bag and need to be replaced in the tree");
       HintsDict.Add(AvatarHint.PotionBrewed, "The potion is finished being brewed");
@@ -50,6 +51,7 @@ public class AvatarHintManager : MonoBehaviour, IAvatarHintManager
       HintsDict.Add(AvatarHint.NeedsToSelectTwoNodes, "The tree is still unbalanced, you need to select two nodes to do a rotaiton");
       HintsDict.Add(AvatarHint.NeedsToSelectTwoNodesToFlipColor, "The tree is still in unbalance. Look at its color. Do you see a color violation?");
       HintsDict.Add(AvatarHint.InBalance, "Wuhu! You have balanced the tree. Now it is time to insert a new ingredient");
+      HintsDict.Add(AvatarHint.SelectedRightPlacementButNeedsToSelectThreeNodes, "You have selected the right placement for the ingredient, but it causes the tree to become unbalanced. You need to select three nodes");
 
   }
 
@@ -57,21 +59,27 @@ public class AvatarHintManager : MonoBehaviour, IAvatarHintManager
   public void UpdateHint(String spriteName, AvatarHint avatarEnum)
   {
 
+    currentAvatarState = spriteName;
+
       ChangeAvatarHintBoxSprinte(spriteName);
       SetHint(avatarEnum);
 
       // If the user inserts a ingredient correct and the tree is in balance
       if(spriteName.Equals("correct")){
-        StartCoroutine(ShowSpriteTemporarily(_avatarHintBoks, 10f)); // Call the coroutine with 10 seconds
+        // Has a bug. If i call it, and then call it again, the first one will end before the secound one, resulting in hiding it to early
+        //StartCoroutine(ShowSpriteTemporarily(_avatarHintBoks, 30f)); // Call the coroutine with 10 seconds
+        ShowAvatarHintBoks();
       }
 
       //if the user selects something total wrong
       else if(spriteName.Equals("wrong")){
         
         ShowAvatarHintBoks();
-        StartCoroutine(TriggerShake(1.0f, 1.0f));
+        StartCoroutine(TriggerShakeText(1f, 10.1f));
+        StartCoroutine(TriggerShakeBox(1f, 0.1f));
+       
       }
-      // If the user select something correct but that lead to the tree is unblancede 
+      // If the user select something correct but that lead to the tree is unblancede (hint)
       else{
         ShowAvatarHintBoks();
       }
@@ -99,8 +107,6 @@ public class AvatarHintManager : MonoBehaviour, IAvatarHintManager
       }
 
       HideText();
-
-
   }
 
 public void ShowAvatarHintBoks()
@@ -113,18 +119,6 @@ public void ShowAvatarHintBoks()
 
       ShowText();
   }
-
-  public IEnumerator ShowSpriteTemporarily(GameObject spriteObject, float duration)
-{
-    SpriteRenderer spriteRenderer = spriteObject.GetComponent<SpriteRenderer>();
-    if (spriteRenderer != null)
-    {
-        spriteRenderer.enabled = true; // Show the sprite
-        yield return new WaitForSeconds(duration); // Wait for the duration
-        spriteRenderer.enabled = false; // Hide the sprite after the duration
-    }
-}
-
 
 
   public void ChangeAvatarHintBoxSprinte(String spriteName){
@@ -146,42 +140,85 @@ public void ShowAvatarHintBoks()
   
   }
 
-  private IEnumerator TriggerShake(float duration, float magnitude)
+private IEnumerator TriggerShakeBox(float duration, float magnitude)
+{
+    Vector3 originalPosition = _avatarHintBoks.transform.localPosition;
+    float elapsed = 0.0f;
+
+    // Determine the number of shakes based on duration and a desired shake speed
+    float shakePeriod = duration / 2; // This will give you approximately 5 back and forth shakes during the entire duration
+
+    while (elapsed < duration)
     {
-        Vector3 originalPosition = _avatarHintBoks.transform.localPosition;
-        float elapsed = 0.0f;
+        elapsed += Time.deltaTime;
+        float percentComplete = elapsed / duration;
 
-        while (elapsed < duration)
-        {
-            float x = originalPosition.x + UnityEngine.Random.Range(-1f, 1f) * magnitude;
-            float y = originalPosition.y + UnityEngine.Random.Range(-1f, 1f) * magnitude;
+        // Sinusoidal shake based on elapsed time
+        float sinWave = Mathf.Sin((elapsed / shakePeriod) * Mathf.PI * 2); // Sin wave for smooth oscillation
+        float x = originalPosition.x + sinWave * magnitude;
 
-            _avatarHintBoks.transform.localPosition = new Vector3(x, y, originalPosition.z);
-            elapsed += Time.deltaTime;
-
-            yield return null;
-        }
-
-        _avatarHintBoks.transform.localPosition = originalPosition;
+        _avatarHintBoks.transform.localPosition = new Vector3(x, originalPosition.y, originalPosition.z);
+        yield return null;
     }
+
+    _avatarHintBoks.transform.localPosition = originalPosition;
+}
+
+private IEnumerator TriggerShakeText(float duration, float magnitude)
+{
+    Vector3 originalPosition = _avatarHintText.rectTransform.anchoredPosition;
+    float elapsed = 0.0f;
+
+    // Determine the number of shakes based on duration and a desired shake speed
+    float shakePeriod = duration / 2; // This will give you approximately 5 back and forth shakes during the entire duration
+
+    while (elapsed < duration)
+    {
+        elapsed += Time.deltaTime;
+        float percentComplete = elapsed / duration;
+
+        // Sinusoidal shake based on elapsed time
+        float sinWave = Mathf.Sin((elapsed / shakePeriod) * Mathf.PI * 2); // Sin wave for smooth oscillation
+        float x = originalPosition.x + sinWave * magnitude;
+
+        _avatarHintText.rectTransform.anchoredPosition = new Vector3(x, originalPosition.y, originalPosition.z);
+        yield return null;
+    }
+
+    _avatarHintText.rectTransform.anchoredPosition = originalPosition;
+}
 
     public void HideText()
-{
-    MeshRenderer renderer = _avatarHintText.GetComponent<MeshRenderer>();
-    if (renderer != null)
     {
-        renderer.enabled = false; // This hides the TextMesh
+    
+        if (_avatarHintText != null)
+        {
+            _avatarHintText.enabled = false; // This hides the TextMesh
+        }
     }
-}
 
 public void ShowText()
 {
-    MeshRenderer renderer = _avatarHintText.GetComponent<MeshRenderer>();
-    if (renderer != null)
-    {
-        renderer.enabled = true; // This shows the TextMesh
-    }
+        _avatarHintText.enabled = true; // This shows the TextMesh
 }
+
+// DOES NOT WORK PERFECTLY
+  public IEnumerator ShowSpriteTemporarily(GameObject spriteObject, float duration)
+    {
+        SpriteRenderer spriteRenderer = spriteObject.GetComponent<SpriteRenderer>();
+        if (spriteRenderer != null)
+        {
+            ShowText();
+            spriteRenderer.enabled = true; // Show the sprite
+            yield return new WaitForSeconds(duration); // Wait for the duration
+            if(currentAvatarState.Equals("correct")){
+            spriteRenderer.enabled = false; // Hide the sprite after the duration
+            HideText();
+            }
+            
+        }
+    
+    }
 
 
 }
