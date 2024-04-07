@@ -113,15 +113,15 @@ public class LevelManager : MonoBehaviour, ILevelManager
     {
         DescriptionsDict.Add(PotionDescription.Dummy, "Dummy");
         DescriptionsDict.Add(PotionDescription.InsertionInfusion, "Start your quest to defeat darkness with this foundational brew");
-        DescriptionsDict.Add(PotionDescription.RotationTonic, "Swirl your way to perfection");
-        DescriptionsDict.Add(PotionDescription.ColorSwapSerum, "Flip your fate with a splash of color");
+        DescriptionsDict.Add(PotionDescription.RotationTonic, "Stir your way to mastery with this swirling tonic that aligns energies and balances forces");
+        DescriptionsDict.Add(PotionDescription.ColorSwapSerum, "Flip your fate with this vibrant serum that switches hues and fortunes alike");
         DescriptionsDict.Add(PotionDescription.BinaryBlend, "Double the power, double the fun");
-        DescriptionsDict.Add(PotionDescription.LeafLixir, "Leaf your worries behind");
-        DescriptionsDict.Add(PotionDescription.BlackBalanceDraught, "Dark, mysterious, perfectly harmonious");
+        DescriptionsDict.Add(PotionDescription.LeafLixir, "'Leaf' your worries behind with this herbal elixir that soothes the soul and calms the mind");
+        DescriptionsDict.Add(PotionDescription.BlackBalanceDraught, "A dark, mysterious potion that brings harmony to your magical endeavors");
         DescriptionsDict.Add(PotionDescription.RootRevitalizer, "Get back to your roots to give your potion a solid foundation!");
-        DescriptionsDict.Add(PotionDescription.KeyKombucha, "Unlock your potion's potential with this essential essence");
+        DescriptionsDict.Add(PotionDescription.KeyKombucha, "Unlock your potential with this critical, fermenting concoction");
         DescriptionsDict.Add(PotionDescription.BadBlood, "Clear away the curses with one purifying potion");
-        DescriptionsDict.Add(PotionDescription.MasterRedBlackPotion, "The ultimate brew to balance power and end tyranny");
+        DescriptionsDict.Add(PotionDescription.MasterRedBlackPotion, "The ultimate brew to restore balance and overthrow tyranny");
     }
 
 public string GetPotionName()
