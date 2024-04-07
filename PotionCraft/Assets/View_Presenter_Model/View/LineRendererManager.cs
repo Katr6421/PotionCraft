@@ -6,6 +6,7 @@ using UnityEngine;
 public class LineRendererManager : MonoBehaviour
 {
     [SerializeField] private NullCircleManager _nullCircleManager;
+    
 
 
     /*********************************************

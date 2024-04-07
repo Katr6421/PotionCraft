@@ -22,10 +22,10 @@ public class LevelUIController : MonoBehaviour
 
     [SerializeField] public TextMeshProUGUI SelectedLevelPotionName;
     [SerializeField] private GameObject CircleMarkerPrefab;
-    [SerializeField] private GameObject Frame;
+
     private GameObject CircleMarker;
     private Vector3 circleStartPosition = new Vector3(-0.57f, 3.79f, 0);
- 
+
     
     public void Start()
     {

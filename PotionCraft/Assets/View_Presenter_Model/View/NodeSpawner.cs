@@ -23,8 +23,9 @@ public class NodeSpawner : MonoBehaviour
     
     // Holds references to the instantiated GameObjects. We need this list to move the nodes and to check thir values to see if they are inserted correctly in the RedBlackTree
     // FUCKING VIGTIG LISTE!!!!!!
-    public static List<GameObject> nodeObjects = new List<GameObject>();
-    
+    public List<GameObject> nodeObjects = new List<GameObject>();
+     // Dont destroy on load a new scene
+   
 
     void Awake() {
         // Fill the dictionary. Maps the node value to the prefab
@@ -55,6 +56,7 @@ public class NodeSpawner : MonoBehaviour
         nodeValueToPrefabDictionary.Add(24, KatnissPrefab);
         nodeValueToPrefabDictionary.Add(25, WaterFlowerPrefab);
         nodeValueToPrefabDictionary.Add(26, RadishPrefab);
+   
     }
 
     public void Start(){
@@ -86,8 +88,12 @@ public class NodeSpawner : MonoBehaviour
             nodeObject.transform.SetParent(uiCanvas.transform, false);
             // Set the text value of the GameObject to the node's value
             nodeObject.GetComponentInChildren<TextMeshProUGUI>().text = node.Value.ToString();
-            
+
+            // Make non-interactable but preserve the visual appearance
+            MakeIngredientInteractable(false, nodeObject);
+
             // Store the reference to the GameObject in a list
+            Debug.Log("Adding nodeObject to list" + nodeObject.GetComponentInChildren<TextMeshProUGUI>().text + " to nodeObjects list");
             nodeObjects.Add(nodeObject);
         }
         
@@ -121,7 +127,51 @@ public class NodeSpawner : MonoBehaviour
     }
 
     public List<GameObject> GetNodeObjects(){
+        Debug.Log("GetNodeObjects1 was called");
+
+        Debug.Log("returning nodeObjects");
+        foreach (GameObject node in nodeObjects)
+        {
+            Debug.Log(node.GetComponentInChildren<TextMeshProUGUI>().text);
+        }
+
         return nodeObjects;
+    }
+
+
+    /**********************************************
+    METHOD: MakeAllPlacedObjectInteractable
+    DESCRIPTION: This method makes the ingredients that have been placed in the tree interactable or non-interactable.
+    False makes them non-interactable, while true makes them interactable.
+    **********************************************/
+    public void MakeAllPlacedIngredientsInteractable(bool shouldBeInteractable, int indexOfTopIngredient)
+    {
+        // Only do it for the ingredients that have been placed in the tree
+        for (int i = 0; i < indexOfTopIngredient; i++)
+        {
+            if (i < nodeObjects.Count)
+            {
+                MakeIngredientInteractable(shouldBeInteractable, nodeObjects[i]);
+            }
+        }
+    }
+
+    /**********************************************
+    METHOD: MakeIngredientInteractable
+    DESCRIPTION: This method makes the given ingredient interactable or non-interactable.
+    False makes it non-interactable, while true makes it interactable.
+    **********************************************/
+    public void MakeIngredientInteractable(bool shouldBeInteractable, GameObject ingredient)
+    {
+        //Debug.Log("Making ingredient with value " + ingredient.GetComponentInChildren<TextMeshProUGUI>().text + " interactable: " + shouldBeInteractable);
+        Button buttonComponent = ingredient.GetComponent<Button>();
+        if (buttonComponent != null)
+        {
+            buttonComponent.interactable = shouldBeInteractable;
+            var colors = buttonComponent.colors;
+            colors.disabledColor = colors.normalColor;
+            buttonComponent.colors = colors;
+        }
     }
 
 }

@@ -37,10 +37,8 @@ public class TreeVisualizationManager : MonoBehaviour
 
     private GameObject _currentIngredient; // Reference to the current Ingredient that the user must insert in the RedBlackTree
     private GameObject _currentNullCircle; // Reference to the latest NullCircle that the user has clicked on
-    private int _currectIngredientIndex = 0;     // Index of the current ingredient in the list of ingredients.
+    public int CurrectIngredientIndex {get; private set;}     // Index of the current ingredient in the list of ingredients.
     private List<GameObject> _currentInstantiatedNullCircles = new List<GameObject>();
-
-
 
 
 
@@ -70,13 +68,16 @@ public class TreeVisualizationManager : MonoBehaviour
 
     public void OnClickedNullCircle()
     {
+
         // The nullcircle that was clicked - Do we need to update this after rotations?
         _currentNullCircle = UnityEngine.EventSystems.EventSystem.current.currentSelectedGameObject;
-
-
+       
+       if(_currentNullCircle != null) Debug.Log("I am in OnClickedNullCircle. The current nullcircle is index " + _currentNullCircle.GetComponent<NullCircle>().Index);
+         else Debug.Log("I am in OnClickedNullCircle. The current nullcircle is null");
         /*********************************************
         Set _currentIngredient and _currentNullCircle.Value
         *********************************************/
+        Debug.Log("calling setNextIngredientForPlacement");
         setNextIngredientForPlacement();
 
         /*********************************************
@@ -97,7 +98,7 @@ public class TreeVisualizationManager : MonoBehaviour
         {
 
             // Prepare the next ingredient for placement. Update the index in the list of ingredients, that we need to place. 
-            _currectIngredientIndex++;
+            CurrectIngredientIndex++;
 
 
             // Move the current ingredient to _currentNullCircle position.
@@ -116,7 +117,7 @@ public class TreeVisualizationManager : MonoBehaviour
                 Move the CircleMarker to the new position
                 // TODO: - This needs to be done somewhere else. Maybe treemanager.
                 *********************************************/
-                _levelUIController.MoveCircleMarker(CalculatePosition(_currectIngredientIndex), 0.5f);
+                _levelUIController.MoveCircleMarker(CalculatePosition(CurrectIngredientIndex), 0.5f);
 
                 /*********************************************
                 Draw lines between nullCircles
@@ -138,11 +139,19 @@ public class TreeVisualizationManager : MonoBehaviour
                     _nullCircleManager.ShowAllChildrenNullCircles();
                     // The user has placed the ingredient in the right place and the tree is in balance
                     _avatarHintManager.UpdateHint("correct", AvatarHint.SelectedRightPlacementAndInBalance);
+                    // Check if the user has completed the level
+                    _treeManager.CheckIfCompletedLevel();
 
                 }
                 else
                 {
+                    /********************************************
+                    Make it possible for the user to select ingredients
+                    Make it impossible for the user to click on the nullCircles
+                    *********************************************/
                     _nullCircleManager.HideAllNullCircles();
+                    _nodeSpawner.MakeAllPlacedIngredientsInteractable(true, CurrectIngredientIndex);
+
 
                     /********************************************
                     The user has placed the ingredient in the right place, but the tree is unbalanced
@@ -177,6 +186,7 @@ public class TreeVisualizationManager : MonoBehaviour
             _treeManager.DeleteNodeAndClearOperations(currentIngredientValue);
 
             // TODO: Update hint 
+            _avatarHintManager.UpdateHint("wrong", AvatarHint.SelectedWrongPlacementForIngredient);
 
             // Allow user to click on the nullCircles
             _nullCircleManager.ShowAllChildrenNullCircles();
@@ -186,12 +196,21 @@ public class TreeVisualizationManager : MonoBehaviour
 
     private void setNextIngredientForPlacement()
     {
+        Debug.Log("CurrectIngredientIndex" + CurrectIngredientIndex);
         // If there are more ingredients to insert, get the next ingredient
-        if (_currectIngredientIndex < _nodeSpawner.GetNodeObjects().Count)
+        if (CurrectIngredientIndex < _nodeSpawner.GetNodeObjects().Count)
         {
-            _currentIngredient = _nodeSpawner.GetNodeObjects()[_currectIngredientIndex];
+            if( _nodeSpawner.GetNodeObjects()[CurrectIngredientIndex] !=null)    _currentIngredient = _nodeSpawner.GetNodeObjects()[CurrectIngredientIndex];
+            else Debug.Log("The current ingredient is null");
+
+
+            foreach (GameObject ingredient in _nodeSpawner.GetNodeObjects())
+            {
+                Debug.Log("I am in setNextIngredientForPlacement. The ingredients are " + ingredient.GetComponentInChildren<TextMeshProUGUI>().text);
+            }
             // Update the value of the current NullCircle to the value of the current ingredient
             _currentNullCircle.GetComponent<NullCircle>().Value = int.Parse(_currentIngredient.GetComponentInChildren<TextMeshProUGUI>().text);
+            Debug.Log("I am in setNextIngredientForPlacement. The current ingredient is " + _currentIngredient.GetComponentInChildren<TextMeshProUGUI>().text);
         }
         else
         {

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class NullCircleManager : MonoBehaviour
 {
@@ -13,11 +14,39 @@ public class NullCircleManager : MonoBehaviour
     public Dictionary<int, GameObject> NullCircles { get; } = new Dictionary<int, GameObject>();
     public GameObject Root { get; set; }
 
+    // Dont destroy on load a new scene
+   
+
     // Start is called before the first frame update
     void Start()
     {
+        Debug.Log("NullCircleManager Start: Spawning nullCircles");
         SpawnNullCircles();
     }
+
+    /*void OnEnable()
+    {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+        SceneManager.sceneUnloaded += OnSceneUnloaded;
+    }
+
+    void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+        SceneManager.sceneUnloaded -= OnSceneUnloaded;
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        //SpawnNullCircles();  // This will be called every time a scene is loaded
+    }
+
+    private void OnSceneUnloaded(Scene current) {
+        // Optionally clean up here if things are persisting unexpectedly between scenes
+        // This will be called every time a scene is unloaded
+    }*/
+
+
 
     public void SpawnNullCircles()
     {
