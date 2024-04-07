@@ -250,12 +250,12 @@ public class TreeManager : MonoBehaviour, ITreeManager
                  
                 // Check if the user has completed the level
                 CheckIfCompletedLevel();
-                
-                // Make circle marker visible
-                _levelUIController.ShowCircleMarker(true);
 
                 // Show nullcircles to allow for new ingredients to be inserted
                 _nullCircleManager.ShowAllChildrenNullCircles();
+
+                // Make circle marker visible
+                _levelUIController.ShowCircleMarker(true);
             }
         }));
 

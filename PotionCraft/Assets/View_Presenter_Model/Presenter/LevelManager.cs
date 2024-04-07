@@ -2,11 +2,16 @@ using System;
 using System.Collections.Generic;
 using System.Collections;
 using UnityEngine;
+using log4net.Core;
+using PlasticPipe.PlasticProtocol.Messages;
 
 public class LevelManager : MonoBehaviour, ILevelManager
 {
+    [SerializeField] private Sprite[] _potionSprites;
     public List<LevelData> Levels { get; set; } = new List<LevelData>();
     public static LevelManager Instance { get; private set; }
+    public Dictionary<PotionDescription, string> DescriptionsDict { get; set; } = new Dictionary<PotionDescription, string>();
+    public int CurrentLevelIndex { get; set; }
 
     private void Awake()
     {
@@ -20,6 +25,7 @@ public class LevelManager : MonoBehaviour, ILevelManager
             Instance = this;
             DontDestroyOnLoad(gameObject);
         }
+        MakeDescriptionDictionary();
         InitializeLevels();
     }
 
@@ -90,51 +96,56 @@ public class LevelManager : MonoBehaviour, ILevelManager
         };
 
         // Add levels to the list of levels. Hardcoded for each level
-        Levels.Add(new LevelData("Dummy", 1, nodesLevel1));
-        Levels.Add(new LevelData("Crystal Elixir", 1, nodesLevel1));
-        Levels.Add(new LevelData("Potion 2", 2, nodesLevel2));
-        Levels.Add(new LevelData("Potion 3", 3, new List<Node>()));
-        Levels.Add(new LevelData("Potion 4", 4, new List<Node>()));
-        Levels.Add(new LevelData("Potion 5", 5, new List<Node>()));
-        Levels.Add(new LevelData("Potion 6", 6, new List<Node>()));
-        Levels.Add(new LevelData("Potion 7", 7, new List<Node>()));
-        Levels.Add(new LevelData("Potion 8", 8, new List<Node>()));
-        Levels.Add(new LevelData("Potion 9", 9, new List<Node>()));
-        Levels.Add(new LevelData("Potion 10", 10, new List<Node>()));
+        Levels.Add(new LevelData("Dummy", 1, nodesLevel1, PotionDescription.Dummy));
+        Levels.Add(new LevelData("Insertion Infusion", 1, nodesLevel1, PotionDescription.InsertionInfusion));
+        Levels.Add(new LevelData("Rotation Tonic", 2, nodesLevel2, PotionDescription.RotationTonic)); 
+        Levels.Add(new LevelData("Color Swap Serum", 3, new List<Node>(), PotionDescription.ColorSwapSerum));
+        Levels.Add(new LevelData("Binary Blend", 4, new List<Node>(), PotionDescription.BinaryBlend));
+        Levels.Add(new LevelData("Leaf Lixir", 5, new List<Node>(), PotionDescription.LeafLixir));
+        Levels.Add(new LevelData("Black Balance Draught", 6, new List<Node>(), PotionDescription.BlackBalanceDraught));
+        Levels.Add(new LevelData("Root Revitalizer", 7, new List<Node>(), PotionDescription.RootRevitalizer));
+        Levels.Add(new LevelData("Key Kombucha", 8, new List<Node>(), PotionDescription.KeyKombucha));
+        Levels.Add(new LevelData("Bad Blood", 9, new List<Node>(), PotionDescription.BadBlood));
+        Levels.Add(new LevelData("Master Red-Black Potion", 10, new List<Node>(), PotionDescription.MasterRedBlackPotion));
     }
 
-    public string GetPotionName(int levelIndex)
+    public void MakeDescriptionDictionary()
     {
-        return Levels[levelIndex].PotionName;
+        DescriptionsDict.Add(PotionDescription.Dummy, "Dummy");
+        DescriptionsDict.Add(PotionDescription.InsertionInfusion, "Start your quest to defeat darkness with this foundational brew");
+        DescriptionsDict.Add(PotionDescription.RotationTonic, "Stir your way to mastery with this swirling tonic that aligns energies and balances forces");
+        DescriptionsDict.Add(PotionDescription.ColorSwapSerum, "Flip your fate with this vibrant serum that switches hues and fortunes alike");
+        DescriptionsDict.Add(PotionDescription.BinaryBlend, "Double the power, double the fun");
+        DescriptionsDict.Add(PotionDescription.LeafLixir, "'Leaf' your worries behind with this herbal elixir that soothes the soul and calms the mind");
+        DescriptionsDict.Add(PotionDescription.BlackBalanceDraught, "A dark, mysterious potion that brings harmony to your magical endeavors");
+        DescriptionsDict.Add(PotionDescription.RootRevitalizer, "Get back to your roots to give your potion a solid foundation!");
+        DescriptionsDict.Add(PotionDescription.KeyKombucha, "Unlock your potential with this critical, fermenting concoction");
+        DescriptionsDict.Add(PotionDescription.BadBlood, "Clear away the curses with one purifying potion");
+        DescriptionsDict.Add(PotionDescription.MasterRedBlackPotion, "The ultimate brew to restore balance and overthrow tyranny");
     }
 
-    public int GetLevelIndex(int levelIndex)
+public string GetPotionName()
     {
-        return Levels[levelIndex].LevelIndex;
+        return Levels[CurrentLevelIndex].PotionName;
     }
 
-    public List<Node> GetIngredients(int levelIndex)
+    public Sprite GetPotionSprite()
     {
-        return Levels[levelIndex].Ingredients;
+        return _potionSprites[CurrentLevelIndex];
     }
 
-    public LevelData LoadLevel(int levelIndex)
+    public string GetPotionDescription()
     {
-        return Levels[levelIndex];
-
+        return DescriptionsDict[Levels[CurrentLevelIndex].PotionDescription];
     }
 
-    public void CompleteLevel(int levelIndex)
+    public int GetLevelIndex()
     {
+        return Levels[CurrentLevelIndex].LevelIndex;
     }
 
-    public void LoadProgress()
+    public List<Node> GetIngredients()
     {
-        throw new NotImplementedException();
-    }
-
-    public void SaveProgress()
-    {
-        throw new NotImplementedException();
+        return Levels[CurrentLevelIndex].Ingredients;
     }
 }

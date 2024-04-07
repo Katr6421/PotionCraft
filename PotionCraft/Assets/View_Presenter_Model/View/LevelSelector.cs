@@ -8,13 +8,9 @@ using TMPro;
 
 public class LevelSelector : MonoBehaviour
 {
-
     public Button[] LevelButtons { get; private set; }
 
     // Fields to store the selected level and potion name. UniversalLevelManager will use these fields to display the selected level and potion name
-    public static int selectedLevel;
-    public static string potionName;
-
 
     private void Start()
     {
@@ -36,10 +32,8 @@ public class LevelSelector : MonoBehaviour
 
     public void OpenScene(int levelIndex)
     {
-        //Store the selected level index in a static variable
-        selectedLevel = levelIndex;
-        // Retrieve the potion name and level index using the singleton instance, which is safer
-        potionName = LevelManager.Instance.GetPotionName(levelIndex);
+        // Current level index
+        LevelManager.Instance.CurrentLevelIndex = levelIndex;
 
         // Now that the UI is set, you can load the new scene
         string levelName = "Level" + levelIndex;

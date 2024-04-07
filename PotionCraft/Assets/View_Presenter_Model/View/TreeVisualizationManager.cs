@@ -105,7 +105,7 @@ public class TreeVisualizationManager : MonoBehaviour
                 /*********************************************
                 Move the CircleMarker to the new position. Except if it is the last ingredient, then hide it
                 *********************************************/
-                if (CurrectIngredientIndex < _nodeSpawner.NodeObjects.Count)
+                if (CurrectIngredientIndex <= _nodeSpawner.NodeObjects.Count)
                 {
                     _levelUIController.MoveCircleMarker(CalculatePosition(CurrectIngredientIndex), 0.5f);
                 }
@@ -131,15 +131,15 @@ public class TreeVisualizationManager : MonoBehaviour
                     // Check if the user has completed the level
                     _treeManager.CheckIfCompletedLevel();
                 }
-                else
+                else // tree is not in balance
                 {
                     /********************************************
                     Make it possible for the user to select ingredients
                     Make it impossible for the user to click on the nullCircles
                     *********************************************/
+                    _levelUIController.ShowCircleMarker(false);
                     _nullCircleManager.HideAllNullCircles();
                     _nodeSpawner.MakeAllPlacedIngredientsInteractable(true, CurrectIngredientIndex);
-                    _levelUIController.ShowCircleMarker(false);
 
                     /********************************************
                     The user has placed the ingredient in the right place, but the tree is unbalanced
