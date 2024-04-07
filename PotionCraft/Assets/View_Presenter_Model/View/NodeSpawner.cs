@@ -18,6 +18,7 @@ public class NodeSpawner : MonoBehaviour
     [SerializeField] private GameObject PinkFlowerPrefab; // Assigned the prefab in the inspector
     [SerializeField] private GameObject RadishPrefab; // Assigned the prefab in the inspector
     [SerializeField] private GameObject WaterFlowerPrefab; // Assigned the prefab in the inspector
+    [SerializeField] private Transform _ingredientsPanel; // Assigned the prefab in the inspector
 
     // Dictionary to map node values to prefabs. This makes it easy to instantiate the correct prefab based on the node's value
     public Dictionary<int, GameObject> NodeValueToPrefabDictionary { get; private set; } = new Dictionary<int, GameObject>();
@@ -102,6 +103,61 @@ public class NodeSpawner : MonoBehaviour
     {
         return NodeValueToPrefabDictionary[node.Value];
     }
+
+    /*********************************************
+    METHOD: SpawnIngredientsOnRecipe
+    DESCRIPTION: This method creates a set of the unique ingredients that are needed for the recipe.
+    It loops through the list of nodes and instantiates a GameObject for each unique ingredient.
+    The GameObject is parented to the _ingredientsPanel with a grid layout.
+    *********************************************/
+    public void SpawnIngredientsOnRecipe()
+    {
+        HashSet<string> uniqueIngredients = new HashSet<string>();
+        List<Node> nodes = LevelManager.Instance.GetIngredients();
+
+        foreach (Node node in nodes)
+        {
+            GameObject prefab = GetPrefabForNode(node);
+            Image prefabImage = prefab.GetComponent<Image>(); // Assuming the prefab contains an Image component
+            if (prefabImage != null && uniqueIngredients.Add(prefab.name))
+            {
+                GameObject instance = new GameObject(prefab.name); // Create an empty GameObject to hold the image
+                instance.transform.SetParent(_ingredientsPanel, false); // Set the parent to _ingredientsPanel
+
+                // Add an Image component to the new GameObject and set its properties
+                Image instanceImage = instance.AddComponent<Image>();
+                instanceImage.sprite = prefabImage.sprite; // Set the sprite to the same sprite as the prefab
+
+                // Set the size of the image to match the size of the prefab's image
+                instanceImage.rectTransform.sizeDelta = prefabImage.rectTransform.sizeDelta;
+
+                // Set the position and rotation of the image to match the prefab's position and rotation
+                instanceImage.rectTransform.localPosition = prefabImage.rectTransform.localPosition;
+                instanceImage.rectTransform.localRotation = prefabImage.rectTransform.localRotation;
+            }
+        }
+
+        Debug.Log("Unique ingredients: " + uniqueIngredients.Count);
+    }
+
+
+    /*********************************************
+    METHOD: SpawnIngredientsOnRecipe
+    DESCRIPTION: This method spawns the set of ingredients on the recipe.
+    *********************************************/
+    /*public void SpawnIngredientsOnRecipe(HashSet<GameObject> ingredients)
+    {
+        foreach (GameObject ingredient in ingredients)
+        {
+            // Calculate the position of the node based on the index
+            Vector3 newNodePosition = CalculatePosition(nodeIndex);
+            //Instantiate a new GameObject from the prefab
+            GameObject nodeObject = Instantiate(GetPrefabForNode(node), newNodePosition, Quaternion.identity);
+            GameObject recipeIngredient = Instantiate(ingredient, Vector3.zero, Quaternion.identity);
+            recipeIngredient.transform.SetParent(uiCanvas.transform, false);
+        }
+    }
+    */
 
     /**********************************************
     METHOD: CalculatePosition

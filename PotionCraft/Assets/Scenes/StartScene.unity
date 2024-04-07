@@ -152,6 +152,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 32c3ea5e245b349f0bdca0b7ffabd03a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _potionSprites:
+  - {fileID: 21300000, guid: 8e1886b86bede487e81770fa5e054266, type: 3}
+  - {fileID: 21300000, guid: 9e62a25e2deb0482683a5795a3c19ae4, type: 3}
+  - {fileID: 21300000, guid: 8e1886b86bede487e81770fa5e054266, type: 3}
 --- !u!4 &245665368
 Transform:
   m_ObjectHideFlags: 0

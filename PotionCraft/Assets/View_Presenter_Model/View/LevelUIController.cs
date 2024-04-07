@@ -21,8 +21,9 @@ public class LevelUIController : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _selectedLevelNumberText;
     [SerializeField] private TextMeshProUGUI _selectedLevelPotionName;
     [SerializeField] private TextMeshProUGUI _selectedLevelPotionDescription;
-    //[SerializeField] private Image _selectedLevelPotionSprite;
+    [SerializeField] private GameObject _selectedLevelPotionSprite;
     [SerializeField] private GameObject _circleMarkerPrefab;
+    [SerializeField] private NodeSpawner _nodeSpawner;
     LevelManager _levelManager;
     public GameObject CircleMarker { get; set; }
     private Vector3 _circleStartPosition = new Vector3(-0.57f, 3.79f, 0);
@@ -32,13 +33,15 @@ public class LevelUIController : MonoBehaviour
     {
         _levelManager = LevelManager.Instance;
 
-        //When the scene starts, we update the recipe text.        
-        _selectedLevelNumberText.text = "" + _levelManager.CurrentLevelIndex;
-        _selectedLevelPotionName.text = "" + _levelManager.GetPotionName();
-        _selectedLevelPotionDescription.text = "" + _levelManager.GetPotionDescription();
-        //_selectedLevelPotionSprite.sprite = _levelManager.potionSprite;
+        /***********************************
+        Update recipe
+        ***********************************/     
+        UpdateRecipe();
 
-        // When the scene starts, we instantiate the CircleMarker
+
+        /***********************************
+        Instantiate the CircleMarker
+        ***********************************/
         SpawnCircleMarker();
     }
 
@@ -74,6 +77,18 @@ public class LevelUIController : MonoBehaviour
     public void ShowCircleMarker(bool shouldBeShown)
     {
         CircleMarker.SetActive(shouldBeShown);
+    }
+
+    public void UpdateRecipe(){
+        // Change text fields
+        _selectedLevelNumberText.text = "" + _levelManager.CurrentLevelIndex;
+        _selectedLevelPotionName.text = "" + _levelManager.GetPotionName();
+        _selectedLevelPotionDescription.text = "" + _levelManager.GetPotionDescription();
+        // Change sprite
+        SpriteRenderer spriteRenderer = _selectedLevelPotionSprite.GetComponent<SpriteRenderer>();
+        spriteRenderer.sprite = _levelManager.GetPotionSprite();
+        // Display set of ingredients on recipe
+        _nodeSpawner.SpawnIngredientsOnRecipe();
     }
 
 }
