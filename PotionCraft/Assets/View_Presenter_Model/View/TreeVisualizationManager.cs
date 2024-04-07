@@ -37,7 +37,7 @@ public class TreeVisualizationManager : MonoBehaviour
 
     private GameObject _currentIngredient; // Reference to the current Ingredient that the user must insert in the RedBlackTree
     private GameObject _currentNullCircle; // Reference to the latest NullCircle that the user has clicked on
-    public int CurrectIngredientIndex {get; private set;}     // Index of the current ingredient in the list of ingredients.
+    public int CurrectIngredientIndex { get; private set; }     // Index of the current ingredient in the list of ingredients.
     private List<GameObject> _currentInstantiatedNullCircles = new List<GameObject>();
 
 
@@ -68,12 +68,11 @@ public class TreeVisualizationManager : MonoBehaviour
 
     public void OnClickedNullCircle()
     {
-
         // The nullcircle that was clicked - Do we need to update this after rotations?
         _currentNullCircle = UnityEngine.EventSystems.EventSystem.current.currentSelectedGameObject;
-       
-       if(_currentNullCircle != null) Debug.Log("I am in OnClickedNullCircle. The current nullcircle is index " + _currentNullCircle.GetComponent<NullCircle>().Index);
-         else Debug.Log("I am in OnClickedNullCircle. The current nullcircle is null");
+
+        if (_currentNullCircle != null) Debug.Log("I am in OnClickedNullCircle. The current nullcircle is index " + _currentNullCircle.GetComponent<NullCircle>().Index);
+        else Debug.Log("I am in OnClickedNullCircle. The current nullcircle is null");
         /*********************************************
         Set _currentIngredient and _currentNullCircle.Value
         *********************************************/
@@ -96,17 +95,13 @@ public class TreeVisualizationManager : MonoBehaviour
         *********************************************/
         if (_currentIngredient != null && isValidPlacement)
         {
-
             // Prepare the next ingredient for placement. Update the index in the list of ingredients, that we need to place. 
             CurrectIngredientIndex++;
-
 
             // Move the current ingredient to _currentNullCircle position.
             // Needs to be a coroutine to be able to wait for the movement to finish before deactivating the NullCircle
             StartCoroutine(MoveAndHide(_currentIngredient, _currentNullCircle.transform.position, 0.5f, () =>
             {
-
-
                 /*********************************************
                 Update _currentNullCircle with the placed ingredient
                 *********************************************/
@@ -114,19 +109,24 @@ public class TreeVisualizationManager : MonoBehaviour
                 _currentNullCircle.GetComponent<NullCircle>().Value = currentIngredientValue;
 
                 /*********************************************
-                Move the CircleMarker to the new position
-                // TODO: - This needs to be done somewhere else. Maybe treemanager.
+                Move the CircleMarker to the new position. Except if it is the last ingredient, then hide it
                 *********************************************/
-                _levelUIController.MoveCircleMarker(CalculatePosition(CurrectIngredientIndex), 0.5f);
+                if (CurrectIngredientIndex < _nodeSpawner.GetNodeObjects().Count)
+                {
+                    Debug.Log("In if. CurrectIngredientIndex: " + CurrectIngredientIndex + " _nodeSpawner.GetNodeObjects().Count: " + _nodeSpawner.GetNodeObjects().Count);
+                    _levelUIController.MoveCircleMarker(CalculatePosition(CurrectIngredientIndex), 0.5f);
+                }
+                else
+                {
+                    Debug.Log("In else. CurrectIngredientIndex: " + CurrectIngredientIndex + " _nodeSpawner.GetNodeObjects().Count: " + _nodeSpawner.GetNodeObjects().Count);
+                    _levelUIController.ShowCircleMarker(false);
+                }
+
 
                 /*********************************************
                 Draw lines between nullCircles
                 *********************************************/
                 _lineRendererManager.UpdateLineRenderers();
-                //_lineRendererManager.SpawnLinesToParent(_currentNullCircle.GetComponent<NullCircle>().LeftChild, _currentIngredient);
-                //_lineRendererManager.SpawnLinesToParent(_currentNullCircle.GetComponent<NullCircle>().RightChild, _currentIngredient);
-                //_lineRendererManager.ShowLineRender(_currentNullCircle.GetComponent<NullCircle>().LeftChild);
-                //_lineRendererManager.ShowLineRender(_currentNullCircle.GetComponent<NullCircle>().RightChild);
 
 
                 /*********************************************
@@ -141,7 +141,6 @@ public class TreeVisualizationManager : MonoBehaviour
                     _avatarHintManager.UpdateHint("correct", AvatarHint.SelectedRightPlacementAndInBalance);
                     // Check if the user has completed the level
                     _treeManager.CheckIfCompletedLevel();
-
                 }
                 else
                 {
@@ -151,7 +150,7 @@ public class TreeVisualizationManager : MonoBehaviour
                     *********************************************/
                     _nullCircleManager.HideAllNullCircles();
                     _nodeSpawner.MakeAllPlacedIngredientsInteractable(true, CurrectIngredientIndex);
-
+                    _levelUIController.ShowCircleMarker(false);
 
                     /********************************************
                     The user has placed the ingredient in the right place, but the tree is unbalanced
@@ -200,7 +199,7 @@ public class TreeVisualizationManager : MonoBehaviour
         // If there are more ingredients to insert, get the next ingredient
         if (CurrectIngredientIndex < _nodeSpawner.GetNodeObjects().Count)
         {
-            if( _nodeSpawner.GetNodeObjects()[CurrectIngredientIndex] !=null)    _currentIngredient = _nodeSpawner.GetNodeObjects()[CurrectIngredientIndex];
+            if (_nodeSpawner.GetNodeObjects()[CurrectIngredientIndex] != null) _currentIngredient = _nodeSpawner.GetNodeObjects()[CurrectIngredientIndex];
             else Debug.Log("The current ingredient is null");
 
 
@@ -478,7 +477,7 @@ public class TreeVisualizationManager : MonoBehaviour
         // Now that the movement is complete, hide the NullCircle GameObject
         _nullCircleManager.HideNullCircle(_currentNullCircle.GetComponent<NullCircle>());
         _currentNullCircle.GetComponent<NullCircle>().IsActive = false;
-        
+
         onComplete?.Invoke();
     }
 

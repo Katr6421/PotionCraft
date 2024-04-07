@@ -4,8 +4,10 @@ using UnityEngine;
 
 public class RotateLeftClickHandler : MonoBehaviour
 {
+    [SerializeField] private TreeManager _treeManager;
+
     // Start is called before the first frame update
     public void OnClickRotateLeft(){
-        TreeManager.instance.HandleOperationButtonClick(OperationType.RotateLeft);
+        _treeManager.HandleOperationButtonClick(OperationType.RotateLeft);
     }
 }

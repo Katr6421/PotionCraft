@@ -71,6 +71,11 @@ public class LevelUIController : MonoBehaviour
     objectToMove.transform.position = destination; // Ensure it reaches the destination
     }
 
-    
+    // Shows or hides circle marker based on the boolean value
+    public void ShowCircleMarker(bool shouldBeShown)
+    {
+        CircleMarker.SetActive(shouldBeShown);
+    }
+
 }
 

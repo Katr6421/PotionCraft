@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class FlipColourClickHandler : MonoBehaviour
 {
-    // Start is called before the first frame update
+    [SerializeField] private TreeManager _treeManager;
     public void OnClickFlipColour(){
-        TreeManager.instance.HandleOperationButtonClick(OperationType.FlipColors);
+        _treeManager.HandleOperationButtonClick(OperationType.FlipColors);
     }
 }

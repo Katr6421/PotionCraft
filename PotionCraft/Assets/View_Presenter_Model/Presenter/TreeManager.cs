@@ -14,6 +14,7 @@ public class TreeManager : MonoBehaviour, ITreeManager
     private HashSet<Node> currentSelctedNodes = new HashSet<Node>();
     public List<GameObject> CurrentSelectedIngredients { get; set; } = new List<GameObject>();
 
+    /*
    private void Awake()
     {
         // Singleton pattern
@@ -30,6 +31,7 @@ public class TreeManager : MonoBehaviour, ITreeManager
         }
         
     }
+    */
 
     void Start()
     { }
@@ -135,6 +137,7 @@ public class TreeManager : MonoBehaviour, ITreeManager
         if (IsTreeInBalanced())
         {
             Debug.Log("There are no more operations in the queue. The tree is in balance. Insert next ingredient.");
+            return;
         }
 
         // Get the current operation from the queue, whitout removing it

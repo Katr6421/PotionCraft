@@ -24,7 +24,6 @@ public class NodeSpawner : MonoBehaviour
     // Holds references to the instantiated GameObjects. We need this list to move the nodes and to check thir values to see if they are inserted correctly in the RedBlackTree
     // FUCKING VIGTIG LISTE!!!!!!
     public List<GameObject> nodeObjects = new List<GameObject>();
-     // Dont destroy on load a new scene
    
 
     void Awake() {

@@ -13,7 +13,7 @@ public class LevelManager : MonoBehaviour, ILevelManager
         // Singleton pattern
         if (Instance != null && Instance != this)
         {
-            Destroy(gameObject);
+            //Destroy(gameObject);
         }
         else
         {
@@ -59,32 +59,40 @@ public class LevelManager : MonoBehaviour, ILevelManager
         Node node26 = new Node(26, 26, 1, false, null);
 
         // Make a list of nodes for each level
-        List<Node> nodesLevel1 = new List<Node>();
-        nodesLevel1.Add(node19);
-        nodesLevel1.Add(node5);
-        nodesLevel1.Add(node1);
-        nodesLevel1.Add(node18);
-        nodesLevel1.Add(node3);
-        nodesLevel1.Add(node8);
-        nodesLevel1.Add(node24);
-        nodesLevel1.Add(node13);
-        nodesLevel1.Add(node16);
-        nodesLevel1.Add(node12);
+        List<Node> nodesLevel1 = new List<Node>
+        {
+            node19,
+            node5,
+            node1,
+            node18,
+            node3,
+            node8,
+            node24,
+            node13,
+            node16,
+            node12
+        };
 
-         List<Node> nodesLevel2 = new List<Node>();
-        nodesLevel2.Add(node4);
-        nodesLevel2.Add(node5);
-        nodesLevel2.Add(node6);
+        List<Node> nodesLevel2 = new List<Node>
+        {
+            node4,
+            node5,
+            node6
+        };
 
-        List<Node> testLeftRotation = new List<Node>();
-        testLeftRotation.Add(node1);
-        testLeftRotation.Add(node2);
+        List<Node> testLeftRotation = new List<Node>
+        {
+            node1,
+            node2
+        };
 
-        List<Node> testLeftRotationShort = new List<Node>();
-        testLeftRotationShort.Add(node1);
-        testLeftRotationShort.Add(node5);
-        testLeftRotationShort.Add(node8);
-        testLeftRotationShort.Add(node3);
+        List<Node> testLeftRotationShort = new List<Node>
+        {
+            node1,
+            node5,
+            node8,
+            node3
+        };
 
 
         // Add levels to the list of levels. Hardcoded for each level

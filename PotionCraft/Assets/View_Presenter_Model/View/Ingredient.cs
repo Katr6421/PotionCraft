@@ -16,11 +16,13 @@ public class Ingredient : MonoBehaviour
     [SerializeField] private Sprite[] _katnissSprite;
     private Image imageComponent;
     public GameObject LineToParent { get; set; } // Saves a referens to the line that goes to the parent of this ingredient
+    private TreeManager _treeManager;
 
     void Awake()
     {
         // Get the Image component from the GameObject
         imageComponent = GetComponent<Image>();
+        _treeManager = FindObjectOfType<TreeManager>();
     }
 
 
@@ -29,10 +31,10 @@ public class Ingredient : MonoBehaviour
         //Debug.Log("Clicked on ingredient, with the value:  " + GetComponentInChildren<TextMeshProUGUI>().text);
         
         ChangePrefabImage(gameObject.name);
-        var setOfSelectedIngredients = TreeManager.instance.CurrentSelectedIngredients;
+        var setOfSelectedIngredients = _treeManager.CurrentSelectedIngredients;
 
         // Add node from the real tree to the selected ingredients/nodes
-        TreeManager.instance.HandleIngredientClick(int.Parse(GetComponentInChildren<TextMeshProUGUI>().text));
+        _treeManager.HandleIngredientClick(int.Parse(GetComponentInChildren<TextMeshProUGUI>().text));
 
         // Add ingredient to the set of selected ingredients
         if (setOfSelectedIngredients.Contains(gameObject))

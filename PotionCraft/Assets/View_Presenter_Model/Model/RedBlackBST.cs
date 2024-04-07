@@ -5,7 +5,6 @@ using UnityEngine;
 
 public class RedBlackBST : IRedBlackBST
 {
-   private TreeManager _treeManager;
    private const bool RED = true;
    private const bool BLACK = false;
    public Node Root { get; set; }
@@ -14,7 +13,6 @@ public class RedBlackBST : IRedBlackBST
    public RedBlackBST()
    {
       Root = null;
-      _treeManager = TreeManager.instance;
    }
 
    public Node Get(int key)

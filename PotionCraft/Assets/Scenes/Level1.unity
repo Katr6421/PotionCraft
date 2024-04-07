@@ -326,6 +326,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f55b5d13b1b400642bb14962aa7f0925, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _treeManager: {fileID: 1750167745}
 --- !u!1 &130390312
 GameObject:
   m_ObjectHideFlags: 0
@@ -10996,6 +10997,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a3eee05d5ddbfdf43b979a26e73ffb83, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _treeManager: {fileID: 1750167745}
 --- !u!1 &592938126
 GameObject:
   m_ObjectHideFlags: 0
@@ -21067,6 +21069,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef2c2eaeef4950d4f92d34f46baf5453, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _treeManager: {fileID: 1750167745}
 --- !u!1 &716256336
 GameObject:
   m_ObjectHideFlags: 0
@@ -31594,6 +31597,7 @@ MonoBehaviour:
   PinkFlowerPrefab: {fileID: 3833749180137690964, guid: bf53e571872f145a59499c213b74579a, type: 3}
   RadishPrefab: {fileID: 1063391715542368879, guid: 117db5b3e526b4a589d4d282d97e599f, type: 3}
   WaterFlowerPrefab: {fileID: 4593815546154278474, guid: a0314163056854d148b2bb88aa4b12db, type: 3}
+  nodeObjects: []
 --- !u!1 &1590804488
 GameObject:
   m_ObjectHideFlags: 0

@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class RotateRightClickHandler : MonoBehaviour
 {
+    [SerializeField] private TreeManager _treeManager;
     public void OnClickRotateRight(){
-        TreeManager.instance.HandleOperationButtonClick(OperationType.RotateRight);
+        _treeManager.HandleOperationButtonClick(OperationType.RotateRight);
     }
 }
