@@ -71,12 +71,12 @@ public class TreeVisualizationManager : MonoBehaviour
         // The nullcircle that was clicked - Do we need to update this after rotations?
         _currentNullCircle = UnityEngine.EventSystems.EventSystem.current.currentSelectedGameObject;
 
-        if (_currentNullCircle != null) Debug.Log("I am in OnClickedNullCircle. The current nullcircle is index " + _currentNullCircle.GetComponent<NullCircle>().Index);
-        else Debug.Log("I am in OnClickedNullCircle. The current nullcircle is null");
+        //if (_currentNullCircle != null) Debug.Log("I am in OnClickedNullCircle. The current nullcircle is index " + _currentNullCircle.GetComponent<NullCircle>().Index);
+        //else Debug.Log("I am in OnClickedNullCircle. The current nullcircle is null");
         /*********************************************
         Set _currentIngredient and _currentNullCircle.Value
         *********************************************/
-        Debug.Log("calling setNextIngredientForPlacement");
+        //Debug.Log("calling setNextIngredientForPlacement");
         setNextIngredientForPlacement();
 
         /*********************************************
@@ -98,6 +98,8 @@ public class TreeVisualizationManager : MonoBehaviour
             // Prepare the next ingredient for placement. Update the index in the list of ingredients, that we need to place. 
             CurrectIngredientIndex++;
 
+            _nullCircleManager.MakeAllNullCirclesNonInteractable(); // otherwise the user can click on the nullCircles while the animation is runnning and fuck everything up
+
             // Move the current ingredient to _currentNullCircle position.
             // Needs to be a coroutine to be able to wait for the movement to finish before deactivating the NullCircle
             StartCoroutine(MoveAndHide(_currentIngredient, _currentNullCircle.transform.position, 0.5f, () =>
@@ -113,12 +115,12 @@ public class TreeVisualizationManager : MonoBehaviour
                 *********************************************/
                 if (CurrectIngredientIndex < _nodeSpawner.GetNodeObjects().Count)
                 {
-                    Debug.Log("In if. CurrectIngredientIndex: " + CurrectIngredientIndex + " _nodeSpawner.GetNodeObjects().Count: " + _nodeSpawner.GetNodeObjects().Count);
+                    //Debug.Log("In if. CurrectIngredientIndex: " + CurrectIngredientIndex + " _nodeSpawner.GetNodeObjects().Count: " + _nodeSpawner.GetNodeObjects().Count);
                     _levelUIController.MoveCircleMarker(CalculatePosition(CurrectIngredientIndex), 0.5f);
                 }
                 else
                 {
-                    Debug.Log("In else. CurrectIngredientIndex: " + CurrectIngredientIndex + " _nodeSpawner.GetNodeObjects().Count: " + _nodeSpawner.GetNodeObjects().Count);
+                    //Debug.Log("In else. CurrectIngredientIndex: " + CurrectIngredientIndex + " _nodeSpawner.GetNodeObjects().Count: " + _nodeSpawner.GetNodeObjects().Count);
                     _levelUIController.ShowCircleMarker(false);
                 }
 
@@ -195,25 +197,25 @@ public class TreeVisualizationManager : MonoBehaviour
 
     private void setNextIngredientForPlacement()
     {
-        Debug.Log("CurrectIngredientIndex" + CurrectIngredientIndex);
+        //Debug.Log("CurrectIngredientIndex" + CurrectIngredientIndex);
         // If there are more ingredients to insert, get the next ingredient
         if (CurrectIngredientIndex < _nodeSpawner.GetNodeObjects().Count)
         {
             if (_nodeSpawner.GetNodeObjects()[CurrectIngredientIndex] != null) _currentIngredient = _nodeSpawner.GetNodeObjects()[CurrectIngredientIndex];
-            else Debug.Log("The current ingredient is null");
+            //else Debug.Log("The current ingredient is null");
 
 
             foreach (GameObject ingredient in _nodeSpawner.GetNodeObjects())
             {
-                Debug.Log("I am in setNextIngredientForPlacement. The ingredients are " + ingredient.GetComponentInChildren<TextMeshProUGUI>().text);
+                //Debug.Log("I am in setNextIngredientForPlacement. The ingredients are " + ingredient.GetComponentInChildren<TextMeshProUGUI>().text);
             }
             // Update the value of the current NullCircle to the value of the current ingredient
             _currentNullCircle.GetComponent<NullCircle>().Value = int.Parse(_currentIngredient.GetComponentInChildren<TextMeshProUGUI>().text);
-            Debug.Log("I am in setNextIngredientForPlacement. The current ingredient is " + _currentIngredient.GetComponentInChildren<TextMeshProUGUI>().text);
+            //Debug.Log("I am in setNextIngredientForPlacement. The current ingredient is " + _currentIngredient.GetComponentInChildren<TextMeshProUGUI>().text);
         }
         else
         {
-            Debug.Log("No more ingredients to place");
+            //Debug.Log("No more ingredients to place");
         }
     }
 

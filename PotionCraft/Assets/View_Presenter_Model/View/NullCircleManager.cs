@@ -733,11 +733,7 @@ public class NullCircleManager : MonoBehaviour
         }
 
         // Disable the Button component to prevent interaction
-        Button button = nullCircle.GetComponent<Button>();
-        if (button != null)
-        {
-            button.interactable = false;
-        }
+        MakeNullCircleNonInteractable(nullCircle);
     }
 
 
@@ -760,7 +756,25 @@ public class NullCircleManager : MonoBehaviour
         }
     }
 
+    // Used to make the null circles non interactable but NOT hide it
+    public void MakeAllNullCirclesNonInteractable()
+    {
+        for (int i = 0; i < NullCircles.Count; i++)
+        {
+            MakeNullCircleNonInteractable(NullCircles[i].GetComponent<NullCircle>());
+        }
+    }
 
+    public void MakeNullCircleNonInteractable(NullCircle nullCircle)
+    {
+        Button nullCircleButton = nullCircle.GetComponent<Button>();
+        nullCircleButton.interactable = false;
+
+        // But keep visual appearance
+        var colors = nullCircleButton.colors;
+        colors.disabledColor = colors.normalColor;
+        nullCircleButton.colors = colors;
+    }
 
     public void PrintNullCircles()
     {

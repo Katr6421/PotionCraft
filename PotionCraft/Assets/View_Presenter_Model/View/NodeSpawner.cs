@@ -92,7 +92,7 @@ public class NodeSpawner : MonoBehaviour
             MakeIngredientInteractable(false, nodeObject);
 
             // Store the reference to the GameObject in a list
-            Debug.Log("Adding nodeObject to list" + nodeObject.GetComponentInChildren<TextMeshProUGUI>().text + " to nodeObjects list");
+            //Debug.Log("Adding nodeObject to list" + nodeObject.GetComponentInChildren<TextMeshProUGUI>().text + " to nodeObjects list");
             nodeObjects.Add(nodeObject);
         }
         
@@ -126,12 +126,12 @@ public class NodeSpawner : MonoBehaviour
     }
 
     public List<GameObject> GetNodeObjects(){
-        Debug.Log("GetNodeObjects1 was called");
+        //Debug.Log("GetNodeObjects1 was called");
 
-        Debug.Log("returning nodeObjects");
+        //Debug.Log("returning nodeObjects");
         foreach (GameObject node in nodeObjects)
         {
-            Debug.Log(node.GetComponentInChildren<TextMeshProUGUI>().text);
+           // Debug.Log(node.GetComponentInChildren<TextMeshProUGUI>().text);
         }
 
         return nodeObjects;
@@ -153,6 +153,8 @@ public class NodeSpawner : MonoBehaviour
                 MakeIngredientInteractable(shouldBeInteractable, nodeObjects[i]);
             }
         }
+
+        // Do the same for the null circles - otherwise the user can quickly click two nullcircles and break everything
     }
 
     /**********************************************

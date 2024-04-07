@@ -5,9 +5,6 @@ using PlasticPipe.PlasticProtocol.Messages;
 
 public class Node
 {
-    private const bool RED = true;
-    private const bool BLACK = false;
-  
     public int Key { get; set; }
 
     public int Value { get; set; } // When inserting numbers, letters etc. both key and value have the same value (the number)

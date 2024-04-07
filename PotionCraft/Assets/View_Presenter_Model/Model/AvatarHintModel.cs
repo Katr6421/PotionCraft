@@ -9,7 +9,7 @@ public enum AvatarHint
 
     //Selecting the right placement for the ingredient (and tree is balanced):
     SelectedRightPlacementAndInBalance,
-    
+
     //Selecting the right placement for the ingredient - but it causes the tree to become unbalanced(rotate left and flipColour)
     SelectedRightPlacementButNeedsToSelectThreeNodes,
 
@@ -40,10 +40,10 @@ public enum AvatarHint
     //# Selected everything right, the ingredient is placede and operation animation has run. But the tree is still in unbalance (right rotation)
     NeedsToSelectThreeNodes,
 
-     //# Selected everything right, the ingredient is placede and operation animation has run. But the tree is still in unbalance (Left rotation)
+    //# Selected everything right, the ingredient is placede and operation animation has run. But the tree is still in unbalance (Left rotation)
     NeedsToSelectTwoNodes,
 
-     //# Selected everything right, the ingredient is placede and operation animation has run. But the tree is still in unbalance (flip color)
+    //# Selected everything right, the ingredient is placede and operation animation has run. But the tree is still in unbalance (flip color)
     NeedsToSelectTwoNodesToFlipColor,
 
     // You have balanced the tree and now you can insert a new one!
@@ -58,5 +58,5 @@ public enum AvatarHint
 }
 public class AvatarHintModel
 {
-    
+
 }

@@ -1,11 +1,9 @@
-using System.Collections;
 using UnityEngine;
-using UnityEngine.UI;
 using System.Collections.Generic;
 public class LevelData : MonoBehaviour
 {
     public string PotionName { get; set; }
-   
+
     public int LevelIndex { get; set; }
     public List<Node> Ingredients { get; set; }
 

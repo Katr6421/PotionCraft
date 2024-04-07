@@ -147,6 +147,12 @@ public class TreeManager : MonoBehaviour, ITreeManager
         bool userSelectedCorrectOperation = selectedOperationType == nextCorrectOperation.OperationType;
         bool userSelectedCorrectIngredients = SelectedCorrectIngredients(nextCorrectOperation, out HashSet<Node> correctNodesInTree);
 
+        // print selected nodes
+        foreach (Node node in currentSelctedNodes)
+        {
+            Debug.Log("Current selected node value: " + node.Value);
+        }
+        
         if (userSelectedCorrectIngredients)
         {
             // Correct ingredients and correct operation
