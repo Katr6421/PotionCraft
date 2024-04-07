@@ -10,31 +10,8 @@ public class TreeManager : MonoBehaviour, ITreeManager
     [SerializeField] private NodeSpawner _nodeSpawner;
     [SerializeField] private PopUpManager _popUpManager;
     public RedBlackBST RedBlackTree { get; set; } = new RedBlackBST();
-    public static TreeManager instance { get; private set; }
-    private HashSet<Node> currentSelctedNodes = new HashSet<Node>();
+    public HashSet<Node> CurrentSelectedNodes {get; set; } = new HashSet<Node>();
     public List<GameObject> CurrentSelectedIngredients { get; set; } = new List<GameObject>();
-
-    /*
-   private void Awake()
-    {
-        // Singleton pattern
-        if (instance != null && instance != this)
-        {
-            Debug.Log("Destroying the tree manager");
-           // Destroy(gameObject);
-        }
-        else
-        {
-            Debug.Log("Setting the instance of the tree manager");
-            instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        
-    }
-    */
-
-    void Start()
-    { }
 
     // Add a node to the tree
     public void InsertNode(int key, int value)
@@ -45,7 +22,6 @@ public class TreeManager : MonoBehaviour, ITreeManager
     // Checks if the clicked null circles parent is the same as the nodes parent in the tree
     public bool ValidateNodePlacement(GameObject clickedNullCircle)
     {
-
         NullCircle clickedNullCircleObject = clickedNullCircle.GetComponent<NullCircle>();
         //RunDebugPrints(clickedNullCircleObject);
 
@@ -53,7 +29,6 @@ public class TreeManager : MonoBehaviour, ITreeManager
         if ((clickedNullCircleObject.Parent) == null && (RedBlackTree.Get((clickedNullCircleObject.Value)).Parent) == null)
         {
             //Debug.Log("We have inserted the root node correctly.");
-            //Debug.Log("I return true.");
             return true;
         }
 
@@ -103,42 +78,22 @@ public class TreeManager : MonoBehaviour, ITreeManager
     public void HandleIngredientClick(int NodeValue)
     {
         Node clickedNode = RedBlackTree.Get(NodeValue);
-        //Debug.Log("I have translatede the clicked ingredient with the value: " + NodeValue + " to the corresponding node in the tree: " + clickedNode + " and its value is: " + clickedNode.Value);
 
         // Togle between selected and not selected nodes
-        if (currentSelctedNodes.Contains(clickedNode))
+        if (CurrentSelectedNodes.Contains(clickedNode))
         {
-            currentSelctedNodes.Remove(clickedNode);
+            CurrentSelectedNodes.Remove(clickedNode);
         }
         else
         {
-            currentSelctedNodes.Add(clickedNode);
+            CurrentSelectedNodes.Add(clickedNode);
         }
-
-        foreach (Node node in currentSelctedNodes)
-        {
-            //Debug.Log("Current Node value in currentSelctedNodes: " + node.Value);
-        }
-
-        // Vi sætter ikke en grænse for hvor mange ingredients de må vælge - så afslører det ikke noget om hvilken operation der er næste
-        // De kan deselecte en ingredient
-
-        //but if we want to, this is how we could do it:
-        // Check what the next operation is in the queue
-        // If the next operation is:
-        //// RotateLeft: can only select 2 nodes - så længe størrelsen på set'et er mindre end 2
-        //// RotateRight: can only select 3 nodes - så længe størrelsen på set'et er mindre end 3
-        //// FlipColors: can only select 3 nodes - så længe størrelsen på set'et er mindre end 3
     }
 
     public void HandleOperationButtonClick(OperationType selectedOperationType)
     {
         // If there is no operations in the queue to perform, do nothing. The user is supposed to insert a new ingredient instead
-        if (IsTreeInBalanced())
-        {
-            Debug.Log("There are no more operations in the queue. The tree is in balance. Insert next ingredient.");
-            return;
-        }
+        if (IsTreeInBalanced()) return;
 
         // Get the current operation from the queue, whitout removing it
         Operation nextCorrectOperation = RedBlackTree.Operations.Peek();
@@ -147,12 +102,6 @@ public class TreeManager : MonoBehaviour, ITreeManager
         bool userSelectedCorrectOperation = selectedOperationType == nextCorrectOperation.OperationType;
         bool userSelectedCorrectIngredients = SelectedCorrectIngredients(nextCorrectOperation, out HashSet<Node> correctNodesInTree);
 
-        // print selected nodes
-        foreach (Node node in currentSelctedNodes)
-        {
-            Debug.Log("Current selected node value: " + node.Value);
-        }
-        
         if (userSelectedCorrectIngredients)
         {
             // Correct ingredients and correct operation
@@ -190,6 +139,7 @@ public class TreeManager : MonoBehaviour, ITreeManager
         }
     }
 
+    // Compare the selected ingredients with the correct ingredients for the next operation
     public bool SelectedCorrectIngredients(Operation nextCorrectOperation, out HashSet<Node> correctNodesInTree)
     {
         switch (nextCorrectOperation.OperationType)
@@ -237,13 +187,13 @@ public class TreeManager : MonoBehaviour, ITreeManager
         // Print current selected nodes
         /*
         Debug.Log("!!!!!!!!!!!!!!! The current SELECTED nodes are: !!!!!!!!!!!!!!!");
-        foreach (Node node in currentSelctedNodes)
+        foreach (Node node in CurrentSelectedNodes)
         {
             Debug.Log("Current selected node value: " + node.Value);
         }
         */
 
-        return correctNodesInTree.SetEquals(currentSelctedNodes);
+        return correctNodesInTree.SetEquals(CurrentSelectedNodes);
     }
 
     public void ExecuteNextOperation(HashSet<Node> correctNodesInTree, OperationType operationType)
@@ -255,11 +205,11 @@ public class TreeManager : MonoBehaviour, ITreeManager
         // Perform the next operation in the queue on our RedBlackBST tree, such that the current state of our tree machted the operation we just did. RotateLeft, RotateRight or FlipColors
         RedBlackTree.ExecuteNextOperation();
 
-        //Debug.Log("!!!!!!!!!!!!!!! Current state of the tree AFTER rotation!!!!!!" + operationType + "**********************");
+        //Debug.Log("!!!!!!!!!!!!!!! Current state of the tree AFTER ROTATION !!!!!!" + operationType + "**********************");
         //RedBlackTree.PrintTree();
 
         // Clear the sets
-        currentSelctedNodes.Clear();
+        CurrentSelectedNodes.Clear();
         correctNodesInTree.Clear();
 
         //Debug.Log("*************** Print all nullcircles BEFORE VISUALIZE ROTATION in ExecuteOperation **********");
@@ -297,7 +247,7 @@ public class TreeManager : MonoBehaviour, ITreeManager
                 // Update hint - Wuhuu the tree is in balance. Insert next ingredient. Green hint
                 _avatarHintManager.UpdateHint("correct", AvatarHint.InBalance);
                  
-                // check om vi er færdige med levellet
+                // Check if the user has completed the level
                 CheckIfCompletedLevel();
 
                 // Show nullcircles to allow for new ingredients to be inserted
@@ -322,17 +272,17 @@ public class TreeManager : MonoBehaviour, ITreeManager
         return RedBlackTree.GetColor(value);
     }
 
+    // If the queue of operations is empty, the tree is in balance
     public bool IsTreeInBalanced()
     {
-        // If the queue is empty, the tree is balanced
         return RedBlackTree.Operations.Count == 0;
     }
 
+    // Update hint according to the next operation in the queue
     public void HandleNextOperation()
     {
-        
         OperationType nextCorrectOperation = GetOperationType();
-        Debug.Log(nextCorrectOperation);
+        //Debug.Log(nextCorrectOperation);
         switch (nextCorrectOperation)
         {
             case OperationType.RotateLeft:
@@ -356,7 +306,7 @@ public class TreeManager : MonoBehaviour, ITreeManager
         // If the current ingredient index is equal to the number of ingredients (we are on the last ingredient to insert) and there are no more operations in the queue, then the user has completed the level
         if(_treeVisualizerManager.CurrectIngredientIndex == _nodeSpawner.GetNodeObjects().Count && RedBlackTree.Operations.Count == 0)
         {
-            Debug.Log("There are no more ingredients to insert. There are no more operation, meaning The tree is in balance. You have completed the level.");
+            //Debug.Log("There are no more ingredients to insert. There are no more operation, meaning The tree is in balance. You have completed the level.");
             // If the user has completed the level, load the pop-up scene
             _popUpManager.LoadPopUpScene(); 
         }
@@ -473,7 +423,8 @@ public void HandleOperationButtonClick(OperationType operationType)
 
                 //Print current selected nodes
                 //Debug.Log("!!!!!!!!!!!!!!! The current selected nodes are when we rotate left are: !!!!!!!!!!!!!!!");
-                foreach (Node node in currentSelctedNodes)
+                foreach (Node node in CurrentSelectedNodes
+    )
                 {
                     //Debug.Log("Current selected node value: " + node.Value);
                 }
@@ -520,7 +471,7 @@ public void HandleOperationButtonClick(OperationType operationType)
         Debug.Log("Incorrect operationButton clicked");
 
         // If correct nodes are selected, but wrong operation button
-        //if (correctNodesInTree.SetEquals(currentSelctedNodes)){
+        //if (correctNodesInTree.SetEquals(CurrentSelectedNodes)){
         // TODO: Update hint
         //}
 
@@ -540,7 +491,7 @@ public void HandleOperationButtonClick(OperationType operationType)
 public void ExecuteOperationIfCorrectNodesSelected(HashSet<Node> correctNodesInTree, OperationType operationType)
 {
     // If these two sets are the same, then the user has selected the correct nodes and the correct operation button
-    if (correctNodesInTree.SetEquals(currentSelctedNodes))
+    if (correctNodesInTree.SetEquals(CurrentSelectedNodes))
     {
         //Debug.Log("You have selected the correct ingredients! Wuhu you go!");
         // Prints the current state of our tree
@@ -554,7 +505,7 @@ public void ExecuteOperationIfCorrectNodesSelected(HashSet<Node> correctNodesInT
         Debug.Log("***************Færdig med at printe træet i ExecuteOperationIfCorrectNodesSelected***********");
 
         // Clear the selected nodes the user has selected
-        currentSelctedNodes.Clear();
+        CurrentSelectedNodes.Clear();
         correctNodesInTree.Clear();
 
         //Debug.Log("!!!!!!!!!!*****The current state of the tree is: *****!!!!!!!");

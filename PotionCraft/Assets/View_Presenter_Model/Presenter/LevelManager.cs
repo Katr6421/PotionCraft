@@ -13,24 +13,19 @@ public class LevelManager : MonoBehaviour, ILevelManager
         // Singleton pattern
         if (Instance != null && Instance != this)
         {
-            //Destroy(gameObject);
+            Destroy(gameObject);
         }
         else
         {
             Instance = this;
             DontDestroyOnLoad(gameObject);
         }
-
-        //Debug.Log("Awake i LevelManager. Iam initializing levels now.");
         InitializeLevels();
-        //Debug.Log("LevelManager. I have initialized levels now.");
     }
 
     public void InitializeLevels()
     {
-
-        //Make nodes for each level
-        // Kan være at det skal være true
+        // Make nodes for each level
         Node node1 = new Node(1, 1, 1, false, null);
         Node node2 = new Node(2, 2, 1, false, null);
         Node node3 = new Node(3, 3, 1, false, null);
@@ -94,7 +89,6 @@ public class LevelManager : MonoBehaviour, ILevelManager
             node3
         };
 
-
         // Add levels to the list of levels. Hardcoded for each level
         Levels.Add(new LevelData("Dummy", 1, nodesLevel1));
         Levels.Add(new LevelData("Crystal Elixir", 1, nodesLevel1));
@@ -109,10 +103,8 @@ public class LevelManager : MonoBehaviour, ILevelManager
         Levels.Add(new LevelData("Potion 10", 10, new List<Node>()));
     }
 
-    //Get the value of the node based on a index
     public string GetPotionName(int levelIndex)
     {
-        //Debug.Log(Levels[levelIndex].PotionName);
         return Levels[levelIndex].PotionName;
     }
 

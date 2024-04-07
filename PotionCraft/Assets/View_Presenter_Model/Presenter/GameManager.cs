@@ -8,18 +8,18 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour, IGameManager
 {
-    public static GameManager instance { get; private set; }
+    public static GameManager Instance { get; private set; }
 
     private void Awake()
     {
         // Singleton pattern
-        if (instance != null && instance != this)
+        if (Instance != null && Instance != this)
         {
             Destroy(this);
         }
         else
         {
-            instance = this;
+            Instance = this;
             DontDestroyOnLoad(this);
         }
     }
@@ -29,18 +29,5 @@ public class GameManager : MonoBehaviour, IGameManager
         //InstantiateLevels();
         SceneManager.LoadScene("StartScene");
         
-    }
-
-    public Node GetCurrentIngredient()
-    {
-        throw new NotImplementedException();
-    }
-
-    public void PlaceIngredient()
-    {
-    }
-
-    public void PlacePlacementCircles()
-    {
     }
 }
