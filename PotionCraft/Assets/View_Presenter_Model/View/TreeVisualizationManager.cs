@@ -34,19 +34,14 @@ public class TreeVisualizationManager : MonoBehaviour
     [SerializeField] private AvatarHintManager _avatarHintManager;
     [SerializeField] private LineRendererManager _lineRendererManager;
 
-
     private GameObject _currentIngredient; // Reference to the current Ingredient that the user must insert in the RedBlackTree
     private GameObject _currentNullCircle; // Reference to the latest NullCircle that the user has clicked on
     public int CurrectIngredientIndex { get; private set; }     // Index of the current ingredient in the list of ingredients.
-    private List<GameObject> _currentInstantiatedNullCircles = new List<GameObject>();
-
-
 
     void Start()
     {
         //When the scene starts, we instantiate the first NullCircle aka. the root of the RedBlackTree
         SpawnRoot();
-
     }
 
     private void SpawnRoot()
@@ -68,15 +63,12 @@ public class TreeVisualizationManager : MonoBehaviour
 
     public void OnClickedNullCircle()
     {
-        // The nullcircle that was clicked - Do we need to update this after rotations?
+        // The nullcircle that was clicked - 
         _currentNullCircle = UnityEngine.EventSystems.EventSystem.current.currentSelectedGameObject;
 
-        //if (_currentNullCircle != null) Debug.Log("I am in OnClickedNullCircle. The current nullcircle is index " + _currentNullCircle.GetComponent<NullCircle>().Index);
-        //else Debug.Log("I am in OnClickedNullCircle. The current nullcircle is null");
         /*********************************************
         Set _currentIngredient and _currentNullCircle.Value
         *********************************************/
-        //Debug.Log("calling setNextIngredientForPlacement");
         setNextIngredientForPlacement();
 
         /*********************************************
@@ -98,7 +90,7 @@ public class TreeVisualizationManager : MonoBehaviour
             // Prepare the next ingredient for placement. Update the index in the list of ingredients, that we need to place. 
             CurrectIngredientIndex++;
 
-            _nullCircleManager.MakeAllNullCirclesNonInteractable(); // otherwise the user can click on the nullCircles while the animation is runnning and fuck everything up
+            _nullCircleManager.MakeAllNullCirclesNonInteractable(); // Otherwise the user can click on the nullCircles while the animation is runnning and fuck everything up
 
             // Move the current ingredient to _currentNullCircle position.
             // Needs to be a coroutine to be able to wait for the movement to finish before deactivating the NullCircle
@@ -113,28 +105,23 @@ public class TreeVisualizationManager : MonoBehaviour
                 /*********************************************
                 Move the CircleMarker to the new position. Except if it is the last ingredient, then hide it
                 *********************************************/
-                if (CurrectIngredientIndex < _nodeSpawner.GetNodeObjects().Count)
+                if (CurrectIngredientIndex < _nodeSpawner.NodeObjects.Count)
                 {
-                    //Debug.Log("In if. CurrectIngredientIndex: " + CurrectIngredientIndex + " _nodeSpawner.GetNodeObjects().Count: " + _nodeSpawner.GetNodeObjects().Count);
                     _levelUIController.MoveCircleMarker(CalculatePosition(CurrectIngredientIndex), 0.5f);
                 }
                 else
                 {
-                    //Debug.Log("In else. CurrectIngredientIndex: " + CurrectIngredientIndex + " _nodeSpawner.GetNodeObjects().Count: " + _nodeSpawner.GetNodeObjects().Count);
                     _levelUIController.ShowCircleMarker(false);
                 }
-
 
                 /*********************************************
                 Draw lines between nullCircles
                 *********************************************/
                 _lineRendererManager.UpdateLineRenderers();
 
-
                 /*********************************************
                 Check if the tree is unbalanced (something is in the operation queue) after we have inserted the ingredient
                 *********************************************/
-
                 bool isTreeInBalanced = _treeManager.IsTreeInBalanced();
                 if (isTreeInBalanced)
                 {
@@ -186,7 +173,7 @@ public class TreeVisualizationManager : MonoBehaviour
             // Delete the node from the Red-Black BST tree and clear the operation queue
             _treeManager.DeleteNodeAndClearOperations(currentIngredientValue);
 
-            // TODO: Update hint 
+            // Update hint
             _avatarHintManager.UpdateHint("wrong", AvatarHint.SelectedWrongPlacementForIngredient);
 
             // Allow user to click on the nullCircles
@@ -197,25 +184,13 @@ public class TreeVisualizationManager : MonoBehaviour
 
     private void setNextIngredientForPlacement()
     {
-        //Debug.Log("CurrectIngredientIndex" + CurrectIngredientIndex);
         // If there are more ingredients to insert, get the next ingredient
-        if (CurrectIngredientIndex < _nodeSpawner.GetNodeObjects().Count)
+        if (CurrectIngredientIndex < _nodeSpawner.NodeObjects.Count)
         {
-            if (_nodeSpawner.GetNodeObjects()[CurrectIngredientIndex] != null) _currentIngredient = _nodeSpawner.GetNodeObjects()[CurrectIngredientIndex];
-            //else Debug.Log("The current ingredient is null");
+            if (_nodeSpawner.NodeObjects[CurrectIngredientIndex] != null) _currentIngredient = _nodeSpawner.NodeObjects[CurrectIngredientIndex];
 
-
-            foreach (GameObject ingredient in _nodeSpawner.GetNodeObjects())
-            {
-                //Debug.Log("I am in setNextIngredientForPlacement. The ingredients are " + ingredient.GetComponentInChildren<TextMeshProUGUI>().text);
-            }
             // Update the value of the current NullCircle to the value of the current ingredient
             _currentNullCircle.GetComponent<NullCircle>().Value = int.Parse(_currentIngredient.GetComponentInChildren<TextMeshProUGUI>().text);
-            //Debug.Log("I am in setNextIngredientForPlacement. The current ingredient is " + _currentIngredient.GetComponentInChildren<TextMeshProUGUI>().text);
-        }
-        else
-        {
-            //Debug.Log("No more ingredients to place");
         }
     }
 
@@ -229,13 +204,9 @@ public class TreeVisualizationManager : MonoBehaviour
         GameObject leftChild;
         WhoIsWho(operationType, ingredientsToRotate, out grandparent, out parent, out rightChild, out leftChild);
 
-        //Debug.Log("");
-
         // Find parentNullcircle, so our left and right rotation always takes the right nullcircle into account
         Vector3 parentPosition = parent.transform.position;
         NullCircle parentNullCircle = _nullCircleManager.FindNullCircleBasedOnPosition(parentPosition);
-        //GameObject parentNullCircle = _currentNullCircle.GetComponent<NullCircle>().Parent;
-
 
         //Debug.Log("I am in VisualizeRotation. _currentNullCircle is index " + _currentNullCircle.GetComponent<NullCircle>().Index);
         //Debug.Log("I am in VisualizeRotation. My parentNullCircle is index " + parentNullCircle.GetComponent<NullCircle>().Index);
@@ -244,12 +215,10 @@ public class TreeVisualizationManager : MonoBehaviour
         {
             case OperationType.RotateLeft:
                 // h node = parent
-                // Så se vores nullcircles rigt child
-                //GameObject leftChildNullCircle  =  _currentNullCircle.GetComponent<NullCircle>().LeftChild;
                 NullCircle rightChildLeftChildNullCircle = parentNullCircle.GetComponent<NullCircle>().RightChild.GetComponent<NullCircle>().LeftChild.GetComponent<NullCircle>();
 
                 /*********************************************
-                Check if the rightChild's leftChild is null -> Bag animation
+                Check if the rightChild's leftChild is null -> Jar animation
                 *********************************************/
                 if (rightChildLeftChildNullCircle.Ingredient != null)
                 {
@@ -260,29 +229,23 @@ public class TreeVisualizationManager : MonoBehaviour
                     *********************************************/
                     NullCircle copyRootOfSubTree = _nullCircleManager.CopyNullCircleSubtree(rightChildLeftChildNullCircle);
 
-
                     /*********************************************
                     Store all the ingredients in the subtree in a list
                     *********************************************/
                     List<GameObject> ingredientsToJar = _nullCircleManager.CollectIngredients(rightChildLeftChildNullCircle, new List<GameObject>());
-
 
                     /*********************************************
                     Update the nullCircles to default value after we have copied them
                     *********************************************/
                     _nullCircleManager.setNullCircleToDefault(rightChildLeftChildNullCircle);
 
-
                     /*********************************************
                     Update the line renderers after we have sat the nullCircles to default
                     *********************************************/
                     _lineRendererManager.UpdateLineRenderers();
 
-
-
                     // MÅSKE UDNØDVENDIGT MED AT SHRINK
                     //yield return StartCoroutine(_jarVisualization.ShrinkMultiple(ingredientsToJar, () => {}));
-
 
                     /*********************************************
                     Move the ingredients to the jar (visually)
@@ -301,13 +264,10 @@ public class TreeVisualizationManager : MonoBehaviour
                     *********************************************/
                     yield return StartCoroutine(_leftRotationVisualization.RotateLeftAnimation(parent, rightChild, parentNullCircle));
 
-
                     // MÅSKE UDNØDVENDIGT MED AT SHRINK
                     // yield return (_jarAnimation.GrowAndMove(yourGameObject, pathPoints, finalPosition, totalAnimationDuration));
-                    //Debug.Log("Jeg har kopieret nullcircle og nu er jeg blevet nulstillet og mine lijer er blevet opdateret");
+                    //Debug.Log("Jeg har kopieret nullcircle og nu er jeg blevet nulstillet og mine linjer er blevet opdateret");
                     //_nullCircleSpawner.PrintNullCircles();
-
-
 
                     /*********************************************
                     Move the ingredients back to the tree (both visually and on the nullCircles)
@@ -315,53 +275,41 @@ public class TreeVisualizationManager : MonoBehaviour
                     NullCircle rootToPlaceSubtree = parentNullCircle.GetComponent<NullCircle>().LeftChild.GetComponent<NullCircle>().RightChild.GetComponent<NullCircle>();
                     yield return StartCoroutine(_jarVisualization.MoveNodeAndAllDescendantsJar(copyRootOfSubTree, rootToPlaceSubtree, 1.0f, () => { }));
 
-
                     /*********************************************
                     Update the line renderers after we have updated the nullCircles to their current ingredients
                     *********************************************/
                     _lineRendererManager.UpdateLineRenderers();
 
-
-
                     //Debug.Log("PRINTER ALL NULLCIRCLES!!!!!!");
                     //_nullCircleSpawner.PrintNullCircles();
-
 
                     /*********************************************
                     Destroy the copied nullCircles
                     *********************************************/
-                    _nullCircleManager.destroyNullCircleAndAllDescendants(copyRootOfSubTree.gameObject);
+                    _nullCircleManager.DestroyNullCircleAndAllDescendants(copyRootOfSubTree.gameObject);
                 }
-                else
+                else // Not jar
                 {
                     // Debug.Log("Jeg har ikke et leftChild, og derfor skal jeg bare rotere");
-                    //Debug.Log("Jeg starter RotateLeftAnimation");
+                    // Debug.Log("Jeg starter RotateLeftAnimation");
 
                     /*********************************************
                     Start the left rotation animation
                     *********************************************/
                     yield return StartCoroutine(_leftRotationVisualization.RotateLeftAnimation(parent, rightChild, parentNullCircle));
-
-
                 }
                 break;
-
 
             case OperationType.RotateRight:
                 //h node = grandparent
                 NullCircle rightChildNullCircle = parentNullCircle.GetComponent<NullCircle>().RightChild.GetComponent<NullCircle>();
 
                 /*********************************************
-                Check if the rightChild is null -> Bag animation
+                Check if the rightChild is null -> Jar animation
                 *********************************************/
                 if (rightChildNullCircle.Ingredient != null)
                 {
                     // Debug.Log("Jeg har et rightChild, og derfor skal mit subtree op i bagen");
-                    // Bag animation
-                    // rotate animation
-                    // move parent to leftChild
-                    // move rightChild to parent
-
 
                     /*********************************************
                     Make a copy of all the nullCircles and instantiate them with the ingredients' values
@@ -386,7 +334,6 @@ public class TreeVisualizationManager : MonoBehaviour
                     // MÅSKE UDNØDVENDIGT MED AT SHRINK
                     //yield return StartCoroutine(_jarVisualization.ShrinkMultiple(ingredientsToJar, () => {}));
 
-
                     /*********************************************
                     Move the ingredients to the jar (visually)
                     *********************************************/
@@ -398,7 +345,6 @@ public class TreeVisualizationManager : MonoBehaviour
                         yield return StartCoroutine(_splineToJar.FollowSplineToJar(ingredient));
                     }
 
-
                     /*********************************************
                     Start the right rotation animation
                     *********************************************/
@@ -407,11 +353,9 @@ public class TreeVisualizationManager : MonoBehaviour
                     // MÅSKE UDNØDVENDIGT MED AT SHRINK
                     // yield return (_jarAnimation.GrowAndMove(yourGameObject, pathPoints, finalPosition, totalAnimationDuration));
 
-
                     /*********************************************
                     Move the ingredients back to the tree (both visually and on the nullCircles)
                     *********************************************/
-
                     // Parent Parent Rightchild
                     NullCircle rootToPlaceSubtree = parentNullCircle.GetComponent<NullCircle>().Parent.GetComponent<NullCircle>().RightChild.GetComponent<NullCircle>().LeftChild.GetComponent<NullCircle>();
                     yield return StartCoroutine(_jarVisualization.MoveNodeAndAllDescendantsJar(copyRootOfSubTree, rootToPlaceSubtree, 1.0f, () => { }));
@@ -424,12 +368,12 @@ public class TreeVisualizationManager : MonoBehaviour
                     /*********************************************
                     Destroy the copied nullCircles
                     *********************************************/
-                    _nullCircleManager.destroyNullCircleAndAllDescendants(copyRootOfSubTree.gameObject);
+                    _nullCircleManager.DestroyNullCircleAndAllDescendants(copyRootOfSubTree.gameObject);
                 }
-                else
+                else // Not jar
                 {
                     // Debug.Log("Jeg har ikke et rightChild, og derfor skal jeg bare rotere");
-                    //Debug.Log("Jeg starter RotateRightAnimation");
+                    // Debug.Log("Jeg starter RotateRightAnimation");
 
                     /*********************************************
                     Start the right rotation animation
@@ -437,10 +381,6 @@ public class TreeVisualizationManager : MonoBehaviour
                     yield return StartCoroutine(_rightRotationVisualization.RotateRightAnimation(leftChild, parent, grandparent, parentNullCircle));
                 }
                 break;
-
-
-
-
 
             case OperationType.FlipColors:
                 // h node = parent
@@ -452,14 +392,12 @@ public class TreeVisualizationManager : MonoBehaviour
                 yield return StartCoroutine(_flipColorVisualization.FlipColorAnimation(parentNullCircle));
                 break;
 
-
             default:
                 Debug.LogError("Invalid operation type. Eller vi glemte at give den en operationtype med");
                 throw new ArgumentOutOfRangeException();
         }
         onComplete?.Invoke();
     }
-
 
     IEnumerator MoveAndHide(GameObject objectToMove, Vector3 destination, float duration, Action onComplete)
     {
@@ -475,7 +413,6 @@ public class TreeVisualizationManager : MonoBehaviour
 
         objectToMove.transform.position = destination; // Ensure it reaches the destination
 
-
         // Now that the movement is complete, hide the NullCircle GameObject
         _nullCircleManager.HideNullCircle(_currentNullCircle.GetComponent<NullCircle>());
         _currentNullCircle.GetComponent<NullCircle>().IsActive = false;
@@ -488,7 +425,7 @@ public class TreeVisualizationManager : MonoBehaviour
         switch (operationType)
         {
             case OperationType.RotateLeft:
-                // Angive hvem der er rightChild, hvem der er parent - grandparent og leftChild må sættes til null pga 'out'
+                // Find them by x position
                 grandparent = null;
                 leftChild = null;
                 if (ingredientsToRotate[0].transform.position.x > ingredientsToRotate[1].transform.position.x)
@@ -503,8 +440,7 @@ public class TreeVisualizationManager : MonoBehaviour
                 }
                 break;
             case OperationType.RotateRight:
-                // Angive hvem der er leftChild, hvem der er parent, og hvem der er grandparent - rightChild må sættes til null pga 'out'
-                // Use LINQ to find the GameObject with the maximum y value
+                // Find them by y position
                 ingredientsToRotate = ingredientsToRotate.OrderByDescending(obj => obj.transform.position.y).ToList();
                 grandparent = ingredientsToRotate[0];
                 parent = ingredientsToRotate[1];
@@ -512,6 +448,7 @@ public class TreeVisualizationManager : MonoBehaviour
                 rightChild = null;
                 break;
             case OperationType.FlipColors:
+                // Find them by x and y position
                 grandparent = null;
 
                 // The parent is the node with the highest y value.
@@ -526,19 +463,12 @@ public class TreeVisualizationManager : MonoBehaviour
                 rightChild = ingredientsToRotate
                              .OrderByDescending(obj => obj.transform.position.x)
                              .FirstOrDefault();
-
-                // Additional checks to ensure we have found all nodes.
-                if (parent == null || leftChild == null || rightChild == null)
-                {
-                    Debug.LogError("Failed to identify nodes correctly for FlipColors operation.");
-                }
                 break;
             default:
                 Debug.LogError("Invalid operation type. Eller vi glemte at give den en operationtype med");
                 throw new ArgumentOutOfRangeException();
         }
     }
-
 
     // Used to calculate the posistion of the current ingredient marker circle
     private Vector3 CalculatePosition(int nodeIndex)

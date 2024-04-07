@@ -11,48 +11,19 @@ public class NullCircleManager : MonoBehaviour
     [SerializeField] private Canvas _uiCanvas; // Reference to the Canvas where the nullCircles will be parented
     [SerializeField] private LineRendererManager _lineRendererManager;
     [SerializeField] private TreeManager _treeManager;
-    public Dictionary<int, GameObject> NullCircles { get; } = new Dictionary<int, GameObject>();
+    public Dictionary<int, GameObject> NullCircles { get; private set; } = new Dictionary<int, GameObject>();
     public GameObject Root { get; set; }
 
-    // Dont destroy on load a new scene
-   
 
-    // Start is called before the first frame update
     void Start()
     {
-        Debug.Log("NullCircleManager Start: Spawning nullCircles");
         SpawnNullCircles();
     }
-
-    /*void OnEnable()
-    {
-        SceneManager.sceneLoaded += OnSceneLoaded;
-        SceneManager.sceneUnloaded += OnSceneUnloaded;
-    }
-
-    void OnDisable()
-    {
-        SceneManager.sceneLoaded -= OnSceneLoaded;
-        SceneManager.sceneUnloaded -= OnSceneUnloaded;
-    }
-
-    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
-    {
-        //SpawnNullCircles();  // This will be called every time a scene is loaded
-    }
-
-    private void OnSceneUnloaded(Scene current) {
-        // Optionally clean up here if things are persisting unexpectedly between scenes
-        // This will be called every time a scene is unloaded
-    }*/
-
-
 
     public void SpawnNullCircles()
     {
         // Instantiate the nullCircles
 
-        // før y = 239
         GameObject nullCircle0 = Instantiate(_nullCirclePrefab, new Vector3(440, 270, 0), Quaternion.identity);
         Root = nullCircle0;
 
@@ -104,7 +75,7 @@ public class NullCircleManager : MonoBehaviour
 
         // Hidden nullCircles in bottom - Should never be shown!! To avoid nullPointerExceptions
         // x = +/- 20 i forhold til parent x
-        // y = -30 i forhold til parent
+        // y = -30 i forhold til parent y
         GameObject nullCircle31 = Instantiate(_nullCirclePrefab, new Vector3(1, -350, 0), Quaternion.identity);
         GameObject nullCircle32 = Instantiate(_nullCirclePrefab, new Vector3(-39, -350, 0), Quaternion.identity);
         GameObject nullCircle33 = Instantiate(_nullCirclePrefab, new Vector3(61, -350, 0), Quaternion.identity);
@@ -473,8 +444,7 @@ public class NullCircleManager : MonoBehaviour
 
 
     /*********************************************
-    Recursively updates the IsActive property of NullCircles.
-    Recursively checks if there is a ingredient places onto the nullcircle, if not, the nullcircle is active.
+    Recursively checks if there is a ingredient placed onto the nullcircle, if not, the nullcircle is active.
     *********************************************/
     public void ShowAllChildrenNullCircles()
     {
@@ -512,7 +482,6 @@ public class NullCircleManager : MonoBehaviour
 
     public void HideAllNullCircles()
     {
-
         HideAllNullCircles(Root.GetComponent<NullCircle>());
     }
 
@@ -595,8 +564,6 @@ public class NullCircleManager : MonoBehaviour
         DeactivateAllNullCirclesInSubtree(leftChild);
         DeactivateAllNullCirclesInSubtree(rightChild);
     }
-
-
 
     /*********************************************
     Finds a NullCircle based on its position in the scene.
@@ -715,8 +682,6 @@ public class NullCircleManager : MonoBehaviour
     }
 
 
-
-
     /// <summary>
     /// Hides the visual representation of one NullCircle and prevents interaction with it.
     /// </summary>
@@ -735,7 +700,6 @@ public class NullCircleManager : MonoBehaviour
         // Disable the Button component to prevent interaction
         MakeNullCircleNonInteractable(nullCircle);
     }
-
 
     public void ShowNullCircle(NullCircle nullCircle)
     {
@@ -756,7 +720,7 @@ public class NullCircleManager : MonoBehaviour
         }
     }
 
-    // Used to make the null circles non interactable but NOT hide it
+    // Used to make the null circles non-interactable but NOT hide it
     public void MakeAllNullCirclesNonInteractable()
     {
         for (int i = 0; i < NullCircles.Count; i++)
@@ -765,6 +729,7 @@ public class NullCircleManager : MonoBehaviour
         }
     }
 
+    // Used to make a null circles non-interactable but NOT hide it
     public void MakeNullCircleNonInteractable(NullCircle nullCircle)
     {
         Button nullCircleButton = nullCircle.GetComponent<Button>();
@@ -796,18 +761,18 @@ public class NullCircleManager : MonoBehaviour
     }
 
 
-    public void destroyNullCircleAndAllDescendants(GameObject nullCircle)
+    public void DestroyNullCircleAndAllDescendants(GameObject nullCircle)
     {
         if (nullCircle == null) return;
 
         NullCircle nc = nullCircle.GetComponent<NullCircle>();
         if (nc.LeftChild != null)
         {
-            destroyNullCircleAndAllDescendants(nc.LeftChild);
+            DestroyNullCircleAndAllDescendants(nc.LeftChild);
         }
         if (nc.RightChild != null)
         {
-            destroyNullCircleAndAllDescendants(nc.RightChild);
+            DestroyNullCircleAndAllDescendants(nc.RightChild);
         }
 
         // Destroy the GameObject

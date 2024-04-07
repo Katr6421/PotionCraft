@@ -4,18 +4,16 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-
-
 public class Ingredient : MonoBehaviour
 {
-    public int NullCircleIndex {get; set;}
+    public int NullCircleIndex { get; set; }
     [SerializeField] private Sprite[] _radishSprite;
     [SerializeField] private Sprite[] _mushroomSprite;
     [SerializeField] private Sprite[] _pinkFlowerSprite;
     [SerializeField] private Sprite[] _waterFlowerSprite;
     [SerializeField] private Sprite[] _katnissSprite;
     private Image imageComponent;
-    public GameObject LineToParent { get; set; } // Saves a referens to the line that goes to the parent of this ingredient
+    public GameObject LineToParent { get; set; } // Saves a reference to the line that goes to the parent of this ingredient
     private TreeManager _treeManager;
 
     void Awake()
@@ -27,9 +25,10 @@ public class Ingredient : MonoBehaviour
 
 
     // Start is called before the first frame update
-    public void OnClick(){
+    public void OnClick()
+    {
         //Debug.Log("Clicked on ingredient, with the value:  " + GetComponentInChildren<TextMeshProUGUI>().text);
-        
+
         ChangePrefabImage(gameObject.name);
         var setOfSelectedIngredients = _treeManager.CurrentSelectedIngredients;
 
@@ -45,12 +44,6 @@ public class Ingredient : MonoBehaviour
         {
             setOfSelectedIngredients.Add(gameObject);
         }
-
-        // print  setOfSelectedIngredients
-        /*foreach (var ingredient in setOfSelectedIngredients)
-        {
-            Debug.Log("Current selected ingredients: " + ingredient.name);
-        }*/
     }
 
     public void ChangePrefabImage(string prefabName)

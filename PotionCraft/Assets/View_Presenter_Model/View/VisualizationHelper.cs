@@ -14,7 +14,6 @@ public class VisualizationHelper : MonoBehaviour
     [SerializeField] private Spline _spline;
     [SerializeField] private LineRendererManager _lineRendererManager;
 
-
     public Vector3 WorldToCanvasPosition(Canvas canvas, Vector3 worldPosition)
     {
         /*********************************************
@@ -52,7 +51,6 @@ public class VisualizationHelper : MonoBehaviour
         onComplete?.Invoke();
     }
 
-
     public IEnumerator MoveNodeAndAllDescendants(NullCircle nullCircle, Vector3 newPosition, float duration, Action onComplete)
     {
         /*********************************************
@@ -65,7 +63,6 @@ public class VisualizationHelper : MonoBehaviour
 
             yield return StartCoroutine(MoveNodeAndAllDescendants(leftChild, newLeftChildPosition, duration, () => { }));
         }
-
 
         /*********************************************
         Recursively move the right subtree if it exists.
@@ -251,7 +248,7 @@ public class VisualizationHelper : MonoBehaviour
             {
                 _nullCircleManager.setNullCircleToDefault(rootOfSubtree.GetComponent<NullCircle>());
                 _lineRendererManager.UpdateLineRenderers();
-                _nullCircleManager.destroyNullCircleAndAllDescendants(copyRootOfSubTree.gameObject);
+                _nullCircleManager.DestroyNullCircleAndAllDescendants(copyRootOfSubTree.gameObject);
             }));
         }
         onComplete?.Invoke();

@@ -5,9 +5,8 @@ using UnityEngine.SceneManagement;
 
 public class NextButton : MonoBehaviour
 {
-   
-    public void UnLockNextLevel(){
-
+    public void UnLockNextLevel()
+    {
         if (SceneManager.GetActiveScene().buildIndex >= PlayerPrefs.GetInt("ReachedIndex"))
         {
             // Save the reached level index and unlock next level
@@ -15,7 +14,6 @@ public class NextButton : MonoBehaviour
             PlayerPrefs.SetInt("UnlockedLevel", PlayerPrefs.GetInt("UnlockedLevel", 1) + 1);
             PlayerPrefs.Save();
         }
-
         SceneManager.LoadScene("LevelMap");
     }
 }

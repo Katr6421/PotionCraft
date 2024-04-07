@@ -17,36 +17,30 @@ DESCRIPTION: This class is responsible for controlling the UI elements in the Le
 public class LevelUIController : MonoBehaviour
 {
 
-    [SerializeField] public Canvas uiCanvas;
-    [SerializeField] public TextMeshProUGUI SelectedLevelText;
+    [SerializeField] private Canvas _uiCanvas;
+    [SerializeField] private TextMeshProUGUI _selectedLevelText;
 
-    [SerializeField] public TextMeshProUGUI SelectedLevelPotionName;
-    [SerializeField] private GameObject CircleMarkerPrefab;
+    [SerializeField] private TextMeshProUGUI _selectedLevelPotionName;
+    [SerializeField] private GameObject _circleMarkerPrefab;
 
-    private GameObject CircleMarker;
-    private Vector3 circleStartPosition = new Vector3(-0.57f, 3.79f, 0);
+    public GameObject CircleMarker { get; set; }
+    private Vector3 _circleStartPosition = new Vector3(-0.57f, 3.79f, 0);
 
-    
+
     public void Start()
     {
         //When the scene starts, we update the recipe text.
-        SelectedLevelText.text = "" + LevelSelector.selectedLevel;
-        SelectedLevelPotionName.text = LevelSelector.potionName;
-    
+        _selectedLevelText.text = "" + LevelSelector.selectedLevel;
+        _selectedLevelPotionName.text = LevelSelector.potionName;
+
         // When the scene starts, we instantiate the CircleMarker
         SpawnCircleMarker();
-
-    }
-   
-
-    public void SpawnCircleMarker(){
-        CircleMarker = Instantiate(CircleMarkerPrefab, circleStartPosition, Quaternion.identity);
-        //CircleMarker.transform.SetParent(uiCanvas.transform, false);
     }
 
-    public Canvas getUiCanvas(){
-        return uiCanvas;
-
+    public void SpawnCircleMarker()
+    {
+        CircleMarker = Instantiate(_circleMarkerPrefab, _circleStartPosition, Quaternion.identity);
+        //CircleMarker.transform.SetParent(_uiCanvas.transform, false);
     }
 
     // Moves the circle marker to the new position
@@ -58,17 +52,17 @@ public class LevelUIController : MonoBehaviour
     // ANIMATION: Coroutine to move the circle marker to the new position. 
     IEnumerator MoveCircleRoutine(GameObject objectToMove, Vector3 destination, float duration)
     {
-    float elapsedTime = 0;
-    Vector3 startingPos = objectToMove.transform.position;
+        float elapsedTime = 0;
+        Vector3 startingPos = objectToMove.transform.position;
 
-    while (elapsedTime < duration)
-    {
-        objectToMove.transform.position = Vector3.Lerp(startingPos, destination, (elapsedTime / duration));
-        elapsedTime += Time.deltaTime;
-        yield return null; // Wait for the next frame
-    }
+        while (elapsedTime < duration)
+        {
+            objectToMove.transform.position = Vector3.Lerp(startingPos, destination, elapsedTime / duration);
+            elapsedTime += Time.deltaTime;
+            yield return null; // Wait for the next frame
+        }
 
-    objectToMove.transform.position = destination; // Ensure it reaches the destination
+        objectToMove.transform.position = destination; // Ensure it reaches the destination
     }
 
     // Shows or hides circle marker based on the boolean value

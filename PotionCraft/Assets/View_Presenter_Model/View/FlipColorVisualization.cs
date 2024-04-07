@@ -20,6 +20,8 @@ public class FlipColorVisualization : MonoBehaviour
         parentNullCircle.IsRed = true;
         leftChildNullCircle.IsRed = false;
         rightChildNullCircle.IsRed = false;
+
+        // Update lines to reflect the new colors
         _lineRendererManager.UpdateLineRenderers();
 
         yield return null;

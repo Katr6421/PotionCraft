@@ -14,7 +14,6 @@ public class NullCircle : MonoBehaviour
     public bool IsActive { get; set; } = false;
     public int Index { get; set; }
     public GameObject Ingredient { get; set; }
-
     public GameObject LineToParent { get; set; } // Saves a referens to the line that goes to the parent
     public bool IsRed { get; set; } = false;
     

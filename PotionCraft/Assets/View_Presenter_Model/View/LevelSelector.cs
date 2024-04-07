@@ -8,25 +8,28 @@ using TMPro;
 
 public class LevelSelector : MonoBehaviour
 {
-    
-    public Button[] levelButtons;
+
+    public Button[] LevelButtons { get; private set; }
 
     // Fields to store the selected level and potion name. UniversalLevelManager will use these fields to display the selected level and potion name
     public static int selectedLevel;
     public static string potionName;
-    
 
-    private void Start(){
+
+    private void Start()
+    {
         // Retrieve the unlocked level from the player preferences
         int unlockedLevel = PlayerPrefs.GetInt("UnlockedLevel", 1);
-        
+
         // Ensure all buttons are disabled
-        for (int i = 0; i < levelButtons.Length; i++){
-            levelButtons[i].interactable = false;
+        for (int i = 0; i < LevelButtons.Length; i++)
+        {
+            LevelButtons[i].interactable = false;
         }
         // Unlock all levels up to the unlocked level
-        for (int i = 0; i < unlockedLevel; i++){
-            levelButtons[i].interactable = true;
+        for (int i = 0; i < unlockedLevel; i++)
+        {
+            LevelButtons[i].interactable = true;
         }
 
     }

@@ -9,6 +9,7 @@ public class TreeManager : MonoBehaviour, ITreeManager
     [SerializeField] private AvatarHintManager _avatarHintManager;
     [SerializeField] private NodeSpawner _nodeSpawner;
     [SerializeField] private PopUpManager _popUpManager;
+    [SerializeField] private LevelUIController _levelUIController;
     public RedBlackBST RedBlackTree { get; set; } = new RedBlackBST();
     public HashSet<Node> CurrentSelectedNodes {get; set; } = new HashSet<Node>();
     public List<GameObject> CurrentSelectedIngredients { get; set; } = new List<GameObject>();
@@ -249,6 +250,9 @@ public class TreeManager : MonoBehaviour, ITreeManager
                  
                 // Check if the user has completed the level
                 CheckIfCompletedLevel();
+                
+                // Make circle marker visible
+                _levelUIController.ShowCircleMarker(true);
 
                 // Show nullcircles to allow for new ingredients to be inserted
                 _nullCircleManager.ShowAllChildrenNullCircles();
@@ -304,7 +308,7 @@ public class TreeManager : MonoBehaviour, ITreeManager
 
     public void CheckIfCompletedLevel(){
         // If the current ingredient index is equal to the number of ingredients (we are on the last ingredient to insert) and there are no more operations in the queue, then the user has completed the level
-        if(_treeVisualizerManager.CurrectIngredientIndex == _nodeSpawner.GetNodeObjects().Count && RedBlackTree.Operations.Count == 0)
+        if(_treeVisualizerManager.CurrectIngredientIndex == _nodeSpawner.NodeObjects.Count && RedBlackTree.Operations.Count == 0)
         {
             //Debug.Log("There are no more ingredients to insert. There are no more operation, meaning The tree is in balance. You have completed the level.");
             // If the user has completed the level, load the pop-up scene

@@ -5,7 +5,8 @@ using UnityEngine.SceneManagement;
 
 public class PopUpManager : MonoBehaviour
 {
-    public void LoadPopUpScene(){
+    public void LoadPopUpScene()
+    {
         SceneManager.LoadScene("PopUpScene");
     }
 }
