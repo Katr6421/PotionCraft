@@ -49,7 +49,6 @@ public enum AvatarHint
     // You have balanced the tree and now you can insert a new one!
     InBalance,
 
-
     //#When a subtree has been put in the bag and need to be replaced in the tree:
     NodeInTheJar,
 

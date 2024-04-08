@@ -18,7 +18,9 @@ public class LevelUIController : MonoBehaviour
     [SerializeField] private GameObject _collectPotionButton;
     [SerializeField] private GameObject _circleMarkerPrefab;
     [SerializeField] private NodeSpawner _nodeSpawner;
+    [SerializeField] private GameObject _pointsNumber; //TODO: Billede af en crystal på scenen
     LevelManager _levelManager;
+    PointManager _pointManager;
     public GameObject CircleMarker { get; set; }
     private Vector3 _circleStartPosition = new Vector3(-0.57f, 3.79f, 0);
 
@@ -27,12 +29,17 @@ public class LevelUIController : MonoBehaviour
     {
         _collectPotionButton.GetComponent<BoxCollider2D>().enabled = false; // so you dont press the complete button before the potion is complete
         _levelManager = LevelManager.Instance;
+        _pointManager = PointManager.Instance;
+
+        /***********************************
+        Update crystals
+        ***********************************/
+        UpdatePoints();
 
         /***********************************
         Update recipe
         ***********************************/
         UpdateRecipe();
-
 
         /***********************************
         Instantiate the CircleMarker
@@ -117,6 +124,11 @@ public class LevelUIController : MonoBehaviour
         Start the coroutine to move the scroll smoothly to the target position
         *********************************************/
         StartCoroutine(MoveObjectRoutine(_finishedScroll, scrollTargetPosition, 0.5f));
+    }
+
+    // Update crystals when completing a level for the first time
+    public void UpdatePoints(){
+        _pointsNumber.GetComponent<TextMeshProUGUI>().text = "" + _pointManager.CurrentPoints;
     }
 
 }

@@ -8,7 +8,6 @@ public class TreeManager : MonoBehaviour, ITreeManager
     [SerializeField] private NullCircleManager _nullCircleManager;
     [SerializeField] private AvatarHintManager _avatarHintManager;
     [SerializeField] private NodeSpawner _nodeSpawner;
-    [SerializeField] private PopUpManager _popUpManager;
     [SerializeField] private LevelUIController _levelUIController;
     public RedBlackBST RedBlackTree { get; set; } = new RedBlackBST();
     public HashSet<Node> CurrentSelectedNodes { get; set; } = new HashSet<Node>();
@@ -324,7 +323,8 @@ public class TreeManager : MonoBehaviour, ITreeManager
         // Hide the circle marker
         _levelUIController.ShowCircleMarker(false);
 
-        // TODO: Avatar jumps or other happy animation
+        // Update Hint
+        _avatarHintManager.UpdateHint("correct", AvatarHint.PotionBrewed);
 
         // Button appears "complete level"
         _levelUIController.MoveScrollDown();
