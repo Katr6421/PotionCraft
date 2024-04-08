@@ -116,32 +116,22 @@ public class NodeSpawner : MonoBehaviour
         foreach (Node node in nodes)
         {
             GameObject prefab = GetPrefabForNode(node);
-            Debug.Log("Prefab name: " + prefab.name);
 
             // Create a sprite of the corresponding ingredient prefab but without the white cirle
             string newSpriteName = prefab.name + "_withoutCircle";
-            Debug.Log("New sprite name: " + newSpriteName);
-
             // Load the new sprite from Assets folder
             Sprite newSprite = Resources.Load<Sprite>("Art/GameScreen/IngredientsWithoutCircles/" + newSpriteName);
-            Debug.Log("New sprite: " + newSprite);
 
             if (newSprite != null && uniqueIngredients.Add(newSpriteName))
             {
-                Debug.Log("In if");
-                GameObject instance = new GameObject(newSpriteName); // Create an empty GameObject to hold the image
-                instance.transform.SetParent(_ingredientsPanel, false); // Set the parent to _ingredientsPanel
-
-                // Add an Image component to the new GameObject and set its properties
+                // Create a new GameObject to hold the image
+                GameObject instance = new GameObject(newSpriteName);
+                // Set the parent to _ingredientsPanel
+                instance.transform.SetParent(_ingredientsPanel, false); 
+                // Add an Image component to the new GameObject 
                 Image instanceImage = instance.AddComponent<Image>();
-                instanceImage.sprite = newSprite; // Set the sprite to the same sprite as the prefab
-
-                // Set the size of the image to match the size of the prefab's image
-                //instanceImage.rectTransform.sizeDelta = instanceImage.rectTransform.sizeDelta;
-
-                // Set the position and rotation of the image to match the prefab's position and rotation
-                //instanceImage.rectTransform.localPosition = instanceImage.rectTransform.localPosition;
-                //instanceImage.rectTransform.localRotation = instanceImage.rectTransform.localRotation;
+                // Set the sprite to the picture of the ingredient (without the white circle)
+                instanceImage.sprite = newSprite; 
             }
         }
     }
