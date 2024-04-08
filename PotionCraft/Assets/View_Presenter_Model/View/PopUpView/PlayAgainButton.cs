@@ -14,7 +14,6 @@ public class PlayAgainButton : MonoBehaviour
 
     public void LoadLevelAgain()
     {
-        Debug.Log("Loading level again");
         Debug.Log("Selected level: " + _levelManager.CurrentLevelIndex);
         int levelIndex = _levelManager.CurrentLevelIndex;
         // Now that the UI is set, you can load the new scene

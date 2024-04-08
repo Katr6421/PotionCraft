@@ -1,9 +1,7 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
-using log4net.Core;
 
 //This is a gameobject on the scene. It is responsible for spawning the nodes as GameObjects and positioning them on the screen.
 
@@ -118,44 +116,26 @@ public class NodeSpawner : MonoBehaviour
         foreach (Node node in nodes)
         {
             GameObject prefab = GetPrefabForNode(node);
-            Image prefabImage = prefab.GetComponent<Image>(); // Assuming the prefab contains an Image component
-            if (prefabImage != null && uniqueIngredients.Add(prefab.name))
+
+            // Create a sprite of the corresponding ingredient prefab but without the white cirle
+            string newSpriteName = prefab.name + "_withoutCircle";
+            // Load the new sprite from Assets folder
+            Sprite newSprite = Resources.Load<Sprite>("Art/GameScreen/IngredientsWithoutCircles/" + newSpriteName);
+
+            if (newSprite != null && uniqueIngredients.Add(newSpriteName))
             {
-                GameObject instance = new GameObject(prefab.name); // Create an empty GameObject to hold the image
-                instance.transform.SetParent(_ingredientsPanel, false); // Set the parent to _ingredientsPanel
-
-                // Add an Image component to the new GameObject and set its properties
+                // Create a new GameObject to hold the image
+                GameObject instance = new GameObject(newSpriteName);
+                // Set the parent to _ingredientsPanel
+                instance.transform.SetParent(_ingredientsPanel, false); 
+                // Add an Image component to the new GameObject 
                 Image instanceImage = instance.AddComponent<Image>();
-                instanceImage.sprite = prefabImage.sprite; // Set the sprite to the same sprite as the prefab
-
-                // Set the size of the image to match the size of the prefab's image
-                instanceImage.rectTransform.sizeDelta = prefabImage.rectTransform.sizeDelta;
-
-                // Set the position and rotation of the image to match the prefab's position and rotation
-                instanceImage.rectTransform.localPosition = prefabImage.rectTransform.localPosition;
-                instanceImage.rectTransform.localRotation = prefabImage.rectTransform.localRotation;
+                // Set the sprite to the picture of the ingredient (without the white circle)
+                instanceImage.sprite = newSprite; 
             }
         }
     }
 
-
-    /*********************************************
-    METHOD: SpawnIngredientsOnRecipe
-    DESCRIPTION: This method spawns the set of ingredients on the recipe.
-    *********************************************/
-    /*public void SpawnIngredientsOnRecipe(HashSet<GameObject> ingredients)
-    {
-        foreach (GameObject ingredient in ingredients)
-        {
-            // Calculate the position of the node based on the index
-            Vector3 newNodePosition = CalculatePosition(nodeIndex);
-            //Instantiate a new GameObject from the prefab
-            GameObject nodeObject = Instantiate(GetPrefabForNode(node), newNodePosition, Quaternion.identity);
-            GameObject recipeIngredient = Instantiate(ingredient, Vector3.zero, Quaternion.identity);
-            recipeIngredient.transform.SetParent(uiCanvas.transform, false);
-        }
-    }
-    */
 
     /**********************************************
     METHOD: CalculatePosition
