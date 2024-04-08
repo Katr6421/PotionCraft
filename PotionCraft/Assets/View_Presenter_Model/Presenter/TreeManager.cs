@@ -8,7 +8,6 @@ public class TreeManager : MonoBehaviour, ITreeManager
     [SerializeField] private NullCircleManager _nullCircleManager;
     [SerializeField] private AvatarHintManager _avatarHintManager;
     [SerializeField] private NodeSpawner _nodeSpawner;
-    [SerializeField] private PopUpManager _popUpManager;
     [SerializeField] private LevelUIController _levelUIController;
     public RedBlackBST RedBlackTree { get; set; } = new RedBlackBST();
     public HashSet<Node> CurrentSelectedNodes { get; set; } = new HashSet<Node>();
