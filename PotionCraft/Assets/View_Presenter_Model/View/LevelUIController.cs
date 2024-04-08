@@ -93,7 +93,7 @@ public class LevelUIController : MonoBehaviour
         _nodeSpawner.SpawnIngredientsOnRecipe();
     }
 
-    // WHen a level is completed, this method is called to move the scroll down to reveal a complete level button
+    // When a level is completed, this method is called to move the scroll down to reveal a complete level button
     public void MoveScrollDown()
     {
         // Calculate the target position by moving down by 0.6 units
