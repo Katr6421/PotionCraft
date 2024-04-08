@@ -22,13 +22,13 @@ public class AvatarHintManager : MonoBehaviour, IAvatarHintManager
     public AvatarHintManager()
     {
         HintsDict.Add(AvatarHint.SelectedWrongPlacementForIngredient, "Hmm, you have selected the wrong placement for that ingredient. ");
-        HintsDict.Add(AvatarHint.SelectedRightPlacementAndInBalance, "Perfect placement! You have selected the right placement for the ingredient and the tree is balanced");
+        HintsDict.Add(AvatarHint.SelectedRightPlacementAndInBalance, "Perfect placement! You have selected the right placement for the ingredient and the tree is balance");
         HintsDict.Add(AvatarHint.SelectedRightPlacementButNeedsToSelectTwoNodes, "You have selected the right placement for the ingredient, but it causes the tree to become unbalanced. You need to select two nodes");
         HintsDict.Add(AvatarHint.SelectedRightIngredientsButWrongButton, "You have selected the wrong button, but the right ingredients. Please try again");
         HintsDict.Add(AvatarHint.SelectedRightIngredientsAndButton, "Good job! You have selected the right button and ingredients");
         HintsDict.Add(AvatarHint.SelectedRightButtonButNeedsToSelectTwoNodes, "You have selected the right button, but the tree is still unbalanced. You need to select two nodes");
         HintsDict.Add(AvatarHint.NodeInTheJar, "A subtree has been put in the bag and need to be replaced in the tree");
-        HintsDict.Add(AvatarHint.PotionBrewed, "The potion is finished being brewed");
+        HintsDict.Add(AvatarHint.PotionBrewed, "You did it! The potion is ready to be collected!");
         HintsDict.Add(AvatarHint.SelectedRightPlacementButNeedToFlipColor, "You have selected the right placement for the ingredient, but it causes the tree to become unbalanced. You need to flip the color");
         HintsDict.Add(AvatarHint.SelectedRightButtonButWrongIngredients, "You have selected the correct button but you selected the wrong ingredients. Try again");
         HintsDict.Add(AvatarHint.SelectedWrongIngredientsAndButton, "You selected the wrong button and ingredients. Try again!");

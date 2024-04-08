@@ -8,23 +8,15 @@ public class CollectPotionButton : MonoBehaviour
     [SerializeField] private PotionCabinetManager _potionCabinetManager;
     private LevelManager _levelManager;
 
+
     private void OnMouseDown()
     {
-        StartCoroutine(CollectPotionAndShowPopup());
+        _levelManager = FindObjectOfType<LevelManager>();
+        _potionCabinetManager.CompleteLevel(_levelManager.CurrentLevelIndex, ShowPopup);
     }
 
-    private IEnumerator CollectPotionAndShowPopup()
+    private void ShowPopup()
     {
-        // Get the level manager
-        _levelManager = FindObjectOfType<LevelManager>();
-
-        // Call the method to place the potion in the cabinet
-        _potionCabinetManager.CompleteLevel(_levelManager.CurrentLevelIndex);
-
-        // Wait for a few seconds
-        yield return new WaitForSeconds(3);
-
-        // Then load the popup
         _popUpManager.LoadPopUpScene();
     }
 }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -26,7 +27,7 @@ public class PotionCabinetManager : MonoBehaviour
         }
     }
 
-    public void CompleteLevel(int levelIndex)
+    public void CompleteLevel(int levelIndex, Action onComplete)
     {
         // Becuase levels are 1-indexed
         levelIndex--;
@@ -36,11 +37,12 @@ public class PotionCabinetManager : MonoBehaviour
             if (!potions[levelIndex].isCollected)
             {
                 Debug.Log($"Potion {levelIndex} not collected yet. Putting it in cabinet...");
-                StartCoroutine(CompleteLevelSequence(levelIndex));
+                StartCoroutine(CompleteLevelSequence(levelIndex, onComplete));
             }
             else
             {
                 Debug.Log($"Potion {levelIndex} has already been collected.");
+                onComplete?.Invoke();
             }
         }
         else
@@ -49,7 +51,7 @@ public class PotionCabinetManager : MonoBehaviour
         }
     }
 
-    private IEnumerator CompleteLevelSequence(int levelIndex)
+    private IEnumerator CompleteLevelSequence(int levelIndex, Action onComplete)
     {
         // Save the collected potion as player preference
         potions[levelIndex].isCollected = true;
@@ -82,7 +84,8 @@ public class PotionCabinetManager : MonoBehaviour
 
         Destroy(sparkle); // Clean up the particle system after it has finished
 
-        yield return null;
+        yield return new WaitForSeconds(0.5f); // Wait for a few seconds before loading the popup
+        onComplete?.Invoke();
     }
 
 }

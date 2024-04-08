@@ -324,7 +324,8 @@ public class TreeManager : MonoBehaviour, ITreeManager
         // Hide the circle marker
         _levelUIController.ShowCircleMarker(false);
 
-        // TODO: Avatar jumps or other happy animation
+        // Update Hint
+        _avatarHintManager.UpdateHint("correct", AvatarHint.PotionBrewed);
 
         // Button appears "complete level"
         _levelUIController.MoveScrollDown();
