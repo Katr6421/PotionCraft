@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class CollectPotionButton : MonoBehaviour
 {
@@ -17,7 +18,7 @@ public class CollectPotionButton : MonoBehaviour
 
     private void ShowPopup()
     {
-        _popUpManager.LoadPopUpScene();
+        SceneManager.LoadScene("PopUpScene");
     }
 }
 
