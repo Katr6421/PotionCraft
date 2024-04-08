@@ -21,22 +21,22 @@ public class AvatarHintManager : MonoBehaviour, IAvatarHintManager
 
     public AvatarHintManager()
     {
-        HintsDict.Add(AvatarHint.SelectedWrongPlacementForIngredient, "Hmm, you have selected the wrong placement for that ingredient. ");
-        HintsDict.Add(AvatarHint.SelectedRightPlacementAndInBalance, "Perfect placement! You have selected the right placement for the ingredient and the tree is balance");
-        HintsDict.Add(AvatarHint.SelectedRightPlacementButNeedsToSelectTwoNodes, "You have selected the right placement for the ingredient, but it causes the tree to become unbalanced. You need to select two nodes");
-        HintsDict.Add(AvatarHint.SelectedRightIngredientsButWrongButton, "You have selected the wrong button, but the right ingredients. Please try again");
-        HintsDict.Add(AvatarHint.SelectedRightIngredientsAndButton, "Good job! You have selected the right button and ingredients");
-        HintsDict.Add(AvatarHint.SelectedRightButtonButNeedsToSelectTwoNodes, "You have selected the right button, but the tree is still unbalanced. You need to select two nodes");
-        HintsDict.Add(AvatarHint.NodeInTheJar, "A subtree has been put in the bag and need to be replaced in the tree");
-        HintsDict.Add(AvatarHint.PotionBrewed, "You did it! The potion is ready to be collected!");
-        HintsDict.Add(AvatarHint.SelectedRightPlacementButNeedToFlipColor, "You have selected the right placement for the ingredient, but it causes the tree to become unbalanced. You need to flip the color");
-        HintsDict.Add(AvatarHint.SelectedRightButtonButWrongIngredients, "You have selected the correct button but you selected the wrong ingredients. Try again");
-        HintsDict.Add(AvatarHint.SelectedWrongIngredientsAndButton, "You selected the wrong button and ingredients. Try again!");
-        HintsDict.Add(AvatarHint.NeedsToSelectThreeNodes, "The tree is still unbalanced, you need to select three nodes to do a rotation");
-        HintsDict.Add(AvatarHint.NeedsToSelectTwoNodes, "The tree is still unbalanced, you need to select two nodes to do a rotaiton");
-        HintsDict.Add(AvatarHint.NeedsToSelectTwoNodesToFlipColor, "The tree is still in unbalance. Look at its color. Do you see a color violation?");
-        HintsDict.Add(AvatarHint.InBalance, "Wuhu! You have balanced the tree. Now it is time to insert a new ingredient");
-        HintsDict.Add(AvatarHint.SelectedRightPlacementButNeedsToSelectThreeNodes, "You have selected the right placement for the ingredient, but it causes the tree to become unbalanced. You need to select three nodes");
+        HintsDict.Add(AvatarHint.SelectedWrongPlacementForIngredient, "Hmm, placing that ingredient there won’t help us craft the perfect potion. Let’s find its proper place");
+        HintsDict.Add(AvatarHint.SelectedRightPlacementAndInBalance, "Perfect placement! The potion's mystical balance remains undisturbed. Onward to our next ingredient");
+        HintsDict.Add(AvatarHint.SelectedRightPlacementButNeedsToSelectTwoNodes, "You've found the right spot! However, the potion is unbalanced. Select two ingredients and find the operation that will restore harmony");
+        HintsDict.Add(AvatarHint.SelectedRightPlacementButNeedsToSelectThreeNodes, "You've found the right spot! However, the potion is unbalanced. Select three ingredients and find the operation that will restore harmony");
+        HintsDict.Add(AvatarHint.SelectedRightPlacementButNeedToFlipColor, "You've found the right spot! However, the potion is unbalanced. Select three ingredients and find the operation that will restore harmony");
+        HintsDict.Add(AvatarHint.SelectedRightIngredientsButWrongButton, "You have chosen the ingredients wisely but not found the correct operation. Please try again");
+        HintsDict.Add(AvatarHint.SelectedRightIngredientsAndButton, "Splendid! The correct magical twist have brought our potion back in balance");
+        HintsDict.Add(AvatarHint.SelectedRightButtonButNeedsToSelectTwoNodes, "The right operation, but not quite there yet. We need to adjust the selected ingredients to keep our potion stable");
+        HintsDict.Add(AvatarHint.SelectedRightButtonButWrongIngredients, "The right operation, but not quite there yet. We need to adjust the selected ingredients to keep our potion stable");
+        HintsDict.Add(AvatarHint.SelectedWrongIngredientsAndButton, "Oh no, both the ingredients and the operation were incorrect. We must reconsider our choices");
+        HintsDict.Add(AvatarHint.NeedsToSelectThreeNodes, "Your magical manipulation was successful, but the potion is still off. Select three ingredients and find the operation that will restore harmony");
+        HintsDict.Add(AvatarHint.NeedsToSelectTwoNodes, "Your magical manipulation was successful, but the potion is still off. Select two ingredients and find the operation that will restore harmony");
+        HintsDict.Add(AvatarHint.NeedsToSelectTwoNodesToFlipColor, "Your magical manipulation was successful, but the potion is still off. Select three ingredients and find the operation that will restore harmony");
+        HintsDict.Add(AvatarHint.InBalance, "Exquisite! The potion is balanced, and a new ingredient can now be introduced");
+        HintsDict.Add(AvatarHint.NodeInTheJar, "During the rotation, a sub-potion was displaced and awaits a new place in the potion. It has been placed in the jar for now."); // husk at brug denne
+        HintsDict.Add(AvatarHint.PotionBrewed, "The potion is brewed to perfection! The magic is complete, and your reward is ready to be collected");
 
     }
 
