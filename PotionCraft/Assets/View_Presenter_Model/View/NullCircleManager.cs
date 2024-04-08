@@ -1,9 +1,8 @@
-using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.SceneManagement;
+
 
 public class NullCircleManager : MonoBehaviour
 {
@@ -22,7 +21,9 @@ public class NullCircleManager : MonoBehaviour
 
     public void SpawnNullCircles()
     {
-        // Instantiate the nullCircles
+        /*********************************************
+        Instantiate the nullCircles
+        *********************************************/
 
         GameObject nullCircle0 = Instantiate(_nullCirclePrefab, new Vector3(440, 270, 0), Quaternion.identity);
         Root = nullCircle0;
@@ -36,7 +37,6 @@ public class NullCircleManager : MonoBehaviour
         GameObject nullCircle5 = Instantiate(_nullCirclePrefab, new Vector3(562, -10, 0), Quaternion.identity);
         GameObject nullCircle6 = Instantiate(_nullCirclePrefab, new Vector3(807, -10, 0), Quaternion.identity);
 
-        // Bottom row
         GameObject nullCircle7 = Instantiate(_nullCirclePrefab, new Vector3(11, -170, 0), Quaternion.identity);
         GameObject nullCircle8 = Instantiate(_nullCirclePrefab, new Vector3(133, -170, 0), Quaternion.identity);
 
@@ -73,9 +73,12 @@ public class NullCircleManager : MonoBehaviour
         GameObject nullCircle29 = Instantiate(_nullCirclePrefab, new Vector3(840, -292, 0), Quaternion.identity);
         GameObject nullCircle30 = Instantiate(_nullCirclePrefab, new Vector3(902, -292, 0), Quaternion.identity);
 
-        // Hidden nullCircles in bottom - Should never be shown!! To avoid nullPointerExceptions
-        // x = +/- 20 i forhold til parent x
-        // y = -30 i forhold til parent y
+
+        /*********************************************
+        Hidden nullCircles in bottom - Should never be shown!! To avoid nullPointerExceptions
+            x = +/- 20 i forhold til parent x
+            y = -30 i forhold til parent y
+        *********************************************/
         GameObject nullCircle31 = Instantiate(_nullCirclePrefab, new Vector3(1, -350, 0), Quaternion.identity);
         GameObject nullCircle32 = Instantiate(_nullCirclePrefab, new Vector3(-39, -350, 0), Quaternion.identity);
         GameObject nullCircle33 = Instantiate(_nullCirclePrefab, new Vector3(61, -350, 0), Quaternion.identity);
@@ -110,7 +113,9 @@ public class NullCircleManager : MonoBehaviour
         GameObject nullCircle62 = Instantiate(_nullCirclePrefab, new Vector3(922, -350, 0), Quaternion.identity);
 
 
-        //Set the children of each nullCircle
+        /*********************************************
+        Set the children of each nullCircle
+        *********************************************/
         nullCircle0.GetComponent<NullCircle>().LeftChild = nullCircle1;
         nullCircle0.GetComponent<NullCircle>().RightChild = nullCircle2;
         nullCircle1.GetComponent<NullCircle>().LeftChild = nullCircle3;
@@ -175,7 +180,9 @@ public class NullCircleManager : MonoBehaviour
         nullCircle30.GetComponent<NullCircle>().LeftChild = nullCircle61;
         nullCircle30.GetComponent<NullCircle>().RightChild = nullCircle62;
 
-        // Set the parent of each nullCircle
+        /*********************************************
+        Set the parent of each nullCircle
+        *********************************************/
         nullCircle0.GetComponent<NullCircle>().Parent = null;
         nullCircle1.GetComponent<NullCircle>().Parent = nullCircle0;
         nullCircle2.GetComponent<NullCircle>().Parent = nullCircle0;
@@ -241,7 +248,9 @@ public class NullCircleManager : MonoBehaviour
         nullCircle61.GetComponent<NullCircle>().Parent = nullCircle30;
         nullCircle62.GetComponent<NullCircle>().Parent = nullCircle30;
 
-        // Add the nullCircles to the dictionary
+        /*********************************************
+        Add the nullCircles to the dictionary
+        *********************************************/
         NullCircles.Add(0, nullCircle0);
         NullCircles.Add(1, nullCircle1);
         NullCircles.Add(2, nullCircle2);
@@ -329,49 +338,43 @@ public class NullCircleManager : MonoBehaviour
     }
 
 
-    public void UpdateNullCircleWithIngredient(Vector3 newPosition, NullCircle nullCircle)
+    public void UpdateNullCircleWithIngredient(NullCircle newPosition, NullCircle nullCircle)
     {
-        NullCircle foundNullCircle = FindNullCircleBasedOnPosition(newPosition);
-        if (foundNullCircle != null)
+        /*********************************************
+        Update the found null circle with its new ingredient
+        *********************************************/
+        newPosition.Ingredient = nullCircle.Ingredient;
+
+        /*********************************************
+        Update the value of the found null circle with the value of the ingredient. 
+        *********************************************/
+        newPosition.Value = int.Parse(nullCircle.Ingredient.GetComponentInChildren<TextMeshProUGUI>().text);
+
+
+        /*********************************************
+        Update the color based on the nodes in our tree.
+        We look up in our RedBlaackBST to get the node that the ingredients value corresponds to.
+        Then we return the node's color
+        *********************************************/
+        if (newPosition.Ingredient.GetComponent<Ingredient>().LineToParent != null)
         {
-            /*********************************************
-            Update the found null circle with its new ingredient
-            *********************************************/
-            foundNullCircle.Ingredient = nullCircle.Ingredient;
+            bool isRed = _treeManager.GetColor(newPosition.Value);
+            newPosition.Ingredient.GetComponent<Ingredient>().LineToParent.GetComponent<Line>().IsRed = isRed;
 
-            /*********************************************
-            Update the value of the found null circle with the value of the ingredient. 
-            *********************************************/
-            foundNullCircle.Value = int.Parse(nullCircle.Ingredient.GetComponentInChildren<TextMeshProUGUI>().text);
-
-
-            /*********************************************
-            Update the color based on the nodes in our tree.
-            We look up in our RedBlaackBST to get the node that the ingredients value corresponds to.
-            Then we return the node's color
-            *********************************************/
-            if (foundNullCircle.Ingredient.GetComponent<Ingredient>().LineToParent != null) {
-                bool isRed = _treeManager.GetColor(foundNullCircle.Value);
-                foundNullCircle.Ingredient.GetComponent<Ingredient>().LineToParent.GetComponent<Line>().IsRed = isRed;
-                //Update the color of the line to the parent
-                if (isRed) {
-                    _lineManager.UpdateLineColor(foundNullCircle, isRed);
-                }
-            }
-
-            /*********************************************
-            Only set null circle to null if the child is also null.
-            Then we know that there will not be any more ingredients in the subtree.
-            *********************************************/
-            if (nullCircle.LeftChild.GetComponent<NullCircle>().Ingredient == null && nullCircle.RightChild.GetComponent<NullCircle>().Ingredient == null)
+            if (isRed)
             {
-                nullCircle.Ingredient = null; // the null circle where the ingredient was earlier now has no ingredient
-                nullCircle.Value = 0; // the value of the null circle where the ingredient was earlier now has no value
+                _lineManager.UpdateLineColor(newPosition, isRed);
             }
         }
-        else
+
+        /*********************************************
+        Only set null circle to null if the child is also null.
+        Then we know that there will not be any more ingredients in the subtree.
+        *********************************************/
+        if (nullCircle.LeftChild.GetComponent<NullCircle>().Ingredient == null && nullCircle.RightChild.GetComponent<NullCircle>().Ingredient == null)
         {
-            //Debug.Log("NullCircle not found at position: " + newPosition);
+            nullCircle.Ingredient = null; // the null circle where the ingredient was earlier now has no ingredient
+            nullCircle.Value = 0; // the value of the null circle where the ingredient was earlier now has no value
         }
     }
 
@@ -422,29 +425,17 @@ public class NullCircleManager : MonoBehaviour
     {
         if (nullCircle == null) return;
 
-        /*********************************************
-        If the current nullCircle has no value, it should be active,
-        but we don't need to check its children because they would be beyond the current "border" of values.
-        *********************************************/
         if (nullCircle.Ingredient == null)
         {
             HideNullCircle(nullCircle);
         }
-        else
-        {
 
-            HideNullCircle(nullCircle);
+        NullCircle leftChild = nullCircle.LeftChild?.GetComponent<NullCircle>();
+        NullCircle rightChild = nullCircle.RightChild?.GetComponent<NullCircle>();
 
-            /*********************************************
-            If this nullCircle has a value, its children might need to be activated,
-            so we recursively check them.
-            *********************************************/
-            NullCircle leftChild = nullCircle.LeftChild?.GetComponent<NullCircle>();
-            NullCircle rightChild = nullCircle.RightChild?.GetComponent<NullCircle>();
+        HideAllNullCircles(leftChild);
+        HideAllNullCircles(rightChild);
 
-            HideAllNullCircles(leftChild);
-            HideAllNullCircles(rightChild);
-        }
     }
 
 
@@ -463,7 +454,7 @@ public class NullCircleManager : MonoBehaviour
         *********************************************/
         if (nullCircle.LeftChild.GetComponent<NullCircle>().Ingredient != null)
         {
-            var leftNullCircle = nullCircle.LeftChild.GetComponent<NullCircle>();
+            NullCircle leftNullCircle = nullCircle.LeftChild.GetComponent<NullCircle>();
             setNullCircleToDefault(leftNullCircle);
         }
 
@@ -496,6 +487,7 @@ public class NullCircleManager : MonoBehaviour
         DeactivateAllNullCirclesInSubtree(leftChild);
         DeactivateAllNullCirclesInSubtree(rightChild);
     }
+
 
     /*********************************************
     Finds a NullCircle based on its position in the scene.
@@ -588,7 +580,9 @@ public class NullCircleManager : MonoBehaviour
     }
 
 
-    // Call this method with the root of your tree and an empty list to fill with ingredients
+    /*********************************************
+    Call this method with the root of your tree and an empty list to fill with ingredients
+    *********************************************/
     public List<GameObject> CollectIngredients(NullCircle nullCircle, List<GameObject> ingredients)
     {
         if (nullCircle == null)
@@ -613,22 +607,25 @@ public class NullCircleManager : MonoBehaviour
     }
 
 
-    /// <summary>
-    /// Hides the visual representation of one NullCircle and prevents interaction with it.
-    /// </summary>
-    /// <param name="nullCircle"></param>
+    /*********************************************
+    Hides the visual representation of one NullCircle and prevents interaction with it.
+    *********************************************/
     public void HideNullCircle(NullCircle nullCircle)
     {
         if (nullCircle == null) return;
 
-        // Disable the Image component to hide the visual representation
+        /*********************************************
+        Disable the Image component to hide the visual representation
+        *********************************************/
         Image image = nullCircle.GetComponent<Image>();
         if (image != null)
         {
             image.enabled = false;
         }
 
-        // Disable the Button component to prevent interaction
+        /*********************************************
+        Disable the Button component to prevent interaction
+        *********************************************/
         MakeNullCircleNonInteractable(nullCircle);
     }
 
@@ -636,14 +633,18 @@ public class NullCircleManager : MonoBehaviour
     {
         if (nullCircle == null) return;
 
-        // Re-enable the Image component
+        /*********************************************
+        Re-enable the Image component
+        *********************************************/
         Image image = nullCircle.GetComponent<Image>();
         if (image != null)
         {
             image.enabled = true;
         }
 
-        // Re-enable the Button component
+        /*********************************************
+        Re-enable the Button component
+        *********************************************/
         Button button = nullCircle.GetComponent<Button>();
         if (button != null)
         {
@@ -651,7 +652,9 @@ public class NullCircleManager : MonoBehaviour
         }
     }
 
-    // Used to make the null circles non-interactable but NOT hide it
+    /*********************************************
+    Used to make the null circles non-interactable but NOT hide it
+    *********************************************/
     public void MakeAllNullCirclesNonInteractable()
     {
         for (int i = 0; i < NullCircles.Count; i++)
@@ -660,17 +663,37 @@ public class NullCircleManager : MonoBehaviour
         }
     }
 
-    // Used to make a null circles non-interactable but NOT hide it
     public void MakeNullCircleNonInteractable(NullCircle nullCircle)
     {
         Button nullCircleButton = nullCircle.GetComponent<Button>();
         nullCircleButton.interactable = false;
 
-        // But keep visual appearance
+        /*********************************************
+        But keep visual appearance
+        *********************************************/
         var colors = nullCircleButton.colors;
         colors.disabledColor = colors.normalColor;
         nullCircleButton.colors = colors;
     }
+
+
+    public void DestroyNullCircleAndAllDescendants(GameObject nullCircle)
+    {
+        if (nullCircle == null) return;
+
+        NullCircle nc = nullCircle.GetComponent<NullCircle>();
+        if (nc.LeftChild != null)
+        {
+            DestroyNullCircleAndAllDescendants(nc.LeftChild);
+        }
+        if (nc.RightChild != null)
+        {
+            DestroyNullCircleAndAllDescendants(nc.RightChild);
+        }
+
+        Destroy(nullCircle);
+    }
+
 
     public void PrintNullCircles()
     {
@@ -692,63 +715,4 @@ public class NullCircleManager : MonoBehaviour
     }
 
 
-    public void DestroyNullCircleAndAllDescendants(GameObject nullCircle)
-    {
-        if (nullCircle == null) return;
-
-        NullCircle nc = nullCircle.GetComponent<NullCircle>();
-        if (nc.LeftChild != null)
-        {
-            DestroyNullCircleAndAllDescendants(nc.LeftChild);
-        }
-        if (nc.RightChild != null)
-        {
-            DestroyNullCircleAndAllDescendants(nc.RightChild);
-        }
-
-        // Destroy the GameObject
-        Destroy(nullCircle);
-    }
-
-
 }
-
-/*************************************** OLD METHOD IF WE FUCK UP************************************************/
-/*  /// <summary>
-    /// Iterates throught a dictionary of NullCircles and shows the visual representation of the NullCircles that are active, by calling ShowNullCircle.
-    /// </summary>
-
-    public void ShowNullCircles()
-    {
-        foreach (KeyValuePair<int, GameObject> nullCirclePair in NullCircles)
-        {
-            NullCircle nullCircle = nullCirclePair.Value.GetComponent<NullCircle>();
-
-            if (nullCircle != null && nullCircle.IsActive) // Checking if component is not null and IsActive is true
-            {
-                //nullCirclePair.Value.SetActive(true); // Activate the GameObject
-                ShowNullCircle(nullCircle);
-            }
-
-        }
-
-    }
-
-    /// <summary>
-    /// Iterates throught a dictionary of NullCircles and hides the visual representation of the NullCircles that are not active, by calling HideNullCircle.
-    /// </summary>
-
-    public void HideNullCircles()
-    {
-        foreach (KeyValuePair<int, GameObject> nullCirclePair in NullCircles)
-        {
-            NullCircle nullCircle = nullCirclePair.Value.GetComponent<NullCircle>();
-
-            // If the NullCircle component is found and IsActive is false, deactivate the GameObject
-            if (nullCircle != null && nullCircle.IsActive) // Checking if component is not null and IsActive is false
-            {
-                //nullCirclePair.Value.SetActive(false); // Deactivate the GameObject
-                HideNullCircle(nullCircle);
-            }
-        }
-    }*/

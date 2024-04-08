@@ -6,39 +6,41 @@ using UnityEngine;
 
 public class JarVisualization : MonoBehaviour
 {
-    [SerializeField] private VisualizationHelper _visualizationHelper;
     [SerializeField] private SplineFromJar _splineFromJar;
     [SerializeField] private NullCircleManager _nullCircleManager;
     [SerializeField] private LineManager _lineManager;
-    private float _duration = 2f;
 
 
-    public IEnumerator MoveNodeAndAllDescendantsJar(NullCircle nodeToMove, NullCircle newPosition, float duration, Action onComplete)
+    public IEnumerator MoveNodeAndAllDescendantsJar(NullCircle nodeToMove, NullCircle newPosition, Action onComplete)
     {
-        // Recursively move the left subtree if it exists.
+        /*********************************************
+        Recursively move the left subtree if it exists.
+        *********************************************/
         if (nodeToMove.LeftChild.GetComponent<NullCircle>().Ingredient != null)
         {
             NullCircle leftChild = nodeToMove.LeftChild.GetComponent<NullCircle>();
             NullCircle newLeftChildPosition = newPosition.LeftChild.GetComponent<NullCircle>();
-            yield return StartCoroutine(MoveNodeAndAllDescendantsJar(leftChild, newLeftChildPosition, duration, () => { }));
+            yield return StartCoroutine(MoveNodeAndAllDescendantsJar(leftChild, newLeftChildPosition, () => { }));
         }
 
-        // Recursively move the right subtree if it exists.
+        /*********************************************
+        Recursively move the right subtree if it exists.
+        *********************************************/
         if (nodeToMove.RightChild.GetComponent<NullCircle>().Ingredient != null)
         {
             NullCircle rightChild = nodeToMove.RightChild.GetComponent<NullCircle>();
             NullCircle newRightChildPosition = newPosition.RightChild.GetComponent<NullCircle>();
-            yield return StartCoroutine(MoveNodeAndAllDescendantsJar(rightChild, newRightChildPosition, duration, () => { }));
+            yield return StartCoroutine(MoveNodeAndAllDescendantsJar(rightChild, newRightChildPosition, () => { }));
         }
 
-        // If the node has an ingredient, move it.
+        /*********************************************
+        If the node has an ingredient, move it.
+        *********************************************/
         if (nodeToMove.Ingredient != null)
         {
             _splineFromJar.ChangeLastKnot(newPosition.transform.position);
             yield return StartCoroutine(_splineFromJar.FollowSplineFromJar(nodeToMove.Ingredient));
-            //_spline.ChangeLastVector3Position(newPosition.transform.position);
-            //yield return StartCoroutine(_spline.FollowPointsFromJar(nodeToMove.Ingredient));
-            _nullCircleManager.UpdateNullCircleWithIngredient(newPosition.transform.position, nodeToMove);
+            _nullCircleManager.UpdateNullCircleWithIngredient(newPosition, nodeToMove);
             _lineManager.DrawLineToNullCircle(newPosition);
         }
         onComplete?.Invoke();

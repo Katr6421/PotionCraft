@@ -87,7 +87,7 @@ public class VisualizationHelper : MonoBehaviour
             {
                 _nullCircleManager.DeactivateAllNullCirclesInSubtree(nullCircle);
                 //_nullCircleManager.UpdateNullCircleWithIngredient(newPosition, nullCircle); VAR HETTA ÁÐRENN
-                _nullCircleManager.UpdateNullCircleWithIngredient(newPosition.transform.position, nullCircle);
+                _nullCircleManager.UpdateNullCircleWithIngredient(newPosition.GetComponent<NullCircle>(), nullCircle);
                 _lineManager.DrawLineToNullCircle(newPosition.GetComponent<NullCircle>());
             }));
 
@@ -122,7 +122,7 @@ public class VisualizationHelper : MonoBehaviour
             yield return StartCoroutine(MoveNode(startNullCircle.Ingredient, endingNullCircle, duration, () =>
             {
                 _nullCircleManager.DeactivateAllNullCirclesInSubtree(startNullCircle);
-                _nullCircleManager.UpdateNullCircleWithIngredient(endingNullCircle.transform.position, startNullCircle); 
+                _nullCircleManager.UpdateNullCircleWithIngredient(endingNullCircle.GetComponent<NullCircle>(), startNullCircle); 
                 _lineManager.DrawLineToNullCircle(endingNullCircle.GetComponent<NullCircle>());
             }));
             onComplete?.Invoke();
@@ -136,7 +136,7 @@ public class VisualizationHelper : MonoBehaviour
             yield return StartCoroutine(MoveNode(startNullCircle.Ingredient, endingNullCircle, duration, () =>
             {
                 _nullCircleManager.DeactivateAllNullCirclesInSubtree(startNullCircle);
-                _nullCircleManager.UpdateNullCircleWithIngredient(endingNullCircle.transform.position, startNullCircle);
+                _nullCircleManager.UpdateNullCircleWithIngredient(endingNullCircle.GetComponent<NullCircle>(), startNullCircle);
                 _lineManager.DrawLineToNullCircle(endingNullCircle.GetComponent<NullCircle>());
             }));
 
@@ -189,7 +189,7 @@ public class VisualizationHelper : MonoBehaviour
             yield return StartCoroutine(MoveNode(nullCircle.Ingredient, endingNullCircle, duration, () =>
             {
                 _nullCircleManager.DeactivateAllNullCirclesInSubtree(nullCircle);
-                _nullCircleManager.UpdateNullCircleWithIngredient(endingNullCircle.transform.position, nullCircle);
+                _nullCircleManager.UpdateNullCircleWithIngredient(endingNullCircle.GetComponent<NullCircle>(), nullCircle);
                 _lineManager.DrawLineToNullCircle(endingNullCircle.GetComponent<NullCircle>());
             }));
 
@@ -210,7 +210,7 @@ public class VisualizationHelper : MonoBehaviour
             yield return StartCoroutine(MoveNode(nullCircle.Ingredient, endingNullCircle, duration, () =>
             {
                 _nullCircleManager.DeactivateAllNullCirclesInSubtree(nullCircle);
-                _nullCircleManager.UpdateNullCircleWithIngredient(endingNullCircle.transform.position, nullCircle);
+                _nullCircleManager.UpdateNullCircleWithIngredient(endingNullCircle.GetComponent<NullCircle>(), nullCircle);
                 _lineManager.DrawLineToNullCircle(endingNullCircle.GetComponent<NullCircle>());
             }));
 

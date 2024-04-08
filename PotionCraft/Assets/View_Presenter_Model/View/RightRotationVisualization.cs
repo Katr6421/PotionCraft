@@ -1,24 +1,20 @@
-using System;
 using System.Collections;
-using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 
 public class RightRotationVisualization : MonoBehaviour
 {
-    [SerializeField] private NullCircleManager _nullCircleManager;
     [SerializeField] private VisualizationHelper _visualizationHelper;
     [SerializeField] private LineManager _lineManager;
 
 
     public IEnumerator RotateRightAnimation(GameObject leftChild, GameObject parent, GameObject grandparent, NullCircle parentNullCircle)
     {
-        /* 
+        /*********************************************
             Move all ingredients on right side of tree down
             Move grandparent to grandparent.rightChild
             Move parent to grandparent
             Move all ingredients on left side of tree up
-        */
+        *********************************************/
 
 
         /*********************************************
@@ -39,21 +35,30 @@ public class RightRotationVisualization : MonoBehaviour
 
     }
 
-    public void UpdateLines(GameObject leftChild, GameObject parent, GameObject grandparent, NullCircle parentNullCircle) {
-        /*
-            grandparent -> får parent's line
-                        -> if parent has bag, grandparent's leftChild = parent's rightChild
-                        -> if parent has no bag, grandparent's leftChild = null
-            parent      -> får grandparent's old line
+    public void UpdateLines(GameObject leftChild, GameObject parent, GameObject grandparent, NullCircle parentNullCircle)
+    {
+        /*********************************************
+            grandparent.lineToParent    -> Er den samme linje som parent's lineToRight - den der må instantieres
+
+            parent.lineToParent         -> Får grandparent's gamle lineToParent
+            parent.lineToRight          -> Må instantiate en ny line for reference årsager (DrawLineToNullCircle sletter altid lineToLeft og lineToRight)
                         -> rightChild = null
             leftChild   -> uændret
-        */
+        *********************************************/
 
+
+        /*********************************************
+        Hvis parent ikke var root, må vi opdatere lineToParent's endepunkt, så den peger på rightChild
+        *********************************************/
         GameObject grandparentOldParent = grandparent.GetComponent<Ingredient>().LineToParent;
-        if (grandparentOldParent != null) {
-            if (parentNullCircle.transform.position.x < parentNullCircle.Parent.transform.position.x) {
+        if (grandparentOldParent != null)
+        {
+            if (parentNullCircle.transform.position.x < parentNullCircle.Parent.transform.position.x)
+            {
                 parentNullCircle.Parent.GetComponent<NullCircle>().Ingredient.GetComponent<Ingredient>().LineToLeft.GetComponent<Line>().ChangeEndPoint(parent.transform);
-            } else {
+            }
+            else
+            {
                 parentNullCircle.Parent.GetComponent<NullCircle>().Ingredient.GetComponent<Ingredient>().LineToRight.GetComponent<Line>().ChangeEndPoint(parent.transform);
             }
         }

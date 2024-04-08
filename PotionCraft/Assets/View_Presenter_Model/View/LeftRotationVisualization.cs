@@ -6,19 +6,18 @@ using UnityEngine;
 
 public class LeftRotationVisualization : MonoBehaviour
 {
-    [SerializeField] private NullCircleManager _nullCircleManager;
     [SerializeField] private VisualizationHelper _visualizationHelper;
     [SerializeField] private LineManager _lineManager;
 
 
     public IEnumerator RotateLeftAnimation(GameObject parent, GameObject rightChild, NullCircle parentNullCircle)
     {
-        /*
+        /*********************************************
             Move all ingredients on the left side of the tree down
             Move parent to parent.leftchild
             Move rightchild to parent
             Move all ingredients on the right side of the tree up
-        */
+        *********************************************/
 
         /*********************************************
         Find the new positions
@@ -37,22 +36,27 @@ public class LeftRotationVisualization : MonoBehaviour
         yield return StartCoroutine(_visualizationHelper.RotateTree(true, false, false, rightChildNullCircle, rightChildNewPosition, 1.0f, () => { }));
     }
 
-    public void UpdateLines(GameObject parent, GameObject rightChild, NullCircle parentNullCircle) {
-        /*
-            grandparent -> får parent's line
-                        -> if parent has bag, grandparent's leftChild = parent's rightChild
-                        -> if parent has no bag, grandparent's leftChild = null
-            parent      -> får grandparent's old line
-                        -> rightChild = null
-            leftChild   -> uændret
-        */
+    public void UpdateLines(GameObject parent, GameObject rightChild, NullCircle parentNullCircle)
+    {
+        /*********************************************
+            parent.lineToParent     -> Må instantiate en ny line for reference årsager (DrawLineToNullCircle sletter altid lineToLeft og lineToRight)
+                                
+            rightChild.lineToParent -> Får parent's gamle lineToParent
+            rightChild.lineToLeft   -> Er den samme linje som parent's lineToParent - den der må instantieres
+        *********************************************/
 
+        /*********************************************
+        Hvis parent ikke var root, må vi opdatere lineToParent's endepunkt, så den peger på rightChild
+        *********************************************/
         GameObject parentOldParent = parent.GetComponent<Ingredient>().LineToParent;
-        if (parentOldParent != null) {
-            Debug.Log("ParentOldParent is not null: " + parentNullCircle.Parent.GetComponent<NullCircle>().Value);
-            if (parentNullCircle.transform.position.x < parentNullCircle.Parent.transform.position.x) {
+        if (parentOldParent != null)
+        {
+            if (parentNullCircle.transform.position.x < parentNullCircle.Parent.transform.position.x)
+            {
                 parentNullCircle.Parent.GetComponent<NullCircle>().Ingredient.GetComponent<Ingredient>().LineToLeft.GetComponent<Line>().ChangeEndPoint(rightChild.transform);
-            } else {
+            }
+            else
+            {
                 parentNullCircle.Parent.GetComponent<NullCircle>().Ingredient.GetComponent<Ingredient>().LineToRight.GetComponent<Line>().ChangeEndPoint(rightChild.transform);
             }
         }
