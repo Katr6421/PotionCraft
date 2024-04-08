@@ -1,12 +1,6 @@
 using System.Collections;
-using System.Collections.Generic;
-using log4net.Core;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using TMPro;
-using UnityEngine.UI;
-using System;
-using System.Linq;
 
 /*********************************************
 CLASS: LevelUIController
@@ -16,8 +10,6 @@ DESCRIPTION: This class is responsible for controlling the UI elements in the Le
 
 public class LevelUIController : MonoBehaviour
 {
-
-    [SerializeField] private Canvas _uiCanvas;
     [SerializeField] private TextMeshProUGUI _selectedLevelNumberText;
     [SerializeField] private TextMeshProUGUI _selectedLevelPotionName;
     [SerializeField] private TextMeshProUGUI _selectedLevelPotionDescription;
@@ -46,7 +38,7 @@ public class LevelUIController : MonoBehaviour
 
         /***********************************
         Update recipe
-        ***********************************/     
+        ***********************************/
         UpdateRecipe();
 
         /***********************************
@@ -58,16 +50,19 @@ public class LevelUIController : MonoBehaviour
     public void SpawnCircleMarker()
     {
         CircleMarker = Instantiate(_circleMarkerPrefab, _circleStartPosition, Quaternion.identity);
-        //CircleMarker.transform.SetParent(_uiCanvas.transform, false);
     }
 
-    // Moves the circle marker to the new position
+    /*********************************************
+    Moves the circle marker to the new position
+    *********************************************/
     public void MoveCircleMarker(Vector3 newPosition, float duration)
     {
         StartCoroutine(MoveObjectRoutine(CircleMarker, newPosition, duration));
     }
 
-    // ANIMATION: Coroutine to move the circle marker to the new position. 
+    /*********************************************
+    ANIMATION: Coroutine to move the circle marker to the new position. 
+    *********************************************/
     IEnumerator MoveObjectRoutine(GameObject objectToMove, Vector3 destination, float duration)
     {
         float elapsedTime = 0;
@@ -83,34 +78,51 @@ public class LevelUIController : MonoBehaviour
         objectToMove.transform.position = destination; // Ensure it reaches the destination
     }
 
-    // Shows or hides circle marker based on the boolean value
+    /*********************************************
+    Shows or hides circle marker based on the boolean value
+    *********************************************/
     public void ShowCircleMarker(bool shouldBeShown)
     {
         CircleMarker.SetActive(shouldBeShown);
     }
 
-    public void UpdateRecipe(){
-        // Change text fields
+    public void UpdateRecipe()
+    {
+        /*********************************************
+        Change text fields
+        *********************************************/
         _selectedLevelNumberText.text = "" + _levelManager.CurrentLevelIndex;
         _selectedLevelPotionName.text = "" + _levelManager.GetPotionName();
         _selectedLevelPotionDescription.text = "" + _levelManager.GetPotionDescription();
-        // Change sprite
+        /*********************************************
+        Change sprite
+        *********************************************/
         SpriteRenderer spriteRenderer = _selectedLevelPotionSprite.GetComponent<SpriteRenderer>();
         spriteRenderer.sprite = _levelManager.GetPotionSprite();
-        // Display set of ingredients on recipe
+        /*********************************************
+        Display set of ingredients on recipe
+        *********************************************/
         _nodeSpawner.SpawnIngredientsOnRecipe();
     }
 
-    // When a level is completed, this method is called to move the scroll down to reveal a complete level button
+    /*********************************************
+    When a level is completed, this method is called to move the scroll down to reveal a complete level button
+    *********************************************/
     public void MoveScrollDown()
     {
-        // Make the button visible
+        /*********************************************
+        Make the button visible
+        *********************************************/
         _collectPotionButton.GetComponent<BoxCollider2D>().enabled = true;
 
-        // Calculate the target position by moving down by 0.6 units
+        /*********************************************
+        Calculate the target position by moving down by 0.6 units
+        *********************************************/
         Vector3 scrollTargetPosition = _finishedScroll.transform.position + Vector3.down * 0.8f; // Adjust how far to move down here
 
-        // Start the coroutine to move the scroll smoothly to the target position
+        /*********************************************
+        Start the coroutine to move the scroll smoothly to the target position
+        *********************************************/
         StartCoroutine(MoveObjectRoutine(_finishedScroll, scrollTargetPosition, 0.5f));
     }
 

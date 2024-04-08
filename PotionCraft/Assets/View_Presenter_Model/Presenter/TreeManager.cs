@@ -55,7 +55,7 @@ public class TreeManager : MonoBehaviour, ITreeManager
             {
                 //Debug.Log("Correct placement of the left child");
                 //Debug.Log("I return true.");
-                clickedNullCircle.GetComponent<NullCircle>().IsRed = true;
+                //clickedNullCircle.GetComponent<NullCircle>().Ingredient.GetComponent<Ingredient>().LineToParent.GetComponent<Line>().IsRed = true;
                 return true;
             }
         }
@@ -66,7 +66,7 @@ public class TreeManager : MonoBehaviour, ITreeManager
             {
                 //Debug.Log("Correct placement of the right child");
                 //Debug.Log("I return true.");
-                clickedNullCircle.GetComponent<NullCircle>().IsRed = true;
+                //clickedNullCircle.GetComponent<NullCircle>().Ingredient.GetComponent<Ingredient>().LineToParent.GetComponent<Line>().IsRed = true;
                 return true;
             }
         }
@@ -93,7 +93,7 @@ public class TreeManager : MonoBehaviour, ITreeManager
     public void HandleOperationButtonClick(OperationType selectedOperationType)
     {
         // If there is no operations in the queue to perform, do nothing. The user is supposed to insert a new ingredient instead
-        if (IsTreeInBalanced()) return;
+        if (IsTreeInBalance()) return;
 
         // Get the current operation from the queue, whitout removing it
         Operation nextCorrectOperation = RedBlackTree.Operations.Peek();
@@ -234,7 +234,7 @@ public class TreeManager : MonoBehaviour, ITreeManager
             RedBlackTree.IsThereATreeViolation();
 
             // There are still more operations to perform
-            if (!IsTreeInBalanced())
+            if (!IsTreeInBalance())
             {
                 // Make it possible to select the ingredients again
                 _nodeSpawner.MakeAllPlacedIngredientsInteractable(true, _treeVisualizerManager.CurrectIngredientIndex);
@@ -281,7 +281,7 @@ public class TreeManager : MonoBehaviour, ITreeManager
     }
 
     // If the queue of operations is empty, the tree is in balance
-    public bool IsTreeInBalanced()
+    public bool IsTreeInBalance()
     {
         return RedBlackTree.Operations.Count == 0;
     }

@@ -11,7 +11,6 @@ public class NodeSpawner : MonoBehaviour
     [SerializeField] private Canvas uiCanvas; // Reference to the Canvas where the nodes will be parented
 
     [SerializeField] private GameObject KatnissPrefab; // Assigned the prefab in the inspector
-    [SerializeField] private GameObject NullCirclePrefab; // Assigned the prefab in the inspector
     [SerializeField] private GameObject MushroomPrefab; // Assigned the prefab in the inspector
     [SerializeField] private GameObject PinkFlowerPrefab; // Assigned the prefab in the inspector
     [SerializeField] private GameObject RadishPrefab; // Assigned the prefab in the inspector
@@ -27,8 +26,10 @@ public class NodeSpawner : MonoBehaviour
 
     void Awake()
     {
-        // Fill the dictionary. Maps the node value to the prefab
-        // This makes it easy to create a new ingredient based on the nodes value. 
+        /*********************************************
+        Fill the dictionary. Maps the node value to the prefab
+        This makes it easy to create a new ingredient based on the nodes value. 
+        *********************************************/
         NodeValueToPrefabDictionary.Add(1, RadishPrefab);
         NodeValueToPrefabDictionary.Add(2, MushroomPrefab);
         NodeValueToPrefabDictionary.Add(3, PinkFlowerPrefab);
@@ -127,11 +128,11 @@ public class NodeSpawner : MonoBehaviour
                 // Create a new GameObject to hold the image
                 GameObject instance = new GameObject(newSpriteName);
                 // Set the parent to _ingredientsPanel
-                instance.transform.SetParent(_ingredientsPanel, false); 
+                instance.transform.SetParent(_ingredientsPanel, false);
                 // Add an Image component to the new GameObject 
                 Image instanceImage = instance.AddComponent<Image>();
                 // Set the sprite to the picture of the ingredient (without the white circle)
-                instanceImage.sprite = newSprite; 
+                instanceImage.sprite = newSprite;
             }
         }
     }

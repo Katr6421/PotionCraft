@@ -12,7 +12,7 @@ public class VisualizationHelper : MonoBehaviour
     [SerializeField] private NullCircleManager _nullCircleManager;
     [SerializeField] private TreeManager _treeManager;
     [SerializeField] private Spline _spline;
-    [SerializeField] private LineRendererManager _lineRendererManager;
+    [SerializeField] private LineManager _lineManager;
 
     public Vector3 WorldToCanvasPosition(Canvas canvas, Vector3 worldPosition)
     {
@@ -35,23 +35,24 @@ public class VisualizationHelper : MonoBehaviour
     /*********************************************
     Move an ingredient to a new position
     *********************************************/
-    public IEnumerator MoveNode(GameObject ingredient, Vector3 newPosition, float duration, NullCircle nullCircle, Action onComplete)
+    public IEnumerator MoveNode(GameObject ingredient, GameObject newPosition, float duration, Action onComplete)
     {
         Vector3 startingPos = ingredient.transform.position;
+        Vector3 newPos = newPosition.transform.position;
         float elapsedTime = 0;
         while (elapsedTime < duration)
         {
-            ingredient.transform.position = Vector3.Lerp(startingPos, newPosition, (elapsedTime / duration));
+            ingredient.transform.position = Vector3.Lerp(startingPos, newPos, (elapsedTime / duration));
             elapsedTime += Time.deltaTime;
             yield return null;
         }
-        ingredient.transform.position = newPosition;
+        ingredient.transform.position = newPos;
 
         yield return null;
         onComplete?.Invoke();
     }
 
-    public IEnumerator MoveNodeAndAllDescendants(NullCircle nullCircle, Vector3 newPosition, float duration, Action onComplete)
+    public IEnumerator MoveNodeAndAllDescendants(bool isLeftRotation, NullCircle nullCircle, GameObject newPosition, float duration, Action onComplete)
     {
         /*********************************************
         Recursively move the left subtree if it exists.
@@ -59,9 +60,9 @@ public class VisualizationHelper : MonoBehaviour
         if (nullCircle.LeftChild.GetComponent<NullCircle>().Ingredient != null)
         {
             NullCircle leftChild = nullCircle.LeftChild.GetComponent<NullCircle>();
-            Vector3 newLeftChildPosition = leftChild.GetComponent<NullCircle>().LeftChild.transform.position;
+            GameObject newLeftChildPosition = leftChild.GetComponent<NullCircle>().LeftChild;
 
-            yield return StartCoroutine(MoveNodeAndAllDescendants(leftChild, newLeftChildPosition, duration, () => { }));
+            yield return StartCoroutine(MoveNodeAndAllDescendants(isLeftRotation, leftChild, newLeftChildPosition, duration, () => { }));
         }
 
         /*********************************************
@@ -70,10 +71,10 @@ public class VisualizationHelper : MonoBehaviour
         if (nullCircle.RightChild.GetComponent<NullCircle>().Ingredient != null)
         {
             NullCircle rightChild = nullCircle.RightChild.GetComponent<NullCircle>();
-            Vector3 newRightChildPosition = rightChild.GetComponent<NullCircle>().RightChild.transform.position;
+            GameObject newRightChildPosition = rightChild.GetComponent<NullCircle>().RightChild;
             //Vector3 rightChildNewPosition = newPosition - (nodeToMove.transform.position - rightChild.transform.position);
             // SHOULD MAYBE BE A DIFFERENT METHOD
-            yield return StartCoroutine(MoveNodeAndAllDescendants(rightChild, newRightChildPosition, duration, () => { }));
+            yield return StartCoroutine(MoveNodeAndAllDescendants(isLeftRotation, rightChild, newRightChildPosition, duration, () => { }));
         }
 
 
@@ -82,10 +83,12 @@ public class VisualizationHelper : MonoBehaviour
         *********************************************/
         if (nullCircle.Ingredient != null)
         {
-            yield return StartCoroutine(MoveNode(nullCircle.Ingredient, newPosition, duration, nullCircle, () =>
+            yield return StartCoroutine(MoveNode(nullCircle.Ingredient, newPosition, duration, () =>
             {
                 _nullCircleManager.DeactivateAllNullCirclesInSubtree(nullCircle);
-                _nullCircleManager.UpdateNullCircleWithIngredient(newPosition, nullCircle);
+                //_nullCircleManager.UpdateNullCircleWithIngredient(newPosition, nullCircle); VAR HETTA ÁÐRENN
+                _nullCircleManager.UpdateNullCircleWithIngredient(newPosition.GetComponent<NullCircle>(), nullCircle);
+                _lineManager.DrawLineToNullCircle(newPosition.GetComponent<NullCircle>());
             }));
 
         }
@@ -94,7 +97,7 @@ public class VisualizationHelper : MonoBehaviour
 
 
 
-    public IEnumerator RotateTree(bool isLeft, bool isDown, GameObject startingNullCircle, GameObject EndingNullCircle, float duration, Action onComplete)
+    public IEnumerator RotateTree(bool isLeftRotation, bool isLeft, bool isDown, GameObject startingNullCircle, GameObject endingNullCircle, float duration, Action onComplete)
     {
         NullCircle startNullCircle = startingNullCircle.GetComponent<NullCircle>();
         GameObject childNullCircle = isLeft ? startNullCircle.LeftChild
@@ -110,16 +113,17 @@ public class VisualizationHelper : MonoBehaviour
                 GameObject newChildPosition = isLeft ? childNullCircle.GetComponent<NullCircle>().LeftChild
                                                      : childNullCircle.GetComponent<NullCircle>().RightChild;
 
-                yield return StartCoroutine(MoveSubTree(isLeft, isDown, childNullCircle, newChildPosition, duration, () => { }));
+                yield return StartCoroutine(MoveSubTree(isLeftRotation, isLeft, isDown, childNullCircle, newChildPosition, duration, () => { }));
             }
 
             /*********************************************
             Move down the starting node itself
             *********************************************/
-            yield return StartCoroutine(MoveNode(startNullCircle.Ingredient, EndingNullCircle.transform.position, duration, startNullCircle, () =>
+            yield return StartCoroutine(MoveNode(startNullCircle.Ingredient, endingNullCircle, duration, () =>
             {
                 _nullCircleManager.DeactivateAllNullCirclesInSubtree(startNullCircle);
-                _nullCircleManager.UpdateNullCircleWithIngredient(EndingNullCircle.transform.position, startNullCircle);
+                _nullCircleManager.UpdateNullCircleWithIngredient(endingNullCircle.GetComponent<NullCircle>(), startNullCircle); 
+                _lineManager.DrawLineToNullCircle(endingNullCircle.GetComponent<NullCircle>());
             }));
             onComplete?.Invoke();
 
@@ -129,10 +133,11 @@ public class VisualizationHelper : MonoBehaviour
             /*********************************************
             Move up the starting node itself
             *********************************************/
-            yield return StartCoroutine(MoveNode(startNullCircle.Ingredient, EndingNullCircle.transform.position, duration, startNullCircle, () =>
+            yield return StartCoroutine(MoveNode(startNullCircle.Ingredient, endingNullCircle, duration, () =>
             {
                 _nullCircleManager.DeactivateAllNullCirclesInSubtree(startNullCircle);
-                _nullCircleManager.UpdateNullCircleWithIngredient(EndingNullCircle.transform.position, startNullCircle);
+                _nullCircleManager.UpdateNullCircleWithIngredient(endingNullCircle.GetComponent<NullCircle>(), startNullCircle);
+                _lineManager.DrawLineToNullCircle(endingNullCircle.GetComponent<NullCircle>());
             }));
 
 
@@ -142,7 +147,7 @@ public class VisualizationHelper : MonoBehaviour
             if (childNullCircle.GetComponent<NullCircle>().Ingredient != null)
             {
                 GameObject newChildPosition = startNullCircle.gameObject;
-                yield return StartCoroutine(MoveSubTree(isLeft, isDown, childNullCircle, newChildPosition, duration, () => { }));
+                yield return StartCoroutine(MoveSubTree(isLeftRotation, isLeft, isDown, childNullCircle, newChildPosition, duration, () => { }));
             }
             onComplete?.Invoke();
         }
@@ -152,7 +157,7 @@ public class VisualizationHelper : MonoBehaviour
 
 
 
-    private IEnumerator MoveSubTree(bool isLeft, bool isDown, GameObject nodeToMove, GameObject EndingNullCircle, float duration, Action onComplete)
+    private IEnumerator MoveSubTree(bool isLeftRotation, bool isLeft, bool isDown, GameObject nodeToMove, GameObject endingNullCircle, float duration, Action onComplete)
     {
         NullCircle nullCircle = nodeToMove.GetComponent<NullCircle>();
         GameObject childNullCircle = isLeft ? nullCircle.LeftChild
@@ -163,7 +168,7 @@ public class VisualizationHelper : MonoBehaviour
             /*********************************************
             Check if the node has a left/right child and move it along with its subtree
             *********************************************/
-            yield return StartCoroutine(MoveSubSubTree(isLeft, isDown, nullCircle, duration, () => { }));
+            yield return StartCoroutine(MoveSubSubTree(isLeftRotation, isLeft, isDown, nullCircle, duration, () => { }));
 
 
             /*********************************************
@@ -174,17 +179,18 @@ public class VisualizationHelper : MonoBehaviour
                 GameObject newChildPosition = isLeft ? childNullCircle.GetComponent<NullCircle>().LeftChild
                                                     : childNullCircle.GetComponent<NullCircle>().RightChild;
 
-                yield return StartCoroutine(MoveSubTree(isLeft, isDown, childNullCircle, newChildPosition, duration, () =>
+                yield return StartCoroutine(MoveSubTree(isLeftRotation, isLeft, isDown, childNullCircle, newChildPosition, duration, () =>
                 { }));
             }
 
             /*********************************************
             Move the node down
             *********************************************/
-            yield return StartCoroutine(MoveNode(nullCircle.Ingredient, EndingNullCircle.transform.position, duration, nullCircle, () =>
+            yield return StartCoroutine(MoveNode(nullCircle.Ingredient, endingNullCircle, duration, () =>
             {
                 _nullCircleManager.DeactivateAllNullCirclesInSubtree(nullCircle);
-                _nullCircleManager.UpdateNullCircleWithIngredient(EndingNullCircle.transform.position, nullCircle);
+                _nullCircleManager.UpdateNullCircleWithIngredient(endingNullCircle.GetComponent<NullCircle>(), nullCircle);
+                _lineManager.DrawLineToNullCircle(endingNullCircle.GetComponent<NullCircle>());
             }));
 
             onComplete?.Invoke();
@@ -195,16 +201,17 @@ public class VisualizationHelper : MonoBehaviour
             /*********************************************
             Check if the node has a left/right child and move it along with its subtree
             *********************************************/
-            yield return StartCoroutine(MoveSubSubTree(isLeft, isDown, nullCircle, duration, () => { }));
+            yield return StartCoroutine(MoveSubSubTree(isLeftRotation, isLeft, isDown, nullCircle, duration, () => { }));
 
 
             /*********************************************
             Move the node up
             *********************************************/
-            yield return StartCoroutine(MoveNode(nullCircle.Ingredient, EndingNullCircle.transform.position, duration, nullCircle, () =>
+            yield return StartCoroutine(MoveNode(nullCircle.Ingredient, endingNullCircle, duration, () =>
             {
                 _nullCircleManager.DeactivateAllNullCirclesInSubtree(nullCircle);
-                _nullCircleManager.UpdateNullCircleWithIngredient(EndingNullCircle.transform.position, nullCircle);
+                _nullCircleManager.UpdateNullCircleWithIngredient(endingNullCircle.GetComponent<NullCircle>(), nullCircle);
+                _lineManager.DrawLineToNullCircle(endingNullCircle.GetComponent<NullCircle>());
             }));
 
 
@@ -214,7 +221,7 @@ public class VisualizationHelper : MonoBehaviour
             if (childNullCircle.GetComponent<NullCircle>().Ingredient != null)
             {
                 GameObject newChildPosition = nodeToMove;
-                yield return StartCoroutine(MoveSubTree(isLeft, isDown, childNullCircle, newChildPosition, duration, () =>
+                yield return StartCoroutine(MoveSubTree(isLeftRotation, isLeft, isDown, childNullCircle, newChildPosition, duration, () =>
                 { }));
             }
             onComplete?.Invoke();
@@ -223,7 +230,7 @@ public class VisualizationHelper : MonoBehaviour
     }
 
 
-    private IEnumerator MoveSubSubTree(bool isLeft, bool isDown, NullCircle nodeToMove, float duration, Action onComplete)
+    private IEnumerator MoveSubSubTree(bool isLeftRotation, bool isLeft, bool isDown, NullCircle nodeToMove, float duration, Action onComplete)
     {
         GameObject childNullCircle = isLeft ? nodeToMove.RightChild
                                             : nodeToMove.LeftChild;
@@ -244,10 +251,9 @@ public class VisualizationHelper : MonoBehaviour
             GameObject rootToPlaceSubtree = GetRootOfSubtreeToPlace(isLeft, isDown, nodeToMove);
 
 
-            yield return StartCoroutine(MoveNodeAndAllDescendants(copyRootOfSubTree, rootToPlaceSubtree.transform.position, duration, () =>
+            yield return StartCoroutine(MoveNodeAndAllDescendants(isLeftRotation, copyRootOfSubTree, rootToPlaceSubtree, duration, () =>
             {
                 _nullCircleManager.setNullCircleToDefault(rootOfSubtree.GetComponent<NullCircle>());
-                _lineRendererManager.UpdateLineRenderers();
                 _nullCircleManager.DestroyNullCircleAndAllDescendants(copyRootOfSubTree.gameObject);
             }));
         }

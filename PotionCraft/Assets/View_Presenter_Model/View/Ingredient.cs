@@ -1,41 +1,42 @@
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class Ingredient : MonoBehaviour
 {
-    public int NullCircleIndex { get; set; }
     [SerializeField] private Sprite[] _radishSprite;
     [SerializeField] private Sprite[] _mushroomSprite;
     [SerializeField] private Sprite[] _pinkFlowerSprite;
     [SerializeField] private Sprite[] _waterFlowerSprite;
     [SerializeField] private Sprite[] _katnissSprite;
+    public GameObject LineToParent { get; set; }
+    public GameObject LineToLeft { get; set; }
+    public GameObject LineToRight { get; set; }
     private Image imageComponent;
-    public GameObject LineToParent { get; set; } // Saves a reference to the line that goes to the parent of this ingredient
     private TreeManager _treeManager;
 
     void Awake()
     {
-        // Get the Image component from the GameObject
+        /*********************************************
+        Get the Image component from the GameObject
+        *********************************************/
         imageComponent = GetComponent<Image>();
         _treeManager = FindObjectOfType<TreeManager>();
     }
 
-
-    // Start is called before the first frame update
     public void OnClick()
     {
-        //Debug.Log("Clicked on ingredient, with the value:  " + GetComponentInChildren<TextMeshProUGUI>().text);
-
         ChangePrefabImage(gameObject.name);
         var setOfSelectedIngredients = _treeManager.CurrentSelectedIngredients;
 
-        // Add node from the real tree to the selected ingredients/nodes
+        /*********************************************
+        Add node from the real tree to the selected ingredients/nodes
+        *********************************************/
         _treeManager.HandleIngredientClick(int.Parse(GetComponentInChildren<TextMeshProUGUI>().text));
 
-        // Add ingredient to the set of selected ingredients
+        /*********************************************
+        Add ingredient to the set of selected ingredients
+        *********************************************/
         if (setOfSelectedIngredients.Contains(gameObject))
         {
             setOfSelectedIngredients.Remove(gameObject);
@@ -48,7 +49,9 @@ public class Ingredient : MonoBehaviour
 
     public void ChangePrefabImage(string prefabName)
     {
-        //(default = 0, glow = 1)
+        /*********************************************
+        Image: default = 0, glow = 1
+        *********************************************/
         if (prefabName.StartsWith("Radish"))
         {
             if (imageComponent.sprite == _radishSprite[0])

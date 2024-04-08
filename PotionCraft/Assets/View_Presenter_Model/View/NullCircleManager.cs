@@ -1,15 +1,14 @@
-using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.SceneManagement;
+
 
 public class NullCircleManager : MonoBehaviour
 {
     [SerializeField] private GameObject _nullCirclePrefab;
     [SerializeField] private Canvas _uiCanvas; // Reference to the Canvas where the nullCircles will be parented
-    [SerializeField] private LineRendererManager _lineRendererManager;
+    [SerializeField] private LineManager _lineManager;
     [SerializeField] private TreeManager _treeManager;
     public Dictionary<int, GameObject> NullCircles { get; private set; } = new Dictionary<int, GameObject>();
     public GameObject Root { get; set; }
@@ -22,7 +21,9 @@ public class NullCircleManager : MonoBehaviour
 
     public void SpawnNullCircles()
     {
-        // Instantiate the nullCircles
+        /*********************************************
+        Instantiate the nullCircles
+        *********************************************/
 
         GameObject nullCircle0 = Instantiate(_nullCirclePrefab, new Vector3(440, 270, 0), Quaternion.identity);
         Root = nullCircle0;
@@ -36,7 +37,6 @@ public class NullCircleManager : MonoBehaviour
         GameObject nullCircle5 = Instantiate(_nullCirclePrefab, new Vector3(562, -10, 0), Quaternion.identity);
         GameObject nullCircle6 = Instantiate(_nullCirclePrefab, new Vector3(807, -10, 0), Quaternion.identity);
 
-        // Bottom row
         GameObject nullCircle7 = Instantiate(_nullCirclePrefab, new Vector3(11, -170, 0), Quaternion.identity);
         GameObject nullCircle8 = Instantiate(_nullCirclePrefab, new Vector3(133, -170, 0), Quaternion.identity);
 
@@ -73,9 +73,12 @@ public class NullCircleManager : MonoBehaviour
         GameObject nullCircle29 = Instantiate(_nullCirclePrefab, new Vector3(840, -292, 0), Quaternion.identity);
         GameObject nullCircle30 = Instantiate(_nullCirclePrefab, new Vector3(902, -292, 0), Quaternion.identity);
 
-        // Hidden nullCircles in bottom - Should never be shown!! To avoid nullPointerExceptions
-        // x = +/- 20 i forhold til parent x
-        // y = -30 i forhold til parent y
+
+        /*********************************************
+        Hidden nullCircles in bottom - Should never be shown!! To avoid nullPointerExceptions
+            x = +/- 20 i forhold til parent x
+            y = -30 i forhold til parent y
+        *********************************************/
         GameObject nullCircle31 = Instantiate(_nullCirclePrefab, new Vector3(1, -350, 0), Quaternion.identity);
         GameObject nullCircle32 = Instantiate(_nullCirclePrefab, new Vector3(-39, -350, 0), Quaternion.identity);
         GameObject nullCircle33 = Instantiate(_nullCirclePrefab, new Vector3(61, -350, 0), Quaternion.identity);
@@ -110,7 +113,9 @@ public class NullCircleManager : MonoBehaviour
         GameObject nullCircle62 = Instantiate(_nullCirclePrefab, new Vector3(922, -350, 0), Quaternion.identity);
 
 
-        //Set the children of each nullCircle
+        /*********************************************
+        Set the children of each nullCircle
+        *********************************************/
         nullCircle0.GetComponent<NullCircle>().LeftChild = nullCircle1;
         nullCircle0.GetComponent<NullCircle>().RightChild = nullCircle2;
         nullCircle1.GetComponent<NullCircle>().LeftChild = nullCircle3;
@@ -175,7 +180,9 @@ public class NullCircleManager : MonoBehaviour
         nullCircle30.GetComponent<NullCircle>().LeftChild = nullCircle61;
         nullCircle30.GetComponent<NullCircle>().RightChild = nullCircle62;
 
-        // Set the parent of each nullCircle
+        /*********************************************
+        Set the parent of each nullCircle
+        *********************************************/
         nullCircle0.GetComponent<NullCircle>().Parent = null;
         nullCircle1.GetComponent<NullCircle>().Parent = nullCircle0;
         nullCircle2.GetComponent<NullCircle>().Parent = nullCircle0;
@@ -241,7 +248,9 @@ public class NullCircleManager : MonoBehaviour
         nullCircle61.GetComponent<NullCircle>().Parent = nullCircle30;
         nullCircle62.GetComponent<NullCircle>().Parent = nullCircle30;
 
-        // Add the nullCircles to the dictionary
+        /*********************************************
+        Add the nullCircles to the dictionary
+        *********************************************/
         NullCircles.Add(0, nullCircle0);
         NullCircles.Add(1, nullCircle1);
         NullCircles.Add(2, nullCircle2);
@@ -307,75 +316,6 @@ public class NullCircleManager : MonoBehaviour
         NullCircles.Add(61, nullCircle61);
         NullCircles.Add(62, nullCircle62);
 
-        // Spawns the lines and assigns them to the nullCircles
-        nullCircle1.GetComponent<NullCircle>().LineToParent = _lineRendererManager.SpawnLinesToParent(nullCircle1, nullCircle0);
-        nullCircle2.GetComponent<NullCircle>().LineToParent = _lineRendererManager.SpawnLinesToParent(nullCircle2, nullCircle0);
-        nullCircle3.GetComponent<NullCircle>().LineToParent = _lineRendererManager.SpawnLinesToParent(nullCircle3, nullCircle1);
-        nullCircle4.GetComponent<NullCircle>().LineToParent = _lineRendererManager.SpawnLinesToParent(nullCircle4, nullCircle1);
-        nullCircle5.GetComponent<NullCircle>().LineToParent = _lineRendererManager.SpawnLinesToParent(nullCircle5, nullCircle2);
-        nullCircle6.GetComponent<NullCircle>().LineToParent = _lineRendererManager.SpawnLinesToParent(nullCircle6, nullCircle2);
-        nullCircle7.GetComponent<NullCircle>().LineToParent = _lineRendererManager.SpawnLinesToParent(nullCircle7, nullCircle3);
-        nullCircle8.GetComponent<NullCircle>().LineToParent = _lineRendererManager.SpawnLinesToParent(nullCircle8, nullCircle3);
-        nullCircle9.GetComponent<NullCircle>().LineToParent = _lineRendererManager.SpawnLinesToParent(nullCircle9, nullCircle4);
-        nullCircle10.GetComponent<NullCircle>().LineToParent = _lineRendererManager.SpawnLinesToParent(nullCircle10, nullCircle4);
-        nullCircle11.GetComponent<NullCircle>().LineToParent = _lineRendererManager.SpawnLinesToParent(nullCircle11, nullCircle5);
-        nullCircle12.GetComponent<NullCircle>().LineToParent = _lineRendererManager.SpawnLinesToParent(nullCircle12, nullCircle5);
-        nullCircle13.GetComponent<NullCircle>().LineToParent = _lineRendererManager.SpawnLinesToParent(nullCircle13, nullCircle6);
-        nullCircle14.GetComponent<NullCircle>().LineToParent = _lineRendererManager.SpawnLinesToParent(nullCircle14, nullCircle6);
-        nullCircle15.GetComponent<NullCircle>().LineToParent = _lineRendererManager.SpawnLinesToParent(nullCircle15, nullCircle7);
-        nullCircle16.GetComponent<NullCircle>().LineToParent = _lineRendererManager.SpawnLinesToParent(nullCircle16, nullCircle7);
-        nullCircle17.GetComponent<NullCircle>().LineToParent = _lineRendererManager.SpawnLinesToParent(nullCircle17, nullCircle8);
-        nullCircle18.GetComponent<NullCircle>().LineToParent = _lineRendererManager.SpawnLinesToParent(nullCircle18, nullCircle8);
-        nullCircle19.GetComponent<NullCircle>().LineToParent = _lineRendererManager.SpawnLinesToParent(nullCircle19, nullCircle9);
-        nullCircle20.GetComponent<NullCircle>().LineToParent = _lineRendererManager.SpawnLinesToParent(nullCircle20, nullCircle9);
-        nullCircle21.GetComponent<NullCircle>().LineToParent = _lineRendererManager.SpawnLinesToParent(nullCircle21, nullCircle10);
-        nullCircle22.GetComponent<NullCircle>().LineToParent = _lineRendererManager.SpawnLinesToParent(nullCircle22, nullCircle10);
-        nullCircle23.GetComponent<NullCircle>().LineToParent = _lineRendererManager.SpawnLinesToParent(nullCircle23, nullCircle11);
-        nullCircle24.GetComponent<NullCircle>().LineToParent = _lineRendererManager.SpawnLinesToParent(nullCircle24, nullCircle11);
-        nullCircle25.GetComponent<NullCircle>().LineToParent = _lineRendererManager.SpawnLinesToParent(nullCircle25, nullCircle12);
-        nullCircle26.GetComponent<NullCircle>().LineToParent = _lineRendererManager.SpawnLinesToParent(nullCircle26, nullCircle12);
-        nullCircle27.GetComponent<NullCircle>().LineToParent = _lineRendererManager.SpawnLinesToParent(nullCircle27, nullCircle13);
-        nullCircle28.GetComponent<NullCircle>().LineToParent = _lineRendererManager.SpawnLinesToParent(nullCircle28, nullCircle13);
-        nullCircle29.GetComponent<NullCircle>().LineToParent = _lineRendererManager.SpawnLinesToParent(nullCircle29, nullCircle14);
-        nullCircle30.GetComponent<NullCircle>().LineToParent = _lineRendererManager.SpawnLinesToParent(nullCircle30, nullCircle14);
-        nullCircle31.GetComponent<NullCircle>().LineToParent = _lineRendererManager.SpawnLinesToParent(nullCircle31, nullCircle15);
-        nullCircle32.GetComponent<NullCircle>().LineToParent = _lineRendererManager.SpawnLinesToParent(nullCircle32, nullCircle15);
-        nullCircle33.GetComponent<NullCircle>().LineToParent = _lineRendererManager.SpawnLinesToParent(nullCircle33, nullCircle16);
-        nullCircle34.GetComponent<NullCircle>().LineToParent = _lineRendererManager.SpawnLinesToParent(nullCircle34, nullCircle16);
-        nullCircle35.GetComponent<NullCircle>().LineToParent = _lineRendererManager.SpawnLinesToParent(nullCircle35, nullCircle17);
-        nullCircle36.GetComponent<NullCircle>().LineToParent = _lineRendererManager.SpawnLinesToParent(nullCircle36, nullCircle17);
-        nullCircle37.GetComponent<NullCircle>().LineToParent = _lineRendererManager.SpawnLinesToParent(nullCircle37, nullCircle18);
-        nullCircle38.GetComponent<NullCircle>().LineToParent = _lineRendererManager.SpawnLinesToParent(nullCircle38, nullCircle18);
-        nullCircle39.GetComponent<NullCircle>().LineToParent = _lineRendererManager.SpawnLinesToParent(nullCircle39, nullCircle19);
-        nullCircle40.GetComponent<NullCircle>().LineToParent = _lineRendererManager.SpawnLinesToParent(nullCircle40, nullCircle19);
-        nullCircle41.GetComponent<NullCircle>().LineToParent = _lineRendererManager.SpawnLinesToParent(nullCircle41, nullCircle20);
-        nullCircle42.GetComponent<NullCircle>().LineToParent = _lineRendererManager.SpawnLinesToParent(nullCircle42, nullCircle20);
-        nullCircle43.GetComponent<NullCircle>().LineToParent = _lineRendererManager.SpawnLinesToParent(nullCircle43, nullCircle21);
-        nullCircle44.GetComponent<NullCircle>().LineToParent = _lineRendererManager.SpawnLinesToParent(nullCircle44, nullCircle21);
-        nullCircle45.GetComponent<NullCircle>().LineToParent = _lineRendererManager.SpawnLinesToParent(nullCircle45, nullCircle22);
-        nullCircle46.GetComponent<NullCircle>().LineToParent = _lineRendererManager.SpawnLinesToParent(nullCircle46, nullCircle22);
-        nullCircle47.GetComponent<NullCircle>().LineToParent = _lineRendererManager.SpawnLinesToParent(nullCircle47, nullCircle23);
-        nullCircle48.GetComponent<NullCircle>().LineToParent = _lineRendererManager.SpawnLinesToParent(nullCircle48, nullCircle23);
-        nullCircle49.GetComponent<NullCircle>().LineToParent = _lineRendererManager.SpawnLinesToParent(nullCircle49, nullCircle24);
-        nullCircle50.GetComponent<NullCircle>().LineToParent = _lineRendererManager.SpawnLinesToParent(nullCircle50, nullCircle24);
-        nullCircle51.GetComponent<NullCircle>().LineToParent = _lineRendererManager.SpawnLinesToParent(nullCircle51, nullCircle25);
-        nullCircle52.GetComponent<NullCircle>().LineToParent = _lineRendererManager.SpawnLinesToParent(nullCircle52, nullCircle25);
-        nullCircle53.GetComponent<NullCircle>().LineToParent = _lineRendererManager.SpawnLinesToParent(nullCircle53, nullCircle26);
-        nullCircle54.GetComponent<NullCircle>().LineToParent = _lineRendererManager.SpawnLinesToParent(nullCircle54, nullCircle26);
-        nullCircle55.GetComponent<NullCircle>().LineToParent = _lineRendererManager.SpawnLinesToParent(nullCircle55, nullCircle27);
-        nullCircle56.GetComponent<NullCircle>().LineToParent = _lineRendererManager.SpawnLinesToParent(nullCircle56, nullCircle27);
-        nullCircle57.GetComponent<NullCircle>().LineToParent = _lineRendererManager.SpawnLinesToParent(nullCircle57, nullCircle28);
-        nullCircle58.GetComponent<NullCircle>().LineToParent = _lineRendererManager.SpawnLinesToParent(nullCircle58, nullCircle28);
-        nullCircle59.GetComponent<NullCircle>().LineToParent = _lineRendererManager.SpawnLinesToParent(nullCircle59, nullCircle29);
-        nullCircle60.GetComponent<NullCircle>().LineToParent = _lineRendererManager.SpawnLinesToParent(nullCircle60, nullCircle29);
-        nullCircle61.GetComponent<NullCircle>().LineToParent = _lineRendererManager.SpawnLinesToParent(nullCircle61, nullCircle30);
-        nullCircle62.GetComponent<NullCircle>().LineToParent = _lineRendererManager.SpawnLinesToParent(nullCircle62, nullCircle30);
-
-        /*********************************************
-        Hide all linderenders to begin with
-        *********************************************/
-        _lineRendererManager.UpdateLineRenderers();
-
         for (int i = 0; i < NullCircles.Count; i++)
         {
             NullCircles[i].GetComponent<NullCircle>().Index = i;
@@ -391,7 +331,6 @@ public class NullCircleManager : MonoBehaviour
             c.transform.SetParent(_uiCanvas.transform, false);
         }
 
-
         /*********************************************
         Activate the root nullCircle
         *********************************************/
@@ -399,46 +338,43 @@ public class NullCircleManager : MonoBehaviour
     }
 
 
-    public void UpdateNullCircleWithIngredient(Vector3 newPosition, NullCircle nullCircle)
+    public void UpdateNullCircleWithIngredient(NullCircle newPosition, NullCircle nullCircle)
     {
-        NullCircle foundNullCircle = FindNullCircleBasedOnPosition(newPosition);
-        if (foundNullCircle != null)
+        /*********************************************
+        Update the found null circle with its new ingredient
+        *********************************************/
+        newPosition.Ingredient = nullCircle.Ingredient;
+
+        /*********************************************
+        Update the value of the found null circle with the value of the ingredient. 
+        *********************************************/
+        newPosition.Value = int.Parse(nullCircle.Ingredient.GetComponentInChildren<TextMeshProUGUI>().text);
+
+
+        /*********************************************
+        Update the color based on the nodes in our tree.
+        We look up in our RedBlaackBST to get the node that the ingredients value corresponds to.
+        Then we return the node's color
+        *********************************************/
+        if (newPosition.Ingredient.GetComponent<Ingredient>().LineToParent != null)
         {
-            /*********************************************
-            Update the found null circle with its new ingredient
-            *********************************************/
-            foundNullCircle.Ingredient = nullCircle.Ingredient;
+            bool isRed = _treeManager.GetColor(newPosition.Value);
+            newPosition.Ingredient.GetComponent<Ingredient>().LineToParent.GetComponent<Line>().IsRed = isRed;
 
-            /*********************************************
-            Update the value of the found null circle with the value of the ingredient. 
-            *********************************************/
-            foundNullCircle.Value = int.Parse(nullCircle.Ingredient.GetComponentInChildren<TextMeshProUGUI>().text);
-
-
-            /*********************************************
-            Update the color based on the nodes in our tree.
-            We look up in our RedBlaackBST to get the node that the ingredients value corresponds to.
-            Then we return the node's color
-            *********************************************/
-            foundNullCircle.IsRed = _treeManager.GetColor(foundNullCircle.Value);
-
-
-            /*********************************************
-            Only set null circle to null if the child is also null.
-            Then we know that there will not be any more ingredients in the subtree.
-            *********************************************/
-            if (nullCircle.LeftChild.GetComponent<NullCircle>().Ingredient == null && nullCircle.RightChild.GetComponent<NullCircle>().Ingredient == null)
+            if (isRed)
             {
-                nullCircle.Ingredient = null; // the null circle where the ingredient was earlier now has no ingredient
-                nullCircle.Value = 0; // the value of the null circle where the ingredient was earlier now has no value
-                nullCircle.IsRed = false; // the color of the null circle where the ingredient was earlier now has no color
+                _lineManager.UpdateLineColor(newPosition, isRed);
             }
-
-            _lineRendererManager.UpdateLineRenderers();
         }
-        else
+
+        /*********************************************
+        Only set null circle to null if the child is also null.
+        Then we know that there will not be any more ingredients in the subtree.
+        *********************************************/
+        if (nullCircle.LeftChild.GetComponent<NullCircle>().Ingredient == null && nullCircle.RightChild.GetComponent<NullCircle>().Ingredient == null)
         {
-            //Debug.Log("NullCircle not found at position: " + newPosition);
+            nullCircle.Ingredient = null; // the null circle where the ingredient was earlier now has no ingredient
+            nullCircle.Value = 0; // the value of the null circle where the ingredient was earlier now has no value
         }
     }
 
@@ -489,29 +425,17 @@ public class NullCircleManager : MonoBehaviour
     {
         if (nullCircle == null) return;
 
-        /*********************************************
-        If the current nullCircle has no value, it should be active,
-        but we don't need to check its children because they would be beyond the current "border" of values.
-        *********************************************/
         if (nullCircle.Ingredient == null)
         {
             HideNullCircle(nullCircle);
         }
-        else
-        {
 
-            HideNullCircle(nullCircle);
+        NullCircle leftChild = nullCircle.LeftChild?.GetComponent<NullCircle>();
+        NullCircle rightChild = nullCircle.RightChild?.GetComponent<NullCircle>();
 
-            /*********************************************
-            If this nullCircle has a value, its children might need to be activated,
-            so we recursively check them.
-            *********************************************/
-            NullCircle leftChild = nullCircle.LeftChild?.GetComponent<NullCircle>();
-            NullCircle rightChild = nullCircle.RightChild?.GetComponent<NullCircle>();
+        HideAllNullCircles(leftChild);
+        HideAllNullCircles(rightChild);
 
-            HideAllNullCircles(leftChild);
-            HideAllNullCircles(rightChild);
-        }
     }
 
 
@@ -522,7 +446,6 @@ public class NullCircleManager : MonoBehaviour
         *********************************************/
         nullCircle.Value = 0;
         nullCircle.IsActive = false;
-        nullCircle.IsRed = false;
         nullCircle.Ingredient = null;
 
 
@@ -531,7 +454,7 @@ public class NullCircleManager : MonoBehaviour
         *********************************************/
         if (nullCircle.LeftChild.GetComponent<NullCircle>().Ingredient != null)
         {
-            var leftNullCircle = nullCircle.LeftChild.GetComponent<NullCircle>();
+            NullCircle leftNullCircle = nullCircle.LeftChild.GetComponent<NullCircle>();
             setNullCircleToDefault(leftNullCircle);
         }
 
@@ -564,6 +487,7 @@ public class NullCircleManager : MonoBehaviour
         DeactivateAllNullCirclesInSubtree(leftChild);
         DeactivateAllNullCirclesInSubtree(rightChild);
     }
+
 
     /*********************************************
     Finds a NullCircle based on its position in the scene.
@@ -650,14 +574,15 @@ public class NullCircleManager : MonoBehaviour
         copyNullCircle.Value = root.Value;
         copyNullCircle.IsActive = root.IsActive;
         copyNullCircle.Index = root.Index;
-        copyNullCircle.IsRed = root.IsRed;
         copyNullCircle.Ingredient = root.Ingredient;
 
         return copyNullCircle;
     }
 
 
-    // Call this method with the root of your tree and an empty list to fill with ingredients
+    /*********************************************
+    Call this method with the root of your tree and an empty list to fill with ingredients
+    *********************************************/
     public List<GameObject> CollectIngredients(NullCircle nullCircle, List<GameObject> ingredients)
     {
         if (nullCircle == null)
@@ -682,22 +607,25 @@ public class NullCircleManager : MonoBehaviour
     }
 
 
-    /// <summary>
-    /// Hides the visual representation of one NullCircle and prevents interaction with it.
-    /// </summary>
-    /// <param name="nullCircle"></param>
+    /*********************************************
+    Hides the visual representation of one NullCircle and prevents interaction with it.
+    *********************************************/
     public void HideNullCircle(NullCircle nullCircle)
     {
         if (nullCircle == null) return;
 
-        // Disable the Image component to hide the visual representation
+        /*********************************************
+        Disable the Image component to hide the visual representation
+        *********************************************/
         Image image = nullCircle.GetComponent<Image>();
         if (image != null)
         {
             image.enabled = false;
         }
 
-        // Disable the Button component to prevent interaction
+        /*********************************************
+        Disable the Button component to prevent interaction
+        *********************************************/
         MakeNullCircleNonInteractable(nullCircle);
     }
 
@@ -705,14 +633,18 @@ public class NullCircleManager : MonoBehaviour
     {
         if (nullCircle == null) return;
 
-        // Re-enable the Image component
+        /*********************************************
+        Re-enable the Image component
+        *********************************************/
         Image image = nullCircle.GetComponent<Image>();
         if (image != null)
         {
             image.enabled = true;
         }
 
-        // Re-enable the Button component
+        /*********************************************
+        Re-enable the Button component
+        *********************************************/
         Button button = nullCircle.GetComponent<Button>();
         if (button != null)
         {
@@ -720,7 +652,9 @@ public class NullCircleManager : MonoBehaviour
         }
     }
 
-    // Used to make the null circles non-interactable but NOT hide it
+    /*********************************************
+    Used to make the null circles non-interactable but NOT hide it
+    *********************************************/
     public void MakeAllNullCirclesNonInteractable()
     {
         for (int i = 0; i < NullCircles.Count; i++)
@@ -729,35 +663,17 @@ public class NullCircleManager : MonoBehaviour
         }
     }
 
-    // Used to make a null circles non-interactable but NOT hide it
     public void MakeNullCircleNonInteractable(NullCircle nullCircle)
     {
         Button nullCircleButton = nullCircle.GetComponent<Button>();
         nullCircleButton.interactable = false;
 
-        // But keep visual appearance
+        /*********************************************
+        But keep visual appearance
+        *********************************************/
         var colors = nullCircleButton.colors;
         colors.disabledColor = colors.normalColor;
         nullCircleButton.colors = colors;
-    }
-
-    public void PrintNullCircles()
-    {
-
-        Debug.Log("**********Printing all NullCircles**********");
-        foreach (KeyValuePair<int, GameObject> nullCirclePair in NullCircles)
-        {
-            NullCircle nullCircle = nullCirclePair.Value.GetComponent<NullCircle>();
-            Debug.Log("NullCircleIndex " + nullCircle.Index + " | isActive " + nullCircle.IsActive + " | Value " + nullCircle.Value + " Color " + nullCircle.IsRed);
-            if (nullCircle.Ingredient != null)
-            {
-                Debug.Log("and has a ingredient: " + nullCircle.Ingredient + " attached to it with the value" + nullCircle.Ingredient.GetComponentInChildren<TextMeshProUGUI>().text.ToString());
-            }
-            else
-            {
-                Debug.Log("and has no ingredient attached to it");
-            }
-        }
     }
 
 
@@ -775,49 +691,28 @@ public class NullCircleManager : MonoBehaviour
             DestroyNullCircleAndAllDescendants(nc.RightChild);
         }
 
-        // Destroy the GameObject
         Destroy(nullCircle);
     }
 
 
-}
-
-/*************************************** OLD METHOD IF WE FUCK UP************************************************/
-/*  /// <summary>
-    /// Iterates throught a dictionary of NullCircles and shows the visual representation of the NullCircles that are active, by calling ShowNullCircle.
-    /// </summary>
-
-    public void ShowNullCircles()
+    public void PrintNullCircles()
     {
+
+        Debug.Log("**********Printing all NullCircles**********");
         foreach (KeyValuePair<int, GameObject> nullCirclePair in NullCircles)
         {
             NullCircle nullCircle = nullCirclePair.Value.GetComponent<NullCircle>();
-
-            if (nullCircle != null && nullCircle.IsActive) // Checking if component is not null and IsActive is true
+            Debug.Log("NullCircleIndex " + nullCircle.Index + " | isActive " + nullCircle.IsActive + " | Value " + nullCircle.Value);
+            if (nullCircle.Ingredient != null)
             {
-                //nullCirclePair.Value.SetActive(true); // Activate the GameObject
-                ShowNullCircle(nullCircle);
+                Debug.Log("and has a ingredient: " + nullCircle.Ingredient + " attached to it with the value" + nullCircle.Ingredient.GetComponentInChildren<TextMeshProUGUI>().text.ToString());
             }
-
+            else
+            {
+                Debug.Log("and has no ingredient attached to it");
+            }
         }
-
     }
 
-    /// <summary>
-    /// Iterates throught a dictionary of NullCircles and hides the visual representation of the NullCircles that are not active, by calling HideNullCircle.
-    /// </summary>
 
-    public void HideNullCircles()
-    {
-        foreach (KeyValuePair<int, GameObject> nullCirclePair in NullCircles)
-        {
-            NullCircle nullCircle = nullCirclePair.Value.GetComponent<NullCircle>();
-
-            // If the NullCircle component is found and IsActive is false, deactivate the GameObject
-            if (nullCircle != null && nullCircle.IsActive) // Checking if component is not null and IsActive is false
-            {
-                //nullCirclePair.Value.SetActive(false); // Deactivate the GameObject
-                HideNullCircle(nullCircle);
-            }
-        }
-    }*/
+}
