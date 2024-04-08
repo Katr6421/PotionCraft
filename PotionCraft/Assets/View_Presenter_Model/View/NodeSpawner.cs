@@ -136,8 +136,6 @@ public class NodeSpawner : MonoBehaviour
                 instanceImage.rectTransform.localRotation = prefabImage.rectTransform.localRotation;
             }
         }
-
-        Debug.Log("Unique ingredients: " + uniqueIngredients.Count);
     }
 
 

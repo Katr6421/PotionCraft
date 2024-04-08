@@ -22,6 +22,7 @@ public class LevelUIController : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _selectedLevelPotionName;
     [SerializeField] private TextMeshProUGUI _selectedLevelPotionDescription;
     [SerializeField] private GameObject _selectedLevelPotionSprite;
+    [SerializeField] private GameObject _finishedScroll; // Scroll that appears when a level is completed
     [SerializeField] private GameObject _circleMarkerPrefab;
     [SerializeField] private NodeSpawner _nodeSpawner;
     LevelManager _levelManager;
@@ -31,6 +32,7 @@ public class LevelUIController : MonoBehaviour
 
     public void Start()
     {
+
         _levelManager = LevelManager.Instance;
 
         /***********************************
@@ -54,11 +56,11 @@ public class LevelUIController : MonoBehaviour
     // Moves the circle marker to the new position
     public void MoveCircleMarker(Vector3 newPosition, float duration)
     {
-        StartCoroutine(MoveCircleRoutine(CircleMarker, newPosition, duration));
+        StartCoroutine(MoveObjectRoutine(CircleMarker, newPosition, duration));
     }
 
     // ANIMATION: Coroutine to move the circle marker to the new position. 
-    IEnumerator MoveCircleRoutine(GameObject objectToMove, Vector3 destination, float duration)
+    IEnumerator MoveObjectRoutine(GameObject objectToMove, Vector3 destination, float duration)
     {
         float elapsedTime = 0;
         Vector3 startingPos = objectToMove.transform.position;
@@ -89,6 +91,16 @@ public class LevelUIController : MonoBehaviour
         spriteRenderer.sprite = _levelManager.GetPotionSprite();
         // Display set of ingredients on recipe
         _nodeSpawner.SpawnIngredientsOnRecipe();
+    }
+
+    // WHen a level is completed, this method is called to move the scroll down to reveal a complete level button
+    public void MoveScrollDown()
+    {
+        // Calculate the target position by moving down by 0.6 units
+        Vector3 scrollTargetPosition = _finishedScroll.transform.position + Vector3.down * 0.6f; // Adjust how far to move down here
+
+        // Start the coroutine to move the scroll smoothly to the target position
+        StartCoroutine(MoveObjectRoutine(_finishedScroll, scrollTargetPosition, 0.5f));
     }
 
 }

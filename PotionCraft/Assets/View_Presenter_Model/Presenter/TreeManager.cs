@@ -11,7 +11,7 @@ public class TreeManager : MonoBehaviour, ITreeManager
     [SerializeField] private PopUpManager _popUpManager;
     [SerializeField] private LevelUIController _levelUIController;
     public RedBlackBST RedBlackTree { get; set; } = new RedBlackBST();
-    public HashSet<Node> CurrentSelectedNodes {get; set; } = new HashSet<Node>();
+    public HashSet<Node> CurrentSelectedNodes { get; set; } = new HashSet<Node>();
     public List<GameObject> CurrentSelectedIngredients { get; set; } = new List<GameObject>();
 
     // Add a node to the tree
@@ -112,7 +112,7 @@ public class TreeManager : MonoBehaviour, ITreeManager
                 // Idea: Could be nice to convert the correctOperation to string and add it to the hint
                 _avatarHintManager.UpdateHint("correct", AvatarHint.SelectedRightIngredientsAndButton);
                 ExecuteNextOperation(correctNodesInTree, nextCorrectOperation.OperationType);
-                
+
             }
             // Correct ingredients but wrong operation
             else
@@ -220,7 +220,7 @@ public class TreeManager : MonoBehaviour, ITreeManager
         _nodeSpawner.MakeAllPlacedIngredientsInteractable(false, _treeVisualizerManager.CurrectIngredientIndex);
 
         // Call TreeVisualizerManager to visualize the operation. The rest of the code will wait for the visualization to finish before continuing
-        StartCoroutine(_treeVisualizerManager.VisualizeRotation(operationType, CurrentSelectedIngredients, () =>
+        _ = StartCoroutine(_treeVisualizerManager.VisualizeRotation(operationType, CurrentSelectedIngredients, () =>
         {
             //Debug.Log("*************** Print all nullcircles AFTER VISUALIZE ROTATION in ExecuteOperation ***********");
             //_nullCircleSpawner.PrintNullCircles();
@@ -247,15 +247,20 @@ public class TreeManager : MonoBehaviour, ITreeManager
             {
                 // Update hint - Wuhuu the tree is in balance. Insert next ingredient. Green hint
                 _avatarHintManager.UpdateHint("correct", AvatarHint.InBalance);
-                 
-                // Check if the user has completed the level
-                CheckIfCompletedLevel();
 
-                // Show nullcircles to allow for new ingredients to be inserted
-                _nullCircleManager.ShowAllChildrenNullCircles();
+                if (IsLevelCompleted())
+                {
+                    // No more ingredients. No more operations. Show complete level button
+                    CompleteLevel();
+                }
+                else // Insert next ingredient
+                {
+                    // Show nullcircles to allow for new ingredients to be inserted
+                    _nullCircleManager.ShowAllChildrenNullCircles();
 
-                // Make circle marker visible
-                _levelUIController.ShowCircleMarker(true);
+                    // Make circle marker visible
+                    _levelUIController.ShowCircleMarker(true);
+                }
             }
         }));
 
@@ -306,14 +311,24 @@ public class TreeManager : MonoBehaviour, ITreeManager
         }
     }
 
-    public void CheckIfCompletedLevel(){
-        // If the current ingredient index is equal to the number of ingredients (we are on the last ingredient to insert) and there are no more operations in the queue, then the user has completed the level
-        if(_treeVisualizerManager.CurrectIngredientIndex == _nodeSpawner.NodeObjects.Count && RedBlackTree.Operations.Count == 0)
-        {
-            //Debug.Log("There are no more ingredients to insert. There are no more operation, meaning The tree is in balance. You have completed the level.");
-            // If the user has completed the level, load the pop-up scene
-            _popUpManager.LoadPopUpScene(); 
-        }
+
+    public bool IsLevelCompleted()
+    {
+        return _treeVisualizerManager.CurrectIngredientIndex == _nodeSpawner.NodeObjects.Count && RedBlackTree.Operations.Count == 0;
+    }
+
+    public void CompleteLevel()
+    {
+        Debug.Log("There are no more ingredients to insert. There are no more operation, meaning The tree is in balance. You have completed the level.");
+
+        // Hide the circle marker
+        _levelUIController.ShowCircleMarker(false);
+
+        // TODO: Avatar jumps or other happy animation
+
+        // Button appears "complete level"
+        _levelUIController.MoveScrollDown();
+
     }
 
     // Only use on newly inserted nodes (before any rotations or color flips)
