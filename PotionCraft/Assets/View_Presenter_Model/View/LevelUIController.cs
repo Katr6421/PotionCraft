@@ -23,6 +23,7 @@ public class LevelUIController : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _selectedLevelPotionDescription;
     [SerializeField] private GameObject _selectedLevelPotionSprite;
     [SerializeField] private GameObject _finishedScroll; // Scroll that appears when a level is completed
+    [SerializeField] private GameObject _collectPotionButton;
     [SerializeField] private GameObject _circleMarkerPrefab;
     [SerializeField] private NodeSpawner _nodeSpawner;
     LevelManager _levelManager;
@@ -32,7 +33,7 @@ public class LevelUIController : MonoBehaviour
 
     public void Start()
     {
-
+        _collectPotionButton.GetComponent<BoxCollider2D>().enabled = false; // so you dont press the complete button before the potion is complete
         _levelManager = LevelManager.Instance;
 
         /***********************************
@@ -96,8 +97,11 @@ public class LevelUIController : MonoBehaviour
     // When a level is completed, this method is called to move the scroll down to reveal a complete level button
     public void MoveScrollDown()
     {
+        // Make the button visible
+        _collectPotionButton.GetComponent<BoxCollider2D>().enabled = true;
+
         // Calculate the target position by moving down by 0.6 units
-        Vector3 scrollTargetPosition = _finishedScroll.transform.position + Vector3.down * 0.6f; // Adjust how far to move down here
+        Vector3 scrollTargetPosition = _finishedScroll.transform.position + Vector3.down * 0.8f; // Adjust how far to move down here
 
         // Start the coroutine to move the scroll smoothly to the target position
         StartCoroutine(MoveObjectRoutine(_finishedScroll, scrollTargetPosition, 0.5f));
