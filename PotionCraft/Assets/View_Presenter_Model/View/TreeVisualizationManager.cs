@@ -129,7 +129,10 @@ public class TreeVisualizationManager : MonoBehaviour
                     // The user has placed the ingredient in the right place and the tree is in balance
                     _avatarHintManager.UpdateHint("correct", AvatarHint.SelectedRightPlacementAndInBalance);
                     // Check if the user has completed the level
-                    _treeManager.CheckIfCompletedLevel();
+                    if (_treeManager.IsLevelCompleted())
+                    {
+                        _treeManager.CompleteLevel();
+                    }
                 }
                 else // tree is not in balance
                 {
