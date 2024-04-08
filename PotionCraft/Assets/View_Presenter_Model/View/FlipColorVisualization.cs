@@ -5,7 +5,7 @@ using UnityEngine;
 public class FlipColorVisualization : MonoBehaviour
 {
     [SerializeField] private NullCircleManager _nullCircleManager;
-    [SerializeField] private LineRendererManager _lineRendererManager;
+    [SerializeField] private LineManager _lineManager;
     public IEnumerator FlipColorAnimation(NullCircle parentNullCircle)
     {
         // Find nullcircles
@@ -17,12 +17,11 @@ public class FlipColorVisualization : MonoBehaviour
         // h.color = RED;
         // h.left.color = BLACK;
         // h.right.color = BLACK;
-        parentNullCircle.IsRed = true;
-        leftChildNullCircle.IsRed = false;
-        rightChildNullCircle.IsRed = false;
-
-        // Update lines to reflect the new colors
-        _lineRendererManager.UpdateLineRenderers();
+        if (parentNullCircle.Ingredient.GetComponent<Ingredient>().LineToParent != null) {
+            _lineManager.UpdateLineColor(parentNullCircle, true);
+        }
+        _lineManager.UpdateLineColor(leftChildNullCircle, false);
+        _lineManager.UpdateLineColor(rightChildNullCircle, false);
 
         yield return null;
     }

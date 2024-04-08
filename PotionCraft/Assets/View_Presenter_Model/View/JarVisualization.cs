@@ -9,8 +9,9 @@ public class JarVisualization : MonoBehaviour
     [SerializeField] private VisualizationHelper _visualizationHelper;
     [SerializeField] private SplineFromJar _splineFromJar;
     [SerializeField] private NullCircleManager _nullCircleManager;
-    //private Vector3 jarPosition = new Vector3(0, 0, 0);
+    [SerializeField] private LineManager _lineManager;
     private float _duration = 2f;
+
 
     public IEnumerator MoveNodeAndAllDescendantsJar(NullCircle nodeToMove, NullCircle newPosition, float duration, Action onComplete)
     {
@@ -38,6 +39,7 @@ public class JarVisualization : MonoBehaviour
             //_spline.ChangeLastVector3Position(newPosition.transform.position);
             //yield return StartCoroutine(_spline.FollowPointsFromJar(nodeToMove.Ingredient));
             _nullCircleManager.UpdateNullCircleWithIngredient(newPosition.transform.position, nodeToMove);
+            _lineManager.DrawLineToNullCircle(newPosition);
         }
         onComplete?.Invoke();
     }

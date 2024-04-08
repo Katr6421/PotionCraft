@@ -1,24 +1,93 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LineRendererManager : MonoBehaviour
+public class LineManager : MonoBehaviour
 {
     [SerializeField] private NullCircleManager _nullCircleManager;
+    [SerializeField] private GameObject _line;
 
-    /*********************************************
+
+
+    public GameObject CreateLine(GameObject startPosition, GameObject endPosition)
+    {
+        GameObject lineGameObject = Instantiate(_line);
+
+        List<Transform> linePoints = new List<Transform> { startPosition.transform, endPosition.transform };
+        lineGameObject.GetComponent<Line>().SetUpLine(linePoints);
+
+        return lineGameObject;
+    }
+
+    public void UpdateLineColor(NullCircle nullCircle, bool isRed)
+    {
+        if (isRed)
+        {
+            nullCircle.Ingredient.GetComponent<Ingredient>().LineToParent.GetComponent<Line>().SetColor(Color.red);
+        }
+        else
+        {
+            nullCircle.Ingredient.GetComponent<Ingredient>().LineToParent.GetComponent<Line>().SetColor(Color.black);
+        }
+    }
+
+    public void DrawLineToNullCircle(NullCircle endNullCircle)
+    {
+
+        if (endNullCircle.LeftChild.GetComponent<NullCircle>().Ingredient == null)
+        {
+            Destroy(endNullCircle.Ingredient.GetComponent<Ingredient>().LineToLeft);
+            endNullCircle.Ingredient.GetComponent<Ingredient>().LineToLeft = CreateLine(endNullCircle.Ingredient, endNullCircle.LeftChild);
+        }
+
+        if (endNullCircle.RightChild.GetComponent<NullCircle>().Ingredient == null)
+        {
+            Destroy(endNullCircle.Ingredient.GetComponent<Ingredient>().LineToRight);
+            endNullCircle.Ingredient.GetComponent<Ingredient>().LineToRight = CreateLine(endNullCircle.Ingredient, endNullCircle.RightChild);
+        }
+
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+    *********************************************
     Create a line renderer for the connection from parent to children
-    *********************************************/
+    *********************************************
     public GameObject SpawnLinesToParent(GameObject nullcircle, GameObject parent)
     {
         return CreateLineRenderer(nullcircle.transform, parent.transform);
     }
 
-    /*********************************************
+    *********************************************
     Creates a line renderer between two points
     Takes either a Transform or a Vector3 as the end position
-    *********************************************/
+    *********************************************
     private GameObject CreateLineRenderer(Transform startPosition, Transform endPosition)
     {
         GameObject lineGameObject = new GameObject("LineRendererObject");
@@ -38,13 +107,15 @@ public class LineRendererManager : MonoBehaviour
         return lineGameObject;
     }
 
-    /*
+    
          !!!REMEMBER THAT THE LINES GET DRAWN FROM BELOW AND UP!!!
         1. After insertion of ingredient - create a linerenderer between ingredient and nullcircles (left and right)
         2. Check if the nullCircle has a parent, if yes, update the line renderer from the parent to point to the new ingredient
         3. In update - the nullCircle is still in charge of updating the color and visibility of the line renderer
     
-    */
+    
+
+
 
     public void UpdateLineRenderers()
     {
@@ -90,6 +161,7 @@ public class LineRendererManager : MonoBehaviour
             HideLineRenderer(nullCircle);
         }
     }
+    
 
     public void ShowLineRender(NullCircle nullCircle)
     {
@@ -114,5 +186,5 @@ public class LineRendererManager : MonoBehaviour
             lineRenderer.enabled = false;
         }
     }
-
+*/
 }

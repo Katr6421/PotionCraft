@@ -32,7 +32,7 @@ public class TreeVisualizationManager : MonoBehaviour
     [SerializeField] private VisualizationHelper _visualizationHelper;
     [SerializeField] private SplineToJar _splineToJar;
     [SerializeField] private AvatarHintManager _avatarHintManager;
-    [SerializeField] private LineRendererManager _lineRendererManager;
+    [SerializeField] private LineManager _lineManager;
 
     private GameObject _currentIngredient; // Reference to the current Ingredient that the user must insert in the RedBlackTree
     private GameObject _currentNullCircle; // Reference to the latest NullCircle that the user has clicked on
@@ -96,11 +96,56 @@ public class TreeVisualizationManager : MonoBehaviour
             // Needs to be a coroutine to be able to wait for the movement to finish before deactivating the NullCircle
             StartCoroutine(MoveAndHide(_currentIngredient, _currentNullCircle.transform.position, 0.5f, () =>
             {
+                // If the currentNullCircle has a parent that has an ingredient, update the currentIngredient's LineToParent
+                // and change the endpoint of the line to reference the current ingredient
+                ////// and remove the parent's LineToChild (left/right) to null - DON'T DO THIS
+                GameObject parentNullCircle = _currentNullCircle.GetComponent<NullCircle>().Parent;
+                if (parentNullCircle != null && parentNullCircle.GetComponent<NullCircle>().Ingredient != null)
+                {
+                    //LEFT
+                    if (_currentNullCircle.transform.position.x < parentNullCircle.transform.position.x)
+                    {
+                        GameObject line = parentNullCircle.GetComponent<NullCircle>().Ingredient.GetComponent<Ingredient>().LineToLeft;
+                        _currentIngredient.GetComponent<Ingredient>().LineToParent = line;
+                        line.GetComponent<Line>().ChangeEndPoint(_currentIngredient.transform);
+                        
+                    }
+                    //RIGHT
+                    else
+                    {
+                        GameObject line = parentNullCircle.GetComponent<NullCircle>().Ingredient.GetComponent<Ingredient>().LineToRight;
+                        _currentIngredient.GetComponent<Ingredient>().LineToParent = line;
+                        line.GetComponent<Line>().ChangeEndPoint(_currentIngredient.transform);
+                        
+                    }
+                }
+
+
                 /*********************************************
                 Update _currentNullCircle with the placed ingredient
                 *********************************************/
                 _currentNullCircle.GetComponent<NullCircle>().Ingredient = _currentIngredient;
                 _currentNullCircle.GetComponent<NullCircle>().Value = currentIngredientValue;
+
+
+                /*********************************************
+                If it's not root, update line to parent
+                *********************************************/
+                GameObject lineToParent = _currentNullCircle.GetComponent<NullCircle>().Ingredient.GetComponent<Ingredient>().LineToParent;
+                if (lineToParent != null)
+                {
+                    bool isRed = _treeManager.GetColor(currentIngredientValue);
+                    lineToParent.GetComponent<Line>().IsRed = isRed;
+                    //Update the color of the line to the parent
+                    if (isRed) {
+                        _lineManager.UpdateLineColor(_currentNullCircle.GetComponent<NullCircle>(), isRed);
+                    }
+                }
+                
+                // Create LineRenderer between ingredient and both nullCircles
+                _currentIngredient.GetComponent<Ingredient>().LineToLeft = _lineManager.CreateLine(_currentIngredient, _currentNullCircle.GetComponent<NullCircle>().LeftChild);
+                _currentIngredient.GetComponent<Ingredient>().LineToRight = _lineManager.CreateLine(_currentIngredient, _currentNullCircle.GetComponent<NullCircle>().RightChild);
+
 
                 /*********************************************
                 Move the CircleMarker to the new position. Except if it is the last ingredient, then hide it
@@ -113,11 +158,6 @@ public class TreeVisualizationManager : MonoBehaviour
                 {
                     _levelUIController.ShowCircleMarker(false);
                 }
-
-                /*********************************************
-                Draw lines between nullCircles
-                *********************************************/
-                _lineRendererManager.UpdateLineRenderers();
 
                 /*********************************************
                 Check if the tree is unbalanced (something is in the operation queue) after we have inserted the ingredient
@@ -221,7 +261,7 @@ public class TreeVisualizationManager : MonoBehaviour
                 NullCircle rightChildLeftChildNullCircle = parentNullCircle.GetComponent<NullCircle>().RightChild.GetComponent<NullCircle>().LeftChild.GetComponent<NullCircle>();
 
                 /*********************************************
-                Check if the rightChild's leftChild is null -> Jar animation
+                Check if the rightChild's leftChild ingredient is not null -> Jar animation
                 *********************************************/
                 if (rightChildLeftChildNullCircle.Ingredient != null)
                 {
@@ -242,10 +282,6 @@ public class TreeVisualizationManager : MonoBehaviour
                     *********************************************/
                     _nullCircleManager.setNullCircleToDefault(rightChildLeftChildNullCircle);
 
-                    /*********************************************
-                    Update the line renderers after we have sat the nullCircles to default
-                    *********************************************/
-                    _lineRendererManager.UpdateLineRenderers();
 
                     // MÅSKE UDNØDVENDIGT MED AT SHRINK
                     //yield return StartCoroutine(_jarVisualization.ShrinkMultiple(ingredientsToJar, () => {}));
@@ -253,8 +289,11 @@ public class TreeVisualizationManager : MonoBehaviour
                     /*********************************************
                     Move the ingredients to the jar (visually)
                     *********************************************/
+                    Destroy(parentNullCircle.RightChild.GetComponent<NullCircle>().Ingredient.GetComponent<Ingredient>().LineToLeft);
                     foreach (GameObject ingredient in ingredientsToJar)
                     {
+                        Destroy(ingredient.GetComponent<Ingredient>().LineToLeft);
+                        Destroy(ingredient.GetComponent<Ingredient>().LineToRight);
                         //_spline.ChangeFirstVector3Position(ingredient.transform.position);
                         //yield return StartCoroutine(_spline.FollowPointsToJar(ingredient));
                         _splineToJar.ChangeFirstKnot(ingredient.transform.position);
@@ -276,12 +315,11 @@ public class TreeVisualizationManager : MonoBehaviour
                     Move the ingredients back to the tree (both visually and on the nullCircles)
                     *********************************************/
                     NullCircle rootToPlaceSubtree = parentNullCircle.GetComponent<NullCircle>().LeftChild.GetComponent<NullCircle>().RightChild.GetComponent<NullCircle>();
-                    yield return StartCoroutine(_jarVisualization.MoveNodeAndAllDescendantsJar(copyRootOfSubTree, rootToPlaceSubtree, 1.0f, () => { }));
+                    yield return StartCoroutine(_jarVisualization.MoveNodeAndAllDescendantsJar(copyRootOfSubTree, rootToPlaceSubtree, 1.0f, () => {
+                        rootToPlaceSubtree.Parent.GetComponent<NullCircle>().Ingredient.GetComponent<Ingredient>().LineToRight.GetComponent<Line>().ChangeEndPoint(rootToPlaceSubtree.Ingredient.transform);
+                        rootToPlaceSubtree.Ingredient.GetComponent<Ingredient>().LineToParent = rootToPlaceSubtree.Parent.GetComponent<NullCircle>().Ingredient.GetComponent<Ingredient>().LineToRight;
+                    }));
 
-                    /*********************************************
-                    Update the line renderers after we have updated the nullCircles to their current ingredients
-                    *********************************************/
-                    _lineRendererManager.UpdateLineRenderers();
 
                     //Debug.Log("PRINTER ALL NULLCIRCLES!!!!!!");
                     //_nullCircleSpawner.PrintNullCircles();
@@ -299,6 +337,7 @@ public class TreeVisualizationManager : MonoBehaviour
                     /*********************************************
                     Start the left rotation animation
                     *********************************************/
+                    Destroy(parentNullCircle.RightChild.GetComponent<NullCircle>().Ingredient.GetComponent<Ingredient>().LineToLeft);
                     yield return StartCoroutine(_leftRotationVisualization.RotateLeftAnimation(parent, rightChild, parentNullCircle));
                 }
                 break;
@@ -308,7 +347,7 @@ public class TreeVisualizationManager : MonoBehaviour
                 NullCircle rightChildNullCircle = parentNullCircle.GetComponent<NullCircle>().RightChild.GetComponent<NullCircle>();
 
                 /*********************************************
-                Check if the rightChild is null -> Jar animation
+                Check if the rightChild ingredient is not null -> Jar animation
                 *********************************************/
                 if (rightChildNullCircle.Ingredient != null)
                 {
@@ -329,10 +368,6 @@ public class TreeVisualizationManager : MonoBehaviour
                     *********************************************/
                     _nullCircleManager.setNullCircleToDefault(rightChildNullCircle);
 
-                    /*********************************************
-                    Update the line renderers after we have sat the nullCircles to default
-                    *********************************************/
-                    _lineRendererManager.UpdateLineRenderers();
 
                     // MÅSKE UDNØDVENDIGT MED AT SHRINK
                     //yield return StartCoroutine(_jarVisualization.ShrinkMultiple(ingredientsToJar, () => {}));
@@ -340,8 +375,11 @@ public class TreeVisualizationManager : MonoBehaviour
                     /*********************************************
                     Move the ingredients to the jar (visually)
                     *********************************************/
+                    Destroy(parentNullCircle.Ingredient.GetComponent<Ingredient>().LineToRight);
                     foreach (GameObject ingredient in ingredientsToJar)
                     {
+                        Destroy(ingredient.GetComponent<Ingredient>().LineToLeft);
+                        Destroy(ingredient.GetComponent<Ingredient>().LineToRight);
                         //_spline.ChangeFirstVector3Position(ingredient.transform.position);
                         //yield return StartCoroutine(_spline.FollowPointsToJar(ingredient));
                         _splineToJar.ChangeFirstKnot(ingredient.transform.position);
@@ -361,12 +399,11 @@ public class TreeVisualizationManager : MonoBehaviour
                     *********************************************/
                     // Parent Parent Rightchild
                     NullCircle rootToPlaceSubtree = parentNullCircle.GetComponent<NullCircle>().Parent.GetComponent<NullCircle>().RightChild.GetComponent<NullCircle>().LeftChild.GetComponent<NullCircle>();
-                    yield return StartCoroutine(_jarVisualization.MoveNodeAndAllDescendantsJar(copyRootOfSubTree, rootToPlaceSubtree, 1.0f, () => { }));
+                    yield return StartCoroutine(_jarVisualization.MoveNodeAndAllDescendantsJar(copyRootOfSubTree, rootToPlaceSubtree, 1.0f, () => {
+                        rootToPlaceSubtree.Parent.GetComponent<NullCircle>().Ingredient.GetComponent<Ingredient>().LineToLeft.GetComponent<Line>().ChangeEndPoint(rootToPlaceSubtree.Ingredient.transform);
+                        rootToPlaceSubtree.Ingredient.GetComponent<Ingredient>().LineToParent = rootToPlaceSubtree.Parent.GetComponent<NullCircle>().Ingredient.GetComponent<Ingredient>().LineToLeft;
+                    }));
 
-                    /*********************************************
-                    Update the line renderers after we have updated the nullCircles to their current ingredients
-                    *********************************************/
-                    _lineRendererManager.UpdateLineRenderers();
 
                     /*********************************************
                     Destroy the copied nullCircles
@@ -381,6 +418,7 @@ public class TreeVisualizationManager : MonoBehaviour
                     /*********************************************
                     Start the right rotation animation
                     *********************************************/
+                    Destroy(parentNullCircle.Ingredient.GetComponent<Ingredient>().LineToRight);
                     yield return StartCoroutine(_rightRotationVisualization.RotateRightAnimation(leftChild, parent, grandparent, parentNullCircle));
                 }
                 break;

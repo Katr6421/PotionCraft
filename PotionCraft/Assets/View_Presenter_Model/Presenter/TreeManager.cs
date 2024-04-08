@@ -56,7 +56,7 @@ public class TreeManager : MonoBehaviour, ITreeManager
             {
                 //Debug.Log("Correct placement of the left child");
                 //Debug.Log("I return true.");
-                clickedNullCircle.GetComponent<NullCircle>().IsRed = true;
+                //clickedNullCircle.GetComponent<NullCircle>().Ingredient.GetComponent<Ingredient>().LineToParent.GetComponent<Line>().IsRed = true;
                 return true;
             }
         }
@@ -67,7 +67,7 @@ public class TreeManager : MonoBehaviour, ITreeManager
             {
                 //Debug.Log("Correct placement of the right child");
                 //Debug.Log("I return true.");
-                clickedNullCircle.GetComponent<NullCircle>().IsRed = true;
+                //clickedNullCircle.GetComponent<NullCircle>().Ingredient.GetComponent<Ingredient>().LineToParent.GetComponent<Line>().IsRed = true;
                 return true;
             }
         }
