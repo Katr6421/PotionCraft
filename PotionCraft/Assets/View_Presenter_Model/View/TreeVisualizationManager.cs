@@ -27,6 +27,7 @@ public class TreeVisualizationManager : MonoBehaviour
     [SerializeField] private SplineToJar _splineToJar;
     [SerializeField] private AvatarHintManager _avatarHintManager;
     [SerializeField] private LineManager _lineManager;
+    [SerializeField] private CauldronController _cauldronController;
     private GameObject _currentIngredient; // Reference to the current Ingredient that the user must insert in the RedBlackTree
     private GameObject _currentNullCircle; // Reference to the latest NullCircle that the user has clicked on
     public int CurrectIngredientIndex { get; private set; }     // Index of the current ingredient in the list of ingredients.
@@ -191,13 +192,20 @@ public class TreeVisualizationManager : MonoBehaviour
                     switch (currentOperationType)
                     {
                         case OperationType.RotateLeft:
+                            // Update hint
                             _avatarHintManager.UpdateHint("hint", AvatarHint.SelectedRightPlacementButNeedsToSelectTwoNodes);
+                            // Tilt the cauldron to the right
+                            _cauldronController.TiltRight();
                             break;
                         case OperationType.RotateRight:
+                            // Update the hint
                             _avatarHintManager.UpdateHint("hint", AvatarHint.SelectedRightPlacementButNeedsToSelectThreeNodes);
+                            // Tilt the cauldron to the left
+                            _cauldronController.TiltLeft();
                             break;
                         case OperationType.FlipColors:
                             _avatarHintManager.UpdateHint("hint", AvatarHint.SelectedRightPlacementButNeedToFlipColor);
+                            _cauldronController.StandUpright();
                             break;
                         default:
                             Debug.LogError("Invalid operation type. Eller vi glemte at give den en operationtype med");

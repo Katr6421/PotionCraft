@@ -178,6 +178,7 @@ MonoBehaviour:
   _splineToJar: {fileID: 761936350}
   _avatarHintManager: {fileID: 669722328}
   _lineManager: {fileID: 506698536}
+  _cauldronController: {fileID: 432656821}
 --- !u!1 &107009967
 GameObject:
   m_ObjectHideFlags: 0
@@ -10963,6 +10964,7 @@ GameObject:
   m_Component:
   - component: {fileID: 432656819}
   - component: {fileID: 432656820}
+  - component: {fileID: 432656821}
   m_Layer: 5
   m_Name: Cauldron
   m_TagString: Untagged
@@ -10977,7 +10979,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 432656818}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.64, y: 0.64, z: 0.64}
   m_ConstrainProportionsScale: 1
@@ -10986,7 +10988,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -2.937, y: -3.559}
+  m_AnchoredPosition: {x: -2.95, y: -4.434}
   m_SizeDelta: {x: 2.57, y: 2.71}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!212 &432656820
@@ -11040,7 +11042,21 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
-  m_SpriteSortPoint: 0
+  m_SpriteSortPoint: 1
+--- !u!114 &432656821
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 432656818}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1fe3df50b5054844dac89c67de512cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tiltAngle: 8
+  tiltSpeed: 1.5
 --- !u!1 &479012108
 GameObject:
   m_ObjectHideFlags: 0
@@ -33023,6 +33039,7 @@ MonoBehaviour:
   _avatarHintManager: {fileID: 669722328}
   _nodeSpawner: {fileID: 1513720697}
   _levelUIController: {fileID: 1654093617}
+  _cauldronController: {fileID: 432656821}
 --- !u!4 &1750167746
 Transform:
   m_ObjectHideFlags: 0
