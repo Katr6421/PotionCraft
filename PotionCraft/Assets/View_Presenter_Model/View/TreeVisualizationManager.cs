@@ -84,6 +84,9 @@ public class TreeVisualizationManager : MonoBehaviour
         *********************************************/
         if (_currentIngredient != null && isValidPlacement)
         {
+            // Hide the jumping arrow
+            _levelUIController.HideArrow();
+
             // Prepare the next ingredient for placement. Update the index in the list of ingredients, that we need to place. 
             CurrectIngredientIndex++;
 

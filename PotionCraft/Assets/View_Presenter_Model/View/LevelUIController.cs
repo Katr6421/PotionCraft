@@ -19,10 +19,12 @@ public class LevelUIController : MonoBehaviour
     [SerializeField] private GameObject _circleMarkerPrefab;
     [SerializeField] private NodeSpawner _nodeSpawner;
     [SerializeField] private GameObject _pointsNumber; //TODO: Billede af en crystal på scenen
+    [SerializeField] private GameObject _arrow;
     LevelManager _levelManager;
     PointManager _pointManager;
     public GameObject CircleMarker { get; set; }
     private Vector3 _circleStartPosition = new Vector3(-0.57f, 3.79f, 0);
+    private GameObject Arrow { get; set; }
 
 
     public void Start()
@@ -45,6 +47,19 @@ public class LevelUIController : MonoBehaviour
         Instantiate the CircleMarker
         ***********************************/
         SpawnCircleMarker();
+
+        /***********************************
+        Instantiate the Arrow
+        ***********************************/
+        SpawnArrow();
+    }
+
+    public void SpawnArrow() {
+        Arrow = Instantiate(_arrow);
+    }
+
+    public void HideArrow() {
+        Destroy(Arrow);
     }
 
     public void SpawnCircleMarker()
