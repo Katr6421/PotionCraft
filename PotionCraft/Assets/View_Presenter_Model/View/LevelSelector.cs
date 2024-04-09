@@ -5,7 +5,8 @@ using UnityEngine.UI;
 
 public class LevelSelector : MonoBehaviour
 {
-    public Button[] LevelButtons { get; private set; }
+    [SerializeField]
+    public Button[] LevelButtons;
 
     /*********************************************
     Fields to store the selected level and potion name.
@@ -18,6 +19,8 @@ public class LevelSelector : MonoBehaviour
         Retrieve the unlocked level from the player preferences
         *********************************************/
         int unlockedLevel = PlayerPrefs.GetInt("UnlockedLevel", 1);
+        Debug.Log("LevelSelector Start, unlockedLevel: " + unlockedLevel);
+
 
         /*********************************************
         Ensure all buttons are disabled
@@ -33,6 +36,7 @@ public class LevelSelector : MonoBehaviour
         for (int i = 0; i < unlockedLevel; i++)
         {
             LevelButtons[i].interactable = true;
+            Debug.Log("Make interactable, LevelButtons[" + i + "] interactable: " + LevelButtons[i].interactable);
         }
 
     }

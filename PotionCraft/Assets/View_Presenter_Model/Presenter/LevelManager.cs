@@ -97,7 +97,7 @@ public class LevelManager : MonoBehaviour, ILevelManager
 
         // Add levels to the list of levels. Hardcoded for each level
         Levels.Add(new LevelData("Dummy", 1, nodesLevel1, PotionDescription.Dummy));
-        Levels.Add(new LevelData("Insertion Infusion", 1, nodesLevel1, PotionDescription.InsertionInfusion));
+        Levels.Add(new LevelData("Insertion Infusion", 1, testLeftRotation, PotionDescription.InsertionInfusion));
         Levels.Add(new LevelData("Rotation Tonic", 2, nodesLevel2, PotionDescription.RotationTonic)); 
         Levels.Add(new LevelData("Color Swap Serum", 3, new List<Node>(), PotionDescription.ColorSwapSerum));
         Levels.Add(new LevelData("Binary Blend", 4, new List<Node>(), PotionDescription.BinaryBlend));

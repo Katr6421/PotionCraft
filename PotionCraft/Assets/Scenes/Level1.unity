@@ -33180,8 +33180,6 @@ MonoBehaviour:
     potionPrefab: {fileID: 0}
   - isCollected: 0
     potionPrefab: {fileID: 0}
-  - isCollected: 0
-    potionPrefab: {fileID: 0}
   gridPositions:
   - {fileID: 1323040234}
   - {fileID: 919778708}

@@ -10573,7 +10573,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 2005153951}
-        m_TargetAssemblyTypeName: NextButton, Assembly-CSharp
+        m_TargetAssemblyTypeName: NextButton, View
         m_MethodName: UnLockNextLevel
         m_Mode: 1
         m_Arguments:
