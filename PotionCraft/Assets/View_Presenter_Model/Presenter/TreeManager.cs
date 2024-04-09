@@ -9,6 +9,7 @@ public class TreeManager : MonoBehaviour, ITreeManager
     [SerializeField] private AvatarHintManager _avatarHintManager;
     [SerializeField] private NodeSpawner _nodeSpawner;
     [SerializeField] private LevelUIController _levelUIController;
+    [SerializeField] private CauldronController _cauldronController;
     public RedBlackBST RedBlackTree { get; set; } = new RedBlackBST();
     public HashSet<Node> CurrentSelectedNodes { get; set; } = new HashSet<Node>();
     public List<GameObject> CurrentSelectedIngredients { get; set; } = new List<GameObject>();
@@ -246,6 +247,7 @@ public class TreeManager : MonoBehaviour, ITreeManager
             {
                 // Update hint - Wuhuu the tree is in balance. Insert next ingredient. Green hint
                 _avatarHintManager.UpdateHint("correct", AvatarHint.InBalance);
+                _cauldronController.StandUpright();
 
                 if (IsLevelCompleted())
                 {
@@ -296,14 +298,19 @@ public class TreeManager : MonoBehaviour, ITreeManager
             case OperationType.RotateLeft:
                 // Update hint - Need to rotate left
                 _avatarHintManager.UpdateHint("hint", AvatarHint.NeedsToSelectTwoNodes);
+                // Tilt the cauldron to the right
+                _cauldronController.TiltRight();
                 break;
             case OperationType.RotateRight:
                 // Update hint - Need to rotate right
                 _avatarHintManager.UpdateHint("hint", AvatarHint.NeedsToSelectThreeNodes);
+                // Tilt the cauldron to the left
+                _cauldronController.TiltLeft();
                 break;
             case OperationType.FlipColors:
                 // Update hint - Need to flip colors
                 _avatarHintManager.UpdateHint("hint", AvatarHint.NeedsToSelectTwoNodesToFlipColor);
+                _cauldronController.StandUpright();
                 break;
             default:
                 break;
