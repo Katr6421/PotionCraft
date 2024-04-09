@@ -36,7 +36,7 @@ public class AvatarHintManager : MonoBehaviour, IAvatarHintManager
         HintsDict.Add(AvatarHint.NeedsToSelectTwoNodes, "Your magical manipulation was successful, but the potion is still off. Select two ingredients and find the operation that will restore harmony");
         HintsDict.Add(AvatarHint.NeedsToSelectTwoNodesToFlipColor, "Your magical manipulation was successful, but the potion is still off. Select three ingredients and find the operation that will restore harmony");
         HintsDict.Add(AvatarHint.InBalance, "Exquisite! The potion is balanced, and a new ingredient can now be introduced");
-        HintsDict.Add(AvatarHint.NodeInTheJar, "During the rotation, a sub-potion was displaced and awaits a new place in the potion. It has been placed in the jar for now."); // husk at brug denne
+        HintsDict.Add(AvatarHint.NodeInTheJar, "During the rotation, a sub-potion was displaced and awaits a new place in the potion. It has been placed in the jar for now.");
         HintsDict.Add(AvatarHint.PotionBrewed, "The potion is brewed to perfection! The magic is complete, and your reward is ready to be collected");
 
     }
