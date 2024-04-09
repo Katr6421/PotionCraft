@@ -4,8 +4,8 @@ public class CauldronController : MonoBehaviour
 {
     // Make sure to attach this script to CauldronBase
 
-    public float tiltAngle = 10.0f;
-    public float tiltSpeed = 2.0f;
+    public float tiltAngle = 8.0f; // Assign in the inspector
+    public float tiltSpeed = 1.5f; // Assign in the inspector
     private Quaternion targetRotation;
 
     // Assuming CauldronBase is at world origin; adjust if it's not.

@@ -11055,8 +11055,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1fe3df50b5054844dac89c67de512cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tiltAngle: 15
-  tiltSpeed: 2
+  tiltAngle: 8
+  tiltSpeed: 1.5
 --- !u!1 &479012108
 GameObject:
   m_ObjectHideFlags: 0
