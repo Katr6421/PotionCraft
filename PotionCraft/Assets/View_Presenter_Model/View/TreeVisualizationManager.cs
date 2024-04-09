@@ -37,6 +37,7 @@ public class TreeVisualizationManager : MonoBehaviour
     {
         //When the scene starts, we instantiate the first NullCircle aka. the root of the RedBlackTree
         SpawnRoot();
+        _avatarHintManager.UpdateHint("hint", AvatarHint.InsertFirstIngredient);
     }
 
     private void SpawnRoot()
@@ -404,8 +405,12 @@ public class TreeVisualizationManager : MonoBehaviour
                 Destroy(ingredient.GetComponent<Ingredient>().LineToRight);
                 _splineToJar.ChangeFirstKnot(ingredient.transform.position);
                 yield return StartCoroutine(_splineToJar.FollowSplineToJar(ingredient));
-
             }
+            
+            /*********************************************
+            Update to jar hint
+            *********************************************/
+            _avatarHintManager.UpdateHint("hint", AvatarHint.NodeInTheJar);
 
             /*********************************************
             Start the rotation animation

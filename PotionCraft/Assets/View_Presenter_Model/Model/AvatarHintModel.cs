@@ -4,6 +4,7 @@ using UnityEngine;
 
 public enum AvatarHint
 {
+    InsertFirstIngredient,
     //Selecting a wrong placement for the ingredient:
     SelectedWrongPlacementForIngredient,
 

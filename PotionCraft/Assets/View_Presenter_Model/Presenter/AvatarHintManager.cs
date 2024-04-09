@@ -21,13 +21,14 @@ public class AvatarHintManager : MonoBehaviour, IAvatarHintManager
 
     public AvatarHintManager()
     {
+        HintsDict.Add(AvatarHint.InsertFirstIngredient, "Welcome to the potion crafting chamber! Let's start by placing the first ingredient in the potion tree");
         HintsDict.Add(AvatarHint.SelectedWrongPlacementForIngredient, "Hmm, placing that ingredient there won’t help us craft the perfect potion. Let’s find its proper place");
         HintsDict.Add(AvatarHint.SelectedRightPlacementAndInBalance, "Perfect placement! The potion's mystical balance remains undisturbed. Onward to our next ingredient");
         HintsDict.Add(AvatarHint.SelectedRightPlacementButNeedsToSelectTwoNodes, "You've found the right spot! However, the potion is unbalanced. Select two ingredients and find the operation that will restore harmony");
         HintsDict.Add(AvatarHint.SelectedRightPlacementButNeedsToSelectThreeNodes, "You've found the right spot! However, the potion is unbalanced. Select three ingredients and find the operation that will restore harmony");
         HintsDict.Add(AvatarHint.SelectedRightPlacementButNeedToFlipColor, "You've found the right spot! However, the potion is unbalanced. Select three ingredients and find the operation that will restore harmony");
         HintsDict.Add(AvatarHint.SelectedRightIngredientsButWrongButton, "You have chosen the ingredients wisely but not found the correct operation. Please try again");
-        HintsDict.Add(AvatarHint.SelectedRightIngredientsAndButton, "Splendid! The correct magical twist have brought our potion back in balance");
+        HintsDict.Add(AvatarHint.SelectedRightIngredientsAndButton, "Splendid! Your chosen magical twist will bring our potion back in balance");
         HintsDict.Add(AvatarHint.SelectedRightButtonButNeedsToSelectTwoNodes, "The right operation, but not quite there yet. We need to adjust the selected ingredients to keep our potion stable");
         HintsDict.Add(AvatarHint.SelectedRightButtonButWrongIngredients, "The right operation, but not quite there yet. We need to adjust the selected ingredients to keep our potion stable");
         HintsDict.Add(AvatarHint.SelectedWrongIngredientsAndButton, "Oh no, both the ingredients and the operation were incorrect. We must reconsider our choices");

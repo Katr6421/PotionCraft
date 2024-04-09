@@ -18,7 +18,7 @@ public class CollectPotionButton : MonoBehaviour
         _pointManager = FindObjectOfType<PointManager>();
 
         // Get 3 points
-        _pointManager.AddPoints(3);
+        _pointManager.AddPoints(1);
 
         // Put the potion in the cabinet or show a popup if the potion has already been collected
         _potionCabinetManager.CompleteLevel(_levelManager.CurrentLevelIndex, ShowPopup);
