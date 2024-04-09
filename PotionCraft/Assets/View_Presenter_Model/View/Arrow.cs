@@ -4,48 +4,28 @@ using UnityEngine;
 
 public class Arrow : MonoBehaviour
 {
-    public void Start()
+    void Start()
     {
         // if only root nullCircle is showing, then show arrow in jumping motion.
-        // when root has an ingredient, hide arrow.
-
-        
+        // when root has an ingredient, destroy arrow.
+        StartCoroutine(MoveArrow(0.1f));
     }
 
     /*********************************************
     Show arrow in a jumping motion
     *********************************************/
-    private IEnumerator ShowArrow(float duration, float magnitude)
+    private IEnumerator MoveArrow(float magnitude)
     {
-        Vector3 originalPosition = gameObject.transform.localPosition;
-        float elapsed = 0.0f;
+        Vector3 originalPosition = transform.position;
 
-        // Determine the number of shakes based on duration and a desired shake speed
-        float shakePeriod = duration / 2; // This will give you approximately 5 back and forth shakes during the entire duration
-
-        while (elapsed < duration)
+        while (true) // Keep looping as long as keepJumping is true
         {
-            elapsed += Time.deltaTime;
-            float percentComplete = elapsed / duration;
-
-            // Sinusoidal shake based on elapsed time
-            float sinWave = Mathf.Sin((elapsed / shakePeriod) * Mathf.PI * 2); // Sin wave for smooth oscillation
-            float x = originalPosition.x + sinWave * magnitude;
-
-            gameObject.transform.localPosition = new Vector3(x, originalPosition.y, originalPosition.z);
-            yield return null;
+            // Sinusoidal shake based on Time.time for continuous oscillation
+            float y = originalPosition.y + Mathf.Sin(Time.time * Mathf.PI * 2) * magnitude;
+            gameObject.transform.localPosition = new Vector3(originalPosition.x, y, originalPosition.z);
+            
+            yield return null; // Wait for the next frame
         }
-
-        gameObject.transform.localPosition = originalPosition;
-    }
-
-
-    /*********************************************
-    Hide arrow
-    *********************************************/
-    private void HideArrow()
-    {
-        // hide arrow
     }
 
 }
