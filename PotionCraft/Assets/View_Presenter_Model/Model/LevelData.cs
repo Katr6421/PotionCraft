@@ -9,14 +9,16 @@ public class LevelData : MonoBehaviour
     public PotionDescription PotionDescription { get; set; }
     public int LevelIndex { get; set; }
     public List<Node> Ingredients { get; set; }
+    public bool IsMiniGame { get; set; }
 
 
-    public LevelData(string potionName, int levelIndex, List<Node> ingredients, PotionDescription potionDescription)
+    public LevelData(string potionName, int levelIndex, List<Node> ingredients, PotionDescription potionDescription, bool isMiniGame = false)
     {
         PotionName = potionName;
         LevelIndex = levelIndex;
         Ingredients = ingredients;
         PotionDescription = potionDescription;
+        IsMiniGame = isMiniGame;
     }
 
 }

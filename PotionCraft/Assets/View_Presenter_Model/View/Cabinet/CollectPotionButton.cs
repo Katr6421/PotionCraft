@@ -6,7 +6,6 @@ using UnityEngine.SceneManagement;
 
 public class CollectPotionButton : MonoBehaviour
 {
-    [SerializeField] private PopUpManager _popUpManager;
     [SerializeField] private PotionCabinetManager _potionCabinetManager;
     private LevelManager _levelManager;
     private PointManager _pointManager;

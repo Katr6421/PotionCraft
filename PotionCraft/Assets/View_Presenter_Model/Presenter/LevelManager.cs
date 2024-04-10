@@ -62,51 +62,104 @@ public class LevelManager : MonoBehaviour, ILevelManager
         // Make a list of nodes for each level
         List<Node> nodesLevel1 = new List<Node>
         {
-            node19,
-            node5,
-            node1,
-            node18,
-            node3,
-            node8,
-            node24,
-            node13,
-            node16,
-            node12
+            node5, 
+            node6,
+            node7,
         };
 
         List<Node> nodesLevel2 = new List<Node>
         {
+            node6,
+            node5,
+            node4,
+            node3,
+            node2,
+            node1
+        };
+
+        List<Node> nodesLevel3 = new List<Node>
+        {
+            node1,
+            node2,
+            node3,
             node4,
             node5,
-            node6
+            node6,
         };
 
-        List<Node> testLeftRotation = new List<Node>
+        // MINI GAME - TOM LISTE
+        List<Node> nodesLevel4 = new List<Node>
         {
-            node1,
-            node2
+            node1
         };
 
-        List<Node> testLeftRotationShort = new List<Node>
+        List<Node> nodesLevel5 = new List<Node>
         {
-            node1,
             node5,
-            node8,
-            node3
+            node1, 
+            node19, 
+            node25, 
+            node17, 
+            node21, 
+            node20, 
+            node9,
+            node15, 
+            node14
         };
+
+        List<Node> nodesLevel6 = new List<Node>
+        {
+            node25, 
+            node12, 
+            node16, 
+            node13, 
+            node24, 
+            node8, 
+            node3, 
+            node18, 
+            node1, 
+            node5, 
+            node19
+
+        };
+
+        // MINI GAME
+        List<Node> nodesLevel7 = new List<Node>
+        {
+
+        };
+
+        List<Node> nodesLevel8 = new List<Node>
+        {
+
+        };
+
+        List<Node> nodesLevel9 = new List<Node>
+        {
+
+        };
+
+        List<Node> nodesLevel10 = new List<Node>
+        {
+
+        };
+
+
+        // Change for minigames 
+        // Change popup for minigames
 
         // Add levels to the list of levels. Hardcoded for each level
         Levels.Add(new LevelData("Dummy", 1, nodesLevel1, PotionDescription.Dummy));
         Levels.Add(new LevelData("Insertion Infusion", 1, nodesLevel1, PotionDescription.InsertionInfusion));
         Levels.Add(new LevelData("Rotation Tonic", 2, nodesLevel2, PotionDescription.RotationTonic)); 
-        Levels.Add(new LevelData("Color Swap Serum", 3, new List<Node>(), PotionDescription.ColorSwapSerum));
-        Levels.Add(new LevelData("Binary Blend", 4, new List<Node>(), PotionDescription.BinaryBlend));
-        Levels.Add(new LevelData("Leaf Lixir", 5, new List<Node>(), PotionDescription.LeafLixir));
-        Levels.Add(new LevelData("Black Balance Draught", 6, new List<Node>(), PotionDescription.BlackBalanceDraught));
-        Levels.Add(new LevelData("Root Revitalizer", 7, new List<Node>(), PotionDescription.RootRevitalizer));
-        Levels.Add(new LevelData("Key Kombucha", 8, new List<Node>(), PotionDescription.KeyKombucha));
-        Levels.Add(new LevelData("Bad Blood", 9, new List<Node>(), PotionDescription.BadBlood));
-        Levels.Add(new LevelData("Master Red-Black Potion", 10, new List<Node>(), PotionDescription.MasterRedBlackPotion));
+        Levels.Add(new LevelData("Color Swap Serum", 3, nodesLevel3, PotionDescription.ColorSwapSerum));
+        Levels.Add(new LevelData(" ", 4, nodesLevel4, PotionDescription.Dummy)); // MINI GAME
+        Levels.Add(new LevelData("Binary Blend", 5, nodesLevel5, PotionDescription.BinaryBlend)); 
+        Levels.Add(new LevelData("Leaf Lixir", 6, nodesLevel6, PotionDescription.LeafLixir));
+        Levels.Add(new LevelData("", 7, nodesLevel7, PotionDescription.Dummy, true)); // MINI GAME 
+        Levels.Add(new LevelData("Key Kombucha", 8, nodesLevel8, PotionDescription.KeyKombucha));
+        Levels.Add(new LevelData("Bad Blood", 9, nodesLevel9, PotionDescription.BadBlood));
+        Levels.Add(new LevelData("Master Red-Black Potion", 10, nodesLevel10, PotionDescription.MasterRedBlackPotion));
     }
 
     public void MakeDescriptionDictionary()
@@ -117,8 +170,6 @@ public class LevelManager : MonoBehaviour, ILevelManager
         DescriptionsDict.Add(PotionDescription.ColorSwapSerum, "Flip your fate with this vibrant serum that switches hues and fortunes alike");
         DescriptionsDict.Add(PotionDescription.BinaryBlend, "Double the power, double the fun");
         DescriptionsDict.Add(PotionDescription.LeafLixir, "'Leaf' your worries behind with this herbal elixir that soothes the soul and calms the mind");
-        DescriptionsDict.Add(PotionDescription.BlackBalanceDraught, "A dark, mysterious potion that brings harmony to your magical endeavors");
-        DescriptionsDict.Add(PotionDescription.RootRevitalizer, "Get back to your roots to give your potion a solid foundation!");
         DescriptionsDict.Add(PotionDescription.KeyKombucha, "Unlock your potential with this critical, fermenting concoction");
         DescriptionsDict.Add(PotionDescription.BadBlood, "Clear away the curses with one purifying potion");
         DescriptionsDict.Add(PotionDescription.MasterRedBlackPotion, "The ultimate brew to restore balance and overthrow tyranny");
@@ -147,5 +198,10 @@ public string GetPotionName()
     public List<Node> GetIngredients()
     {
         return Levels[CurrentLevelIndex].Ingredients;
+    }
+
+    public bool IsMiniGame()
+    {
+        return Levels[CurrentLevelIndex].IsMiniGame;
     }
 }
