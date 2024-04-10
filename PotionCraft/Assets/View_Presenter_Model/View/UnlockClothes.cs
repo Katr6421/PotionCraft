@@ -1,14 +1,18 @@
 using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
-public class ClothesUnlocked : MonoBehaviour
+public class UnlockClothes : MonoBehaviour
 {
-    [SerializeField] private GameObject _unicorn; // Assign the popup GameObject in the inspector
+    [SerializeField] private Sprite[] _colors;
+    [SerializeField] private GameObject _clothes;
+    private Image _imageComponent;
     private float delayBeforeShowing = 2.0f; // Seconds to wait before showing the popup
 
     void Start()
     {
-        _unicorn.SetActive(true);
+        _imageComponent = GetComponent<Image>();
+        //_clothes.SetActive(false);
     }
 
     // Call this method when the correct answer is chosen
@@ -23,7 +27,7 @@ public class ClothesUnlocked : MonoBehaviour
         yield return new WaitForSeconds(delayBeforeShowing);
 
         // Show the popup
-        _unicorn.SetActive(true);
+        _clothes.SetActive(true);
 
         // If you're using an animator, you could instead set a trigger to play the popup animation
         // Animator animator = unlockPopup.GetComponent<Animator>();

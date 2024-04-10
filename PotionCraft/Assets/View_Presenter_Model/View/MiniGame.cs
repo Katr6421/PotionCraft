@@ -5,7 +5,8 @@ using UnityEngine.UI;
 
 public class MiniGame : MonoBehaviour
 {
-    private float transitionTime = 0.2f;
+    [SerializeField] UnlockClothes _unlockClothes;
+    private float _transitionTime = 0.2f;
 
     // Start is called before the first frame update
     void Start()
@@ -29,6 +30,7 @@ public class MiniGame : MonoBehaviour
             // sparkle 
             Debug.Log("Correct answer");
             StartCoroutine(ShowRightAnswer(button));
+            _unlockClothes.ShowUnlockPopup();
         }
         // if the answer is wrong, make a little red glow around the button
         else
@@ -53,9 +55,9 @@ public class MiniGame : MonoBehaviour
         float elapsedTime = 0;
 
         // Change color to red with easing
-        while (elapsedTime < transitionTime)
+        while (elapsedTime < _transitionTime)
         {
-            button.image.color = Color.Lerp(originalColor, targetColor, (elapsedTime / transitionTime));
+            button.image.color = Color.Lerp(originalColor, targetColor, (elapsedTime / _transitionTime));
             elapsedTime += Time.deltaTime;
             yield return null;
         }
@@ -68,9 +70,9 @@ public class MiniGame : MonoBehaviour
 
         // Change the color back to the original color with easing
         elapsedTime = 0;
-        while (elapsedTime < transitionTime)
+        while (elapsedTime < _transitionTime)
         {
-            button.image.color = Color.Lerp(targetColor, originalColor, (elapsedTime / transitionTime));
+            button.image.color = Color.Lerp(targetColor, originalColor, (elapsedTime / _transitionTime));
             elapsedTime += Time.deltaTime;
             yield return null;
         }
@@ -87,9 +89,9 @@ public class MiniGame : MonoBehaviour
         float elapsedTime = 0;
 
         // Change color to red with easing
-        while (elapsedTime < transitionTime)
+        while (elapsedTime < _transitionTime)
         {
-            button.image.color = Color.Lerp(originalColor, targetColor, (elapsedTime / transitionTime));
+            button.image.color = Color.Lerp(originalColor, targetColor, (elapsedTime / _transitionTime));
             elapsedTime += Time.deltaTime;
             yield return null;
         }
