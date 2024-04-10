@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class MiniGame : MonoBehaviour
 {
-    [SerializeField] UnlockClothes _unlockClothes;
+    [SerializeField] UnlockNewAvatar _unlockClothes;
     private Color _targetColor;
     private float _transitionTime = 0.2f;
 
