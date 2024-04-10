@@ -117,8 +117,7 @@ public class LevelManager : MonoBehaviour, ILevelManager
             node8, 
             node3, 
             node18, 
-            node1, 
-            node5, 
+            node1,
             node19
 
         };
