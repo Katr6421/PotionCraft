@@ -30,7 +30,6 @@ public class LevelUIController : MonoBehaviour
 
     public void Start()
     {
-        _goalOverlay.SetActive(false);
         _levelManager = LevelManager.Instance;
         _pointManager = PointManager.Instance;
 
@@ -39,21 +38,23 @@ public class LevelUIController : MonoBehaviour
         ***********************************/
         UpdatePoints();
 
-        /***********************************
-        FIRST LEVEL FOR THE FIRST TIME - Show goal overlay
-        ***********************************/
-        if (_levelManager.CurrentLevelIndex == 1 && PlayerPrefs.GetInt("UnlockedLevel", 1) == 1)
-        {
-            // Show goal overlay
-            Debug.Log("Show goal overlay");
-            _goalOverlay.SetActive(true);
-        }
-
+        
         /***********************************
         NORMAL LEVEL 
         ***********************************/
         if (!_levelManager.Levels[_levelManager.CurrentLevelIndex].IsMiniGame)
         {
+            _goalOverlay.SetActive(false);
+            /***********************************
+            FIRST LEVEL FOR THE FIRST TIME - Show goal overlay
+            ***********************************/
+            if (_levelManager.CurrentLevelIndex == 1 && PlayerPrefs.GetInt("UnlockedLevel", 1) == 1)
+            {
+                // Show goal overlay
+                Debug.Log("Show goal overlay");
+                _goalOverlay.SetActive(true);
+            }
+
             _collectPotionButton.GetComponent<BoxCollider2D>().enabled = false; // so you dont press the complete button before the potion is complete
 
             /***********************************

@@ -1,41 +1,34 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class MiniGame : MonoBehaviour
 {
-    private float transitionTime = 0.2f;
+    [SerializeField] UnlockNewAvatar _unlockClothes;
+    private Color _targetColor;
+    private float _transitionTime = 0.2f;
 
-    // Start is called before the first frame update
+    
     void Start()
     {
 
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
 
     public void OnClicked(Button button)
     {
-
-
-        // if the answer is correct, make the button sparkle
         if (button.name == "Correct")
         {
-            // sparkle 
-            Debug.Log("Correct answer");
-            StartCoroutine(ShowRightAnswer(button));
+            _targetColor = new Color(74f / 255f, 160f / 255f, 144f / 255f, 0.5f);
+            StartCoroutine(OverlayWithColor(button, _targetColor, true));
+
+            _unlockClothes.ShowUnlockPopup();
         }
-        // if the answer is wrong, make a little red glow around the button
         else
         {
-            // glow red
-            Debug.Log("Wrong answer");
-            StartCoroutine(ShowWrongAnswer(button));
+            _targetColor = new Color(0.4745098f, 0.1372549f, 0.1215686f, 0.5f);
+            StartCoroutine(OverlayWithColor(button, _targetColor, false));
 
         }
 
@@ -44,63 +37,60 @@ public class MiniGame : MonoBehaviour
         // if the answer is correct, show the the collect potion button
     }
 
-    // Coroutine to flash the button red
-    private IEnumerator ShowWrongAnswer(Button button)
+    // Coroutine to flash the button with overlay color
+    private IEnumerator OverlayWithColor(Button button, Color targetColor, bool isCorrect)
     {
-        //Color targetColor = new Color(1, 0, 0, 0.8f); // Transparent red
-        Color targetColor = new Color(0.4745098f, 0.1372549f, 0.1215686f, 0.5f); // Corresponds to #79231F
+        // Disable the button to prevent further clicks
+        button.interactable = false;
+
         Color originalColor = button.image.color; // Original button color
+        // We're going to use the original alpha, ensuring the image underneath does not become transparent
+        float originalAlpha = originalColor.a;
         float elapsedTime = 0;
 
         // Change color to red with easing
-        while (elapsedTime < transitionTime)
+        while (elapsedTime < _transitionTime)
         {
-            button.image.color = Color.Lerp(originalColor, targetColor, (elapsedTime / transitionTime));
+            Color transitionColor = Color.Lerp(originalColor, targetColor, (elapsedTime / _transitionTime));
+            transitionColor.a = originalAlpha; // Apply the original alpha to the transition color
+            button.image.color = transitionColor;
             elapsedTime += Time.deltaTime;
             yield return null;
         }
+
 
         // Ensure the target color is set (in case the while loop doesn't hit it exactly)
+        targetColor.a = originalAlpha; // Apply the original alpha to the target color
         button.image.color = targetColor;
 
-        // Hold the red color for a moment
-        yield return new WaitForSeconds(0.01f);
 
-        // Change the color back to the original color with easing
-        elapsedTime = 0;
-        while (elapsedTime < transitionTime)
+        if (!isCorrect)
         {
-            button.image.color = Color.Lerp(targetColor, originalColor, (elapsedTime / transitionTime));
-            elapsedTime += Time.deltaTime;
+            // Hold the red color for a moment
+            yield return new WaitForSeconds(0.01f);
+
+            // Change the color back to the original color with easing
+            elapsedTime = 0;
+            while (elapsedTime < _transitionTime)
+            {
+                Color transitionColor = Color.Lerp(targetColor, originalColor, (elapsedTime / _transitionTime));
+                transitionColor.a = originalAlpha; // Apply the original alpha to the transition color
+                button.image.color = transitionColor;
+                elapsedTime += Time.deltaTime;
+                yield return null;
+            }
+
+            // Ensure the original color is set
+            button.image.color = originalColor;
+
+            // Re-enable the button after the whole process
+            button.interactable = true;
+
+            // Unselect the button
+            EventSystem.current.SetSelectedGameObject(null);
             yield return null;
         }
-
-        // Ensure the original color is set
-        button.image.color = originalColor;
-    }
-
-    private IEnumerator ShowRightAnswer(Button button)
-    {
-        //Color targetColor = new Color(1, 0, 0, 0.8f); // Transparent red
-        Color targetColor = new Color(74f / 255f, 160f / 255f, 144f / 255f, 0.5f); // Corresponds to #4AA090
-        Color originalColor = button.image.color; // Original button color
-        float elapsedTime = 0;
-
-        // Change color to red with easing
-        while (elapsedTime < transitionTime)
-        {
-            button.image.color = Color.Lerp(originalColor, targetColor, (elapsedTime / transitionTime));
-            elapsedTime += Time.deltaTime;
-            yield return null;
-        }
-
-        // Ensure the target color is set (in case the while loop doesn't hit it exactly)
-        button.image.color = targetColor;
-    }
-
-    public void CompleteLevel()
-    {
-        Debug.Log("Level complete");
+        
     }
 
 }
