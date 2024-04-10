@@ -34,7 +34,7 @@ public class PotionCabinetManager : MonoBehaviour
 
         if (levelIndex < potions.Length)
         {
-            if (!potions[levelIndex].isCollected)
+            if (!potions[levelIndex].isCollected) // If the potion has not been collected yet
             {
                 Debug.Log($"Potion {levelIndex} not collected yet. Putting it in cabinet...");
                 StartCoroutine(CompleteLevelSequence(levelIndex, onComplete));
@@ -44,10 +44,6 @@ public class PotionCabinetManager : MonoBehaviour
                 Debug.Log($"Potion {levelIndex} has already been collected.");
                 onComplete?.Invoke();
             }
-        }
-        else
-        {
-            Debug.LogError("Error: Level index out of range.");
         }
     }
 
@@ -77,7 +73,7 @@ public class PotionCabinetManager : MonoBehaviour
             sparkleRenderer.sortingOrder = 0; // Lower number to render behind within the same layer
         }
 
-        Debug.Log($"Potion {levelIndex} collected and instantiated at {gridPositions[levelIndex].position}. Sparkles initiated.");
+        //Debug.Log($"Potion {levelIndex} collected and instantiated at {gridPositions[levelIndex].position}. Sparkles initiated.");
 
         // Wait for the sparkle effect to finish
         yield return new WaitForSeconds(1.5f); 
