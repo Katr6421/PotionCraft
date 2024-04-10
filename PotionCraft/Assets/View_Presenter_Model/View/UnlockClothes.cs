@@ -6,7 +6,7 @@ public class UnlockClothes : MonoBehaviour
 {
     [SerializeField] private Sprite[] _colors;
     [SerializeField] private GameObject _clothes;
-    private float delayBeforeShowing = 2.0f; // Seconds to wait before showing the popup
+    private float delayBeforeShowing = 1.0f; // Seconds to wait before showing the popup
 
     void Start()
     {
