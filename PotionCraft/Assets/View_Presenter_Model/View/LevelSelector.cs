@@ -19,7 +19,7 @@ public class LevelSelector : MonoBehaviour
         Retrieve the unlocked level from the player preferences
         *********************************************/
         int unlockedLevel = PlayerPrefs.GetInt("UnlockedLevel", 1);
-        Debug.Log("LevelSelector Start, unlockedLevel: " + unlockedLevel);
+        //Debug.Log("LevelSelector Start, unlockedLevel: " + unlockedLevel);
 
 
         /*********************************************
@@ -36,7 +36,7 @@ public class LevelSelector : MonoBehaviour
         for (int i = 0; i < unlockedLevel; i++)
         {
             LevelButtons[i].interactable = true;
-            Debug.Log("Make interactable, LevelButtons[" + i + "] interactable: " + LevelButtons[i].interactable);
+            //Debug.Log("Make interactable, LevelButtons[" + i + "] interactable: " + LevelButtons[i].interactable);
         }
 
     }
