@@ -18,7 +18,7 @@ public class LevelUIController : MonoBehaviour
     [SerializeField] private GameObject _collectPotionButton;
     [SerializeField] private GameObject _circleMarkerPrefab;
     [SerializeField] private NodeSpawner _nodeSpawner;
-    [SerializeField] private GameObject _pointsNumber; //TODO: Billede af en crystal på scenen
+    [SerializeField] private GameObject _pointsNumber; 
     [SerializeField] private GameObject _arrow;
     LevelManager _levelManager;
     PointManager _pointManager;
@@ -29,7 +29,6 @@ public class LevelUIController : MonoBehaviour
 
     public void Start()
     {
-        _collectPotionButton.GetComponent<BoxCollider2D>().enabled = false; // so you dont press the complete button before the potion is complete
         _levelManager = LevelManager.Instance;
         _pointManager = PointManager.Instance;
 
@@ -38,27 +37,35 @@ public class LevelUIController : MonoBehaviour
         ***********************************/
         UpdatePoints();
 
-        /***********************************
-        Update recipe
-        ***********************************/
-        UpdateRecipe();
+        if (!_levelManager.Levels[_levelManager.CurrentLevelIndex].IsMiniGame)
+        {
+            _collectPotionButton.GetComponent<BoxCollider2D>().enabled = false; // so you dont press the complete button before the potion is complete
 
-        /***********************************
-        Instantiate the CircleMarker
-        ***********************************/
-        SpawnCircleMarker();
+            /***********************************
+            Update recipe
+            ***********************************/
+            UpdateRecipe();
 
-        /***********************************
-        Instantiate the Arrow
-        ***********************************/
-        SpawnArrow();
+            /***********************************
+            Instantiate the CircleMarker
+            ***********************************/
+            SpawnCircleMarker();
+
+            /***********************************
+            Instantiate the Arrow
+            ***********************************/
+            SpawnArrow();
+        }
+
     }
 
-    public void SpawnArrow() {
+    public void SpawnArrow()
+    {
         Arrow = Instantiate(_arrow);
     }
 
-    public void HideArrow() {
+    public void HideArrow()
+    {
         Destroy(Arrow);
     }
 
@@ -142,7 +149,8 @@ public class LevelUIController : MonoBehaviour
     }
 
     // Update crystals when completing a level for the first time
-    public void UpdatePoints(){
+    public void UpdatePoints()
+    {
         _pointsNumber.GetComponent<TextMeshProUGUI>().text = "" + _pointManager.CurrentPoints;
     }
 
