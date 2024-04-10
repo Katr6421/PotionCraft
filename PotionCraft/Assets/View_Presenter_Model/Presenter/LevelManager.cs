@@ -2,8 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections;
 using UnityEngine;
-using log4net.Core;
-using PlasticPipe.PlasticProtocol.Messages;
 
 public class LevelManager : MonoBehaviour, ILevelManager
 {
