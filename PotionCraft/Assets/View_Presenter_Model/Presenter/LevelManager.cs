@@ -144,10 +144,6 @@ public class LevelManager : MonoBehaviour, ILevelManager
             node4
         };
 
-
-        // Change for minigames 
-        // Change popup for minigames
-
         // Add levels to the list of levels. Hardcoded for each level
         Levels.Add(new LevelData("Dummy", 1, nodesLevel1, PotionDescription.Dummy));
         Levels.Add(new LevelData("Insertion Infusion", 1, nodesLevel1, PotionDescription.InsertionInfusion));
