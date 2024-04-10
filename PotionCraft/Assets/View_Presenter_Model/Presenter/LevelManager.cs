@@ -63,29 +63,28 @@ public class LevelManager : MonoBehaviour, ILevelManager
         List<Node> nodesLevel1 = new List<Node>
         {
             node5, 
-            /*
             node6,
-            node7,*/
+            node7,
         };
 
         List<Node> nodesLevel2 = new List<Node>
         {
-            node6,/*
+            node6,
             node5,
             node4,
             node3,
             node2,
-            node1*/
+            node1
         };
 
         List<Node> nodesLevel3 = new List<Node>
         {
             node1,
-            node2,/*
+            node2,
             node3,
             node4,
             node5,
-            node6,*/
+            node6,
         };
 
         // MINI GAME - TOM LISTE
@@ -97,7 +96,7 @@ public class LevelManager : MonoBehaviour, ILevelManager
         List<Node> nodesLevel5 = new List<Node>
         {
             node5,
-            node1, /*
+            node1, 
             node19, 
             node25, 
             node17, 
@@ -105,13 +104,13 @@ public class LevelManager : MonoBehaviour, ILevelManager
             node20, 
             node9,
             node15, 
-            node14*/
+            node14
         };
 
         List<Node> nodesLevel6 = new List<Node>
         {
             node25, 
-            node12, /*
+            node12, 
             node16, 
             node13, 
             node24, 
@@ -119,7 +118,7 @@ public class LevelManager : MonoBehaviour, ILevelManager
             node3, 
             node18, 
             node1,
-            node19*/
+            node19
 
         };
 

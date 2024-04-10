@@ -44,7 +44,6 @@ public class AvatarHintManager : MonoBehaviour, IAvatarHintManager
     // Call this method with "correct" or "hint" and the corresponding enum
     public void UpdateHint(String spriteName, AvatarHint avatarEnum)
     {
-
         _currentAvatarState = spriteName;
 
         ChangeAvatarHintBoxSprinte(spriteName);
@@ -67,6 +66,7 @@ public class AvatarHintManager : MonoBehaviour, IAvatarHintManager
             StartCoroutine(TriggerShakeBox(1f, 0.1f));
 
         }
+        // If subtree in jar or 
         // If the user select something correct but that lead to the tree is unblancede (hint)
         else
         {
@@ -126,6 +126,10 @@ public class AvatarHintManager : MonoBehaviour, IAvatarHintManager
             else if (spriteName.Equals("wrong"))
             {
                 spriteRenderer.sprite = _avatarHintSprites[2];
+            }
+            else if (spriteName.Equals("explain"))
+            {
+                spriteRenderer.sprite = _avatarHintSprites[3];
             }
         }
 
