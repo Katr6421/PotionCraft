@@ -6,12 +6,10 @@ public class UnlockClothes : MonoBehaviour
 {
     [SerializeField] private Sprite[] _colors;
     [SerializeField] private GameObject _clothes;
-    private Image _imageComponent;
     private float delayBeforeShowing = 2.0f; // Seconds to wait before showing the popup
 
     void Start()
     {
-        _imageComponent = GetComponent<Image>();
         //_clothes.SetActive(false);
     }
 
@@ -29,11 +27,11 @@ public class UnlockClothes : MonoBehaviour
         // Show the popup
         _clothes.SetActive(true);
 
-        // If you're using an animator, you could instead set a trigger to play the popup animation
-        // Animator animator = unlockPopup.GetComponent<Animator>();
-        // if (animator != null)
-        // {
-        //     animator.SetTrigger("ShowPopup");
-        // }
+
+        
+        // To change the color of the clothes
+        //_clothes.GetComponent<Image>().sprite = _colors[1];        
+
+    
     }
 }
