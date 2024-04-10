@@ -421,7 +421,7 @@ public class TreeVisualizationManager : MonoBehaviour
             /*********************************************
             Update to jar hint
             *********************************************/
-            _avatarHintManager.UpdateHint("hint", AvatarHint.NodeInTheJar);
+            _avatarHintManager.UpdateHint("explain", AvatarHint.NodeInTheJar);
 
             /*********************************************
             Start the rotation animation
