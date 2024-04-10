@@ -15258,12 +15258,12 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: -1
-  m_Sprite: {fileID: 21300000, guid: fa49af9252397490892b1d1ffaad3f3f, type: 3}
+  m_Sprite: {fileID: 21300000, guid: ed54d209fdd6f4ab9bdb46d6498a06af, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 19.2, y: 10.8}
+  m_Size: {x: 17.777779, y: 10}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -20630,8 +20630,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -731.4, y: -7.63}
-  m_SizeDelta: {x: 35.22, y: 39.74}
+  m_AnchoredPosition: {x: -824.26, y: -85.8}
+  m_SizeDelta: {x: 48.3, y: 51.88}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1095341465
 GameObject:
@@ -20665,8 +20665,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -784.2, y: -237.29999}
-  m_SizeDelta: {x: 35.22, y: 39.74}
+  m_AnchoredPosition: {x: -734.84, y: -235.4}
+  m_SizeDelta: {x: 41.29, y: 43.53}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1162683878
 GameObject:
@@ -21122,6 +21122,7 @@ MonoBehaviour:
   _nodeSpawner: {fileID: 0}
   _pointsNumber: {fileID: 2122329537}
   _arrow: {fileID: 4936282630505275363, guid: 3633f5bc3d8d4dc47b6bd27c7ea88d5f, type: 3}
+  _goalOverlay: {fileID: 1176121316}
 --- !u!4 &1654093618
 Transform:
   m_ObjectHideFlags: 0
@@ -21189,10 +21190,13 @@ MonoBehaviour:
   - isCollected: 0
     potionPrefab: {fileID: 4099563956040880022, guid: a34896a1889a286479edb6f3116f1ef0, type: 3}
   - isCollected: 0
+    potionPrefab: {fileID: 0}
+  - isCollected: 0
     potionPrefab: {fileID: 9212215047898566613, guid: bb8a26a08d064904699f4b712ae4201f, type: 3}
   - isCollected: 0
     potionPrefab: {fileID: 0}
   - isCollected: 0
+    potionPrefab: {fileID: 0}
     potionPrefab: {fileID: 0}
   - isCollected: 0
     potionPrefab: {fileID: 0}
@@ -21206,10 +21210,10 @@ MonoBehaviour:
   - {fileID: 1323040234}
   - {fileID: 919778708}
   - {fileID: 1002052129}
-  - {fileID: 939486594}
+  - {fileID: 0}
   - {fileID: 852051744}
   - {fileID: 1095341466}
-  - {fileID: 2022607079}
+  - {fileID: 0}
   - {fileID: 1271517001}
   - {fileID: 264210839}
   - {fileID: 1788505235}
