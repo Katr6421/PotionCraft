@@ -60,41 +60,40 @@ public class LevelManager : MonoBehaviour, ILevelManager
         // Make a list of nodes for each level
         List<Node> nodesLevel1 = new List<Node>
         {
-            node5, 
+            node5, /*
             node6,
-            node7,
+            node7,*/
         };
 
         List<Node> nodesLevel2 = new List<Node>
         {
             node6,
-            node5,
+            node5,/*
             node4,
             node3,
             node2,
-            node1
+            node1*/
         };
 
         List<Node> nodesLevel3 = new List<Node>
         {
             node1,
-            node2,
+            node2,/*
             node3,
             node4,
             node5,
-            node6,
+            node6,*/
         };
 
         // MINI GAME - TOM LISTE
         List<Node> nodesLevel4 = new List<Node>
         {
-            node1
         };
 
         List<Node> nodesLevel5 = new List<Node>
         {
             node5,
-            node1, 
+            node1, /*
             node19, 
             node25, 
             node17, 
@@ -102,13 +101,13 @@ public class LevelManager : MonoBehaviour, ILevelManager
             node20, 
             node9,
             node15, 
-            node14
+            node14*/
         };
 
         List<Node> nodesLevel6 = new List<Node>
         {
             node25, 
-            node12, 
+            node12, /*
             node16, 
             node13, 
             node24, 
@@ -116,7 +115,7 @@ public class LevelManager : MonoBehaviour, ILevelManager
             node3, 
             node18, 
             node1,
-            node19
+            node19*/
 
         };
 
@@ -146,7 +145,7 @@ public class LevelManager : MonoBehaviour, ILevelManager
         Levels.Add(new LevelData("Insertion Infusion", 1, nodesLevel1, PotionDescription.InsertionInfusion));
         Levels.Add(new LevelData("Rotation Tonic", 2, nodesLevel2, PotionDescription.RotationTonic)); 
         Levels.Add(new LevelData("Color Swap Serum", 3, nodesLevel3, PotionDescription.ColorSwapSerum));
-        Levels.Add(new LevelData(" ", 4, nodesLevel4, PotionDescription.Dummy)); // MINI GAME
+        Levels.Add(new LevelData(" ", 4, nodesLevel4, PotionDescription.Dummy, true)); // MINI GAME
         Levels.Add(new LevelData("Binary Blend", 5, nodesLevel5, PotionDescription.BinaryBlend)); 
         Levels.Add(new LevelData("Leaf Lixir", 6, nodesLevel6, PotionDescription.LeafLixir));
         Levels.Add(new LevelData("", 7, nodesLevel7, PotionDescription.Dummy, true)); // MINI GAME 

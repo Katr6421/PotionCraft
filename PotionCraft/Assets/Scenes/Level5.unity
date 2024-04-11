@@ -10770,7 +10770,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -778, y: -292.9}
+  m_AnchoredPosition: {x: -778, y: -297.7}
   m_SizeDelta: {x: 35.22, y: 39.74}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &355132312
@@ -21752,7 +21752,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -809.86, y: -235.4}
+  m_AnchoredPosition: {x: -815.88, y: -240.2}
   m_SizeDelta: {x: 40.53, y: 43.525}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &919778707
@@ -26897,7 +26897,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -824.26, y: -85.8}
+  m_AnchoredPosition: {x: -824.26, y: -88.7}
   m_SizeDelta: {x: 48.3, y: 51.88}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1015148538
@@ -27032,7 +27032,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -734.84, y: -235.4}
+  m_AnchoredPosition: {x: -734.84, y: -240.2}
   m_SizeDelta: {x: 41.29, y: 43.53}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1147364487
@@ -27611,7 +27611,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -817.01, y: -3.46}
+  m_AnchoredPosition: {x: -817.02, y: -8.3}
   m_SizeDelta: {x: 42.81, y: 48.09}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1336661791
@@ -33455,17 +33455,17 @@ MonoBehaviour:
   - isCollected: 0
     potionPrefab: {fileID: 0}
   - isCollected: 0
-    potionPrefab: {fileID: 9212215047898566613, guid: bb8a26a08d064904699f4b712ae4201f, type: 3}
+    potionPrefab: {fileID: 3004392370178615565, guid: a0dbacbc6aff5b042b62695285f419de, type: 3}
   - isCollected: 0
-    potionPrefab: {fileID: 9212215047898566613, guid: bb8a26a08d064904699f4b712ae4201f, type: 3}
+    potionPrefab: {fileID: 3004392370178615565, guid: 873ffba6acfb8304eacacc24fd9a6630, type: 3}
   - isCollected: 0
     potionPrefab: {fileID: 0}
   - isCollected: 0
-    potionPrefab: {fileID: 9212215047898566613, guid: bb8a26a08d064904699f4b712ae4201f, type: 3}
+    potionPrefab: {fileID: 3004392370178615565, guid: 6b5476f32dc32224b8f304647b76db30, type: 3}
   - isCollected: 0
-    potionPrefab: {fileID: 9212215047898566613, guid: bb8a26a08d064904699f4b712ae4201f, type: 3}
+    potionPrefab: {fileID: 3004392370178615565, guid: 82b81c89fd87bc043bb6b749be96f830, type: 3}
   - isCollected: 0
-    potionPrefab: {fileID: 9212215047898566613, guid: bb8a26a08d064904699f4b712ae4201f, type: 3}
+    potionPrefab: {fileID: 3004392370178615565, guid: bf5e60b87dfd49c42b211196da1583fe, type: 3}
   gridPositions:
   - {fileID: 1323040234}
   - {fileID: 919778708}
@@ -33510,7 +33510,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -723.4, y: -292.9}
+  m_AnchoredPosition: {x: -723.4, y: -297.7}
   m_SizeDelta: {x: 35.22, y: 39.74}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1825988707
