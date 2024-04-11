@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Avatar : MonoBehaviour
+public class AvatarSmall : MonoBehaviour
 {
     private LevelManager _levelManager;
 
@@ -8,8 +8,7 @@ public class Avatar : MonoBehaviour
     void Start()
     {
         _levelManager = LevelManager.Instance;
-        GetComponent<SpriteRenderer>().sprite = _levelManager.CurrentAvatarSprite;
+        GetComponent<SpriteRenderer>().sprite = _levelManager.CurrentAvatarSpriteSmall;
     }
-
 
 }

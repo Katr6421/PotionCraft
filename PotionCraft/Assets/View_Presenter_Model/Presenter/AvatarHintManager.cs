@@ -7,8 +7,8 @@ using UnityEngine;
 public class AvatarHintManager : MonoBehaviour, IAvatarHintManager
 {
     [SerializeField] TextMeshProUGUI _avatarHintText;  // This is the text that will be displayed in the hint box
-    [SerializeField] private GameObject _avatarHintBoks; // The Script that is attached to the hint box
-    [SerializeField] private Sprite[] _avatarHintSprites; // The sprites that will be displayed in the hint box
+    [SerializeField] private GameObject _hintBox; // The Script that is attached to the hint box
+    [SerializeField] private Sprite[] _hintBoxSprites; // The sprites that will be displayed in the hint box
     [SerializeField] private AnimationCurve shakeCurve;
     public Dictionary<AvatarHint, string> HintsDict { get; set; } = new Dictionary<AvatarHint, string>();
     private string _currentAvatarState;
@@ -89,7 +89,7 @@ public class AvatarHintManager : MonoBehaviour, IAvatarHintManager
 
     public void HideAvatarHintBoks()
     {
-        SpriteRenderer spriteRenderer = _avatarHintBoks.GetComponent<SpriteRenderer>();
+        SpriteRenderer spriteRenderer = _hintBox.GetComponent<SpriteRenderer>();
         if (spriteRenderer != null)
         {
             spriteRenderer.enabled = false; // This hides the sprite
@@ -100,7 +100,7 @@ public class AvatarHintManager : MonoBehaviour, IAvatarHintManager
 
     public void ShowAvatarHintBoks()
     {
-        SpriteRenderer spriteRenderer = _avatarHintBoks.GetComponent<SpriteRenderer>();
+        SpriteRenderer spriteRenderer = _hintBox.GetComponent<SpriteRenderer>();
         if (spriteRenderer != null)
         {
             spriteRenderer.enabled = true; // This shows the sprite
@@ -112,24 +112,24 @@ public class AvatarHintManager : MonoBehaviour, IAvatarHintManager
 
     public void ChangeAvatarHintBoxSprinte(String spriteName)
     {
-        SpriteRenderer spriteRenderer = _avatarHintBoks.GetComponent<SpriteRenderer>();
+        SpriteRenderer spriteRenderer = _hintBox.GetComponent<SpriteRenderer>();
         if (spriteRenderer != null)
         {
             if (spriteName.Equals("hint"))
             {
-                spriteRenderer.sprite = _avatarHintSprites[0];
+                spriteRenderer.sprite = _hintBoxSprites[0];
             }
             else if (spriteName.Equals("correct"))
             {
-                spriteRenderer.sprite = _avatarHintSprites[1];
+                spriteRenderer.sprite = _hintBoxSprites[1];
             }
             else if (spriteName.Equals("wrong"))
             {
-                spriteRenderer.sprite = _avatarHintSprites[2];
+                spriteRenderer.sprite = _hintBoxSprites[2];
             }
             else if (spriteName.Equals("explain"))
             {
-                spriteRenderer.sprite = _avatarHintSprites[3];
+                spriteRenderer.sprite = _hintBoxSprites[3];
             }
         }
 
@@ -137,7 +137,7 @@ public class AvatarHintManager : MonoBehaviour, IAvatarHintManager
 
     private IEnumerator TriggerShakeBox(float duration, float magnitude)
     {
-        Vector3 originalPosition = _avatarHintBoks.transform.localPosition;
+        Vector3 originalPosition = _hintBox.transform.localPosition;
         float elapsed = 0.0f;
 
         // Determine the number of shakes based on duration and a desired shake speed
@@ -152,11 +152,11 @@ public class AvatarHintManager : MonoBehaviour, IAvatarHintManager
             float sinWave = Mathf.Sin((elapsed / shakePeriod) * Mathf.PI * 2); // Sin wave for smooth oscillation
             float x = originalPosition.x + sinWave * magnitude;
 
-            _avatarHintBoks.transform.localPosition = new Vector3(x, originalPosition.y, originalPosition.z);
+            _hintBox.transform.localPosition = new Vector3(x, originalPosition.y, originalPosition.z);
             yield return null;
         }
 
-        _avatarHintBoks.transform.localPosition = originalPosition;
+        _hintBox.transform.localPosition = originalPosition;
     }
 
     private IEnumerator TriggerShakeText(float duration, float magnitude)
