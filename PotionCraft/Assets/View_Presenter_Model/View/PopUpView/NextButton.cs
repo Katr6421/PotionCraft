@@ -7,6 +7,8 @@ public class NextButton : MonoBehaviour
 {
     public void UnLockNextLevel()
     {
+        int levelIndex = LevelManager.Instance.CurrentLevelIndex;
+
         if (LevelManager.Instance.CurrentLevelIndex >= PlayerPrefs.GetInt("ReachedIndex"))
         {
             // Save the reached level index and unlock next level
@@ -16,9 +18,9 @@ public class NextButton : MonoBehaviour
 
         }
 
-         /********************************************
-        Add the current levelTrackData object to the list for the selected level
-        ********************************************/
+        /********************************************
+       Add the current levelTrackData object to the list for the selected level
+       ********************************************/
 
         // Check if the key already exists in the dictionary
         if (!LevelTrackManager.Instance.levelTrackDataDictionary.ContainsKey(levelIndex))

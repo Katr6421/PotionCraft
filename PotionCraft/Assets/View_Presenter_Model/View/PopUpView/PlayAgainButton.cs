@@ -32,10 +32,10 @@ public class PlayAgainButton : MonoBehaviour
         LevelTrackManager.Instance.levelTrackDataDictionary[levelIndex].Add(LevelTrackManager.Instance.CurrentLevelTrackData);
 
         // Reset the currentLevelTrackData
-        LevelTrackManager.Instance.CurrectLevelTrackData = new LevelTrackData(levelIndex);
+        LevelTrackManager.Instance.CurrentLevelTrackData = new LevelTrackData(levelIndex);
         // Start a timer, that we can use for TimeForCompletingLevel
         LevelTrackManager.Instance.CurrentStartTime = Time.time;
-    
+
 
         // Now that the UI is set, you can load the new scene
         string levelName = "Level" + levelIndex;

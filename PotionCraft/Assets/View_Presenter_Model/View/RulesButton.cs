@@ -13,7 +13,7 @@ public class RulesButton : MonoBehaviour
     private bool isMoving = false; // Flag to check if the object is currently moving
 
     private void Start()
-    {          
+    {
         // Store the original position of the rulesScriptObject
         originalPosition = rulesScriptObject.transform.position;
 
@@ -24,7 +24,7 @@ public class RulesButton : MonoBehaviour
 
     public void ShowRulesBox()
     {
-        LevelTrackManager.Instance.CurrectLevelTrackData.ClickOnRulesButton++;
+        LevelTrackManager.Instance.CurrentLevelTrackData.ClickOnRulesButton++;
         if (!isMoving)
         {
             DisableAllInteractions(); // Disable all particle systems and make all buttons non-interactable

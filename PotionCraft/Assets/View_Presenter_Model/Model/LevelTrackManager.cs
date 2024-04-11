@@ -8,10 +8,10 @@ using System.Runtime.InteropServices;
 public class LevelTrackManager : MonoBehaviour
 {
     public static LevelTrackManager Instance { get; private set; }
-    public LevelTrackData CurrectLevelTrackData;
-    public float CurrentStartTime {get; set;}
+    public LevelTrackData CurrentLevelTrackData;
+    public float CurrentStartTime { get; set; }
 
-     private void Awake()
+    private void Awake()
     {
         // Singleton pattern
         if (Instance != null && Instance != this)
@@ -23,7 +23,7 @@ public class LevelTrackManager : MonoBehaviour
             Instance = this;
             DontDestroyOnLoad(gameObject);
         }
-       
+
 
     }
 
@@ -33,7 +33,8 @@ public class LevelTrackManager : MonoBehaviour
     public Dictionary<int, List<LevelTrackData>> levelTrackDataDictionary = new Dictionary<int, List<LevelTrackData>>();
 
 
-    public void SaveDataToFile(){
+    public void SaveDataToFile()
+    {
 
         // Use Environment to get the desktop path
         string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
@@ -43,5 +44,5 @@ public class LevelTrackManager : MonoBehaviour
 
     }
 
-    
+
 }
