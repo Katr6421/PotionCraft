@@ -164,6 +164,10 @@ MonoBehaviour:
   - {fileID: 21300000, guid: c57fa815e58d24916a1f90e0d87ebf64, type: 3}
   - {fileID: 21300000, guid: 9b1f261e83fbd4764bcc0dbe9c9c765b, type: 3}
   - {fileID: 21300000, guid: e8b18bf0e42dc469cbc0255d1dea5c54, type: 3}
+  _avatarSprites:
+  - {fileID: 21300000, guid: 68941f59bb7ae4e4dbacabc1d20ae7eb, type: 3}
+  - {fileID: 21300000, guid: 39b8b4a09d69a448c8565888f545caaa, type: 3}
+  - {fileID: 21300000, guid: a3e47b9fa2f42464e8a26a39c716d988, type: 3}
 --- !u!4 &245665368
 Transform:
   m_ObjectHideFlags: 0

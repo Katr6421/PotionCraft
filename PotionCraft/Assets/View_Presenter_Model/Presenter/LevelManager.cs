@@ -6,6 +6,7 @@ using UnityEngine;
 public class LevelManager : MonoBehaviour, ILevelManager
 {
     [SerializeField] private Sprite[] _potionSprites;
+    [SerializeField] private Sprite[] _avatarSprites;
     public List<LevelData> Levels { get; set; } = new List<LevelData>();
     public static LevelManager Instance { get; private set; }
     public Dictionary<PotionDescription, string> DescriptionsDict { get; set; } = new Dictionary<PotionDescription, string>();
@@ -195,5 +196,10 @@ public string GetPotionName()
     public bool IsMiniGame()
     {
         return Levels[CurrentLevelIndex].IsMiniGame;
+    }
+
+    public Sprite GetAvatarSprite(int index)
+    {
+        return _avatarSprites[index];
     }
 }
