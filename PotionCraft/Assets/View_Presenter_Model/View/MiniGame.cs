@@ -20,6 +20,8 @@ public class MiniGame : MonoBehaviour
     {
         if (button.name == "Correct")
         {
+            // Stop time
+
             _targetColor = new Color(74f / 255f, 160f / 255f, 144f / 255f, 0.5f);
             StartCoroutine(OverlayWithColor(button, _targetColor, true));
 

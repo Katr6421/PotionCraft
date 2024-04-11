@@ -60,9 +60,9 @@ public class LevelManager : MonoBehaviour, ILevelManager
         // Make a list of nodes for each level - max 10 ingredients
         List<Node> nodesLevel1 = new List<Node>
         {
-            node5,
             node6,
-            node7
+            node5,
+            node3
         };
 
         List<Node> nodesLevel2 = new List<Node>
@@ -105,6 +105,7 @@ public class LevelManager : MonoBehaviour, ILevelManager
 
         };
 
+        // From the book 
         List<Node> nodesLevel6 = new List<Node>
         {
             node5,
@@ -125,6 +126,7 @@ public class LevelManager : MonoBehaviour, ILevelManager
         {
         };
 
+        // From the book
         List<Node> nodesLevel8 = new List<Node>
         {
             node25,
@@ -141,29 +143,30 @@ public class LevelManager : MonoBehaviour, ILevelManager
 
         List<Node> nodesLevel9 = new List<Node>
         {
-            node14,
-            node10,
-            node6,
-            node18,
-            node22,
-            node4,
-            node2,
-            node8,
-            node20
+            node2, 
+            node1,  
+            node15, 
+            node5,  
+            node17, 
+            node8,  
+            node22, 
+            node6,  
+            node11, 
+            node24  
         };
 
         List<Node> nodesLevel10 = new List<Node>
         {
-            node26,
-            node3,
-            node19,
-            node7,
-            node11,
-            node23,
-            node1,
-            node17,
-            node25,
-            node9
+            node3,   
+            node20,  
+            node23,  
+            node10,  
+            node26,  
+            node7,   
+            node18,  
+            node14,  
+            node9,   
+            node4    
         };
 
         // Add levels to the list of levels. Hardcoded for each level

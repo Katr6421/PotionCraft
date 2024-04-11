@@ -24,6 +24,7 @@ public class RulesButton : MonoBehaviour
 
     public void ShowRulesBox()
     {
+        LevelTrackManager.Instance.CurrectLevelTrackData.ClickOnRulesButton++;
         if (!isMoving)
         {
             DisableAllInteractions(); // Disable all particle systems and make all buttons non-interactable

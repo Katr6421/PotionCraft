@@ -103,6 +103,9 @@ public class TreeManager : MonoBehaviour, ITreeManager
         bool userSelectedCorrectOperation = selectedOperationType == nextCorrectOperation.OperationType;
         bool userSelectedCorrectIngredients = SelectedCorrectIngredients(nextCorrectOperation, out HashSet<Node> correctNodesInTree);
 
+
+        // TODO: should impelement if you have chosen some right ingredients, but not nok.
+
         if (userSelectedCorrectIngredients)
         {
             // Correct ingredients and correct operation
@@ -120,6 +123,7 @@ public class TreeManager : MonoBehaviour, ITreeManager
                 // The ingredients were correct but not the operation.
                 // Updates hint to Red Sprite, and keep showing
                 _avatarHintManager.UpdateHint("wrong", AvatarHint.SelectedRightIngredientsButWrongButton);
+                LevelTrackManager.Instance.CurrectLevelTrackData.WrongClickCounter++;
             }
 
         }
@@ -130,12 +134,14 @@ public class TreeManager : MonoBehaviour, ITreeManager
             {
                 //  Update hint - The operation was correct but not the ingredients. Red Sprite is shown, until you select something right
                 _avatarHintManager.UpdateHint("wrong", AvatarHint.SelectedRightButtonButWrongIngredients);
+                LevelTrackManager.Instance.CurrectLevelTrackData.WrongClickCounter++;
             }
             // Wrong ingredients and wrong operation
             else
             {
                 // Update hint - The ingredients and operation were both wrong. Red Sprite is shown, until you select something right
                 _avatarHintManager.UpdateHint("wrong", AvatarHint.SelectedWrongIngredientsAndButton);
+                LevelTrackManager.Instance.CurrectLevelTrackData.WrongClickCounter++;
             }
         }
     }
@@ -325,6 +331,9 @@ public class TreeManager : MonoBehaviour, ITreeManager
 
     public void CompleteLevel()
     {
+        // Set the time for levelTrackData. 
+        LevelTrackManager.Instance.CurrectLevelTrackData.TimeForCompletingLevel = Time.time - LevelTrackManager.Instance.CurrentStartTime;
+
         Debug.Log("There are no more ingredients to insert. There are no more operation, meaning The tree is in balance. You have completed the level.");
 
         // Hide the circle marker
