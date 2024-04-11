@@ -39,6 +39,9 @@ public class LevelTrackManager : MonoBehaviour
         
         // Create a StringBuilder to hold the formatted text
         System.Text.StringBuilder sb = new System.Text.StringBuilder();
+        sb.Append($"PotionCraft");
+        sb.AppendLine();
+        sb.AppendLine();
 
         foreach (var entry in levelTrackDataDictionary)
         {
