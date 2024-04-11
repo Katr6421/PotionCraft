@@ -7,11 +7,13 @@ public class LevelManager : MonoBehaviour, ILevelManager
 {
     [SerializeField] private Sprite[] _potionSprites;
     [SerializeField] private Sprite[] _avatarSprites;
+    [SerializeField] private Sprite[] _avatarSmallSprites;
     public List<LevelData> Levels { get; set; } = new List<LevelData>();
     public static LevelManager Instance { get; private set; }
     public Dictionary<PotionDescription, string> DescriptionsDict { get; set; } = new Dictionary<PotionDescription, string>();
     public int CurrentLevelIndex { get; set; }
     public Sprite CurrentAvatarSprite { get; set;}
+    public Sprite CurrentAvatarSpriteSmall { get; set;}
 
     private void Awake()
     {
@@ -27,6 +29,9 @@ public class LevelManager : MonoBehaviour, ILevelManager
         }
         MakeDescriptionDictionary();
         InitializeLevels();
+
+        CurrentAvatarSprite = _avatarSprites[0];
+        CurrentAvatarSpriteSmall = _avatarSmallSprites[0];
     }
 
     public void InitializeLevels()
@@ -228,8 +233,10 @@ public class LevelManager : MonoBehaviour, ILevelManager
         return Levels[CurrentLevelIndex].IsMiniGame;
     }
 
-    public Sprite GetAvatarSprite(int index)
+    public Sprite SetAvatarSprite(int index)
     {
-        return _avatarSprites[index];
+        CurrentAvatarSprite = _avatarSprites[index];
+        CurrentAvatarSpriteSmall = _avatarSmallSprites[index];
+        return CurrentAvatarSprite;
     }
 }

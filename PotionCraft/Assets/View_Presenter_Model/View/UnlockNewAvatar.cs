@@ -26,10 +26,10 @@ public class UnlockNewAvatar : MonoBehaviour
         yield return new WaitForSeconds(delayBeforeShowing);
 
         // Change the sprite of the new avatar
-        if (_levelManager.CurrentLevelIndex == 4) {
-            _newAvatar.GetComponent<Image>().sprite = _levelManager.GetAvatarSprite(1);
+        if (_levelManager.CurrentLevelIndex == 4) { 
+            _newAvatar.GetComponent<Image>().sprite = _levelManager.SetAvatarSprite(1);
         } else {
-            _newAvatar.GetComponent<Image>().sprite = _levelManager.GetAvatarSprite(2);
+            _newAvatar.GetComponent<Image>().sprite = _levelManager.SetAvatarSprite(2);
         }
 
         // Show the popup

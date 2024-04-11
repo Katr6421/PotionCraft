@@ -8,7 +8,6 @@ public class AvatarHintManager : MonoBehaviour, IAvatarHintManager
 {
     [SerializeField] TextMeshProUGUI _avatarHintText;  // This is the text that will be displayed in the hint box
     [SerializeField] private GameObject _hintBox; // The Script that is attached to the hint box
-    [SerializeField] private Sprite[] _avatarSprites;
     [SerializeField] private Sprite[] _hintBoxSprites; // The sprites that will be displayed in the hint box
     [SerializeField] private AnimationCurve shakeCurve;
     public Dictionary<AvatarHint, string> HintsDict { get; set; } = new Dictionary<AvatarHint, string>();
