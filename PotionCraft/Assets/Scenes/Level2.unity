@@ -33852,7 +33852,7 @@ MonoBehaviour:
   - isCollected: 0
     potionPrefab: {fileID: 980441550459626869, guid: 26c5682a868dc3e448ec4edc9d9659ac, type: 3}
   - isCollected: 0
-    potionPrefab: {fileID: 4099563956040880022, guid: a34896a1889a286479edb6f3116f1ef0, type: 3}
+    potionPrefab: {fileID: 9212215047898566613, guid: bb8a26a08d064904699f4b712ae4201f, type: 3}
   - isCollected: 0
     potionPrefab: {fileID: 0}
   - isCollected: 0
