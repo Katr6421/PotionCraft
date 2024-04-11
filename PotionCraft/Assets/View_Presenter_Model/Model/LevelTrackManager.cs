@@ -36,11 +36,37 @@ public class LevelTrackManager : MonoBehaviour
     public void SaveDataToFile()
     {
 
-        // Use Environment to get the desktop path
+
+
+
+         // Use Environment to get the desktop path
         string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+        string path = Path.Combine(desktopPath, "LevelTrackData.txt");
+        
+        // Create a StringBuilder to hold the formatted text
+        System.Text.StringBuilder sb = new System.Text.StringBuilder();
+
+        foreach (var entry in levelTrackDataDictionary)
+        {
+            foreach (var data in entry.Value)
+            {
+                // Each LevelTrackData on a new line
+                sb.AppendLine($"Level Number: {data.LevelNumber}, Wrong Clicks: {data.WrongClickCounter}, " +
+                              $"Time: {data.TimeForCompletingLevel} seconds, Clicks on Rules: {data.ClickOnRulesButton}, " +
+                              $"Completed: {data.HasCompletedLevel}");
+            }
+        }
+
+        // Write the string to a text file
+        File.WriteAllText(path, sb.ToString());
+        Debug.Log("Data saved to " + path);
+    
+
+        // Use Environment to get the desktop path
+        /*string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
         string path = Path.Combine(desktopPath, "counter.txt");
         //File.WriteAllText(path, counter.ToString());
-        Debug.Log("Counter saved to " + path);
+        Debug.Log("Counter saved to " + path);*/
 
     }
 

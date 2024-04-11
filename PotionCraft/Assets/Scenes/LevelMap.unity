@@ -2416,7 +2416,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1268553556}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 880ea22bd7392f7449741a973d957774, type: 3}
+  m_Script: {fileID: 11500000, guid: b568a43e7037f55489c75525c50140d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &1268553559
@@ -2464,7 +2464,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1268553558}
-        m_TargetAssemblyTypeName: SaveToFile, View
+        m_TargetAssemblyTypeName: LevelTrackManager, View
         m_MethodName: SaveDataToFile
         m_Mode: 1
         m_Arguments:
