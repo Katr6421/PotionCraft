@@ -219,6 +219,7 @@ public class TreeVisualizationManager : MonoBehaviour
         *********************************************/
         else
         {
+            LevelTrackManager.Instance.CurrentLevelTrackData.WrongClickCounter++;
             // Delete the node from the Red-Black BST tree and clear the operation queue
             _treeManager.DeleteNodeAndClearOperations(currentIngredientValue);
 

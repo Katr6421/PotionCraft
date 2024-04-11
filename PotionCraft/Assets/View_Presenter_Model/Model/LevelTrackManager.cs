@@ -23,10 +23,7 @@ public class LevelTrackManager : MonoBehaviour
             Instance = this;
             DontDestroyOnLoad(gameObject);
         }
-
-
     }
-
 
 
     //private int counter = 100; //test value
@@ -36,9 +33,38 @@ public class LevelTrackManager : MonoBehaviour
     public void SaveDataToFile()
     {
 
+        // Use Environment to get the desktop path
+        string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+        string path = Path.Combine(desktopPath, "LevelTrackData.txt");
+        
+        // Create a StringBuilder to hold the formatted text
+        System.Text.StringBuilder sb = new System.Text.StringBuilder();
+
+        foreach (var entry in levelTrackDataDictionary)
+        {
+            if(entry.Key == 4 || entry.Key == 7) sb.AppendLine($"MiniGame!");
+            sb.AppendLine($"Level Number: {entry.Key}"); // Assuming you want to label the levels
+            
+            foreach (var data in entry.Value)
+            {
+                // Each property on a new line
+                sb.AppendLine($"  Level Number: {data.LevelNumber}");
+                sb.AppendLine($"  Wrong Clicks: {data.WrongClickCounter}");
+                sb.AppendLine($"  Time: {data.TimeForCompletingLevel} seconds");
+                sb.AppendLine($"  Clicks on Rules: {data.ClickOnRulesButton}");
+                sb.AppendLine($"  Completed: {data.HasCompletedLevel}");
+                sb.AppendLine(); // Add an extra blank line for separation between entries
+            }
+        }
+
+        // Write the string to a text file
+        File.WriteAllText(path, sb.ToString());
+        Debug.Log("Data saved to " + path);
+    
 
 
 
+/*
          // Use Environment to get the desktop path
         string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
         string path = Path.Combine(desktopPath, "LevelTrackData.txt");
@@ -59,7 +85,7 @@ public class LevelTrackManager : MonoBehaviour
 
         // Write the string to a text file
         File.WriteAllText(path, sb.ToString());
-        Debug.Log("Data saved to " + path);
+        Debug.Log("Data saved to " + path);*/
     
 
         // Use Environment to get the desktop path
