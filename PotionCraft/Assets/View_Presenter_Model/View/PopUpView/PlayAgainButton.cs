@@ -14,7 +14,7 @@ public class PlayAgainButton : MonoBehaviour
 
     public void LoadLevelAgain()
     {
-        Debug.Log("Selected level: " + _levelManager.CurrentLevelIndex);
+        //Debug.Log("Selected level: " + _levelManager.CurrentLevelIndex);
         int levelIndex = _levelManager.CurrentLevelIndex;
 
         /********************************************

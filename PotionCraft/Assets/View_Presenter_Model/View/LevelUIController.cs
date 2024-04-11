@@ -44,7 +44,6 @@ public class LevelUIController : MonoBehaviour
         ***********************************/
         if (!_levelManager.Levels[_levelManager.CurrentLevelIndex].IsMiniGame)
         {
-            Debug.Log("In if. Current level index: " + _levelManager.CurrentLevelIndex);
             _goalOverlay.SetActive(false);
             /***********************************
             FIRST LEVEL FOR THE FIRST TIME - Show goal overlay
@@ -52,7 +51,6 @@ public class LevelUIController : MonoBehaviour
             if (_levelManager.CurrentLevelIndex == 1 && PlayerPrefs.GetInt("UnlockedLevel", 1) == 1)
             {
                 // Show goal overlay
-                Debug.Log("Show goal overlay");
                 _goalOverlay.SetActive(true);
             }
 

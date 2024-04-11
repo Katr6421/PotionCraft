@@ -36,12 +36,12 @@ public class PotionCabinetManager : MonoBehaviour
         {
             if (!potions[levelIndex].isCollected) // If the potion has not been collected yet
             {
-                Debug.Log($"Potion {levelIndex} not collected yet. Putting it in cabinet...");
+                //Debug.Log($"Potion {levelIndex} not collected yet. Putting it in cabinet...");
                 StartCoroutine(CompleteLevelSequence(levelIndex, onComplete));
             }
             else
             {
-                Debug.Log($"Potion {levelIndex} has already been collected.");
+                //Debug.Log($"Potion {levelIndex} has already been collected.");
                 onComplete?.Invoke();
             }
         }
