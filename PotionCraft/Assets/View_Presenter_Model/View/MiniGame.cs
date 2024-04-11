@@ -27,8 +27,10 @@ public class MiniGame : MonoBehaviour
 
             _unlockClothes.ShowUnlockPopup();
         }
-        else
+        else // Wrong button
         {
+            // Update wrongClickCounter for levelTrackData
+            LevelTrackManager.Instance.CurrentLevelTrackData.WrongClickCounter++;
             _targetColor = new Color(0.4745098f, 0.1372549f, 0.1215686f, 0.5f);
             StartCoroutine(OverlayWithColor(button, _targetColor, false));
 
