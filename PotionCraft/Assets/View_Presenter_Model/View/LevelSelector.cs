@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -7,6 +8,7 @@ public class LevelSelector : MonoBehaviour
 {
     [SerializeField]
     public Button[] LevelButtons;
+
 
     /*********************************************
     Fields to store the selected level and potion name.
@@ -47,6 +49,12 @@ public class LevelSelector : MonoBehaviour
         Current level index
         *********************************************/
         LevelManager.Instance.CurrentLevelIndex = levelIndex;
+
+        // Instantiate a new LevelTrackData object. Save the reference into LevelTrackManager that keeps track of the current LevelTrackData
+        LevelTrackManager.Instance.CurrentLevelTrackData = new LevelTrackData(LevelManager.Instance.CurrentLevelIndex);
+        // Start a timer, that we can use for TimeForCompletingLevel
+        LevelTrackManager.Instance.CurrentStartTime = Time.time;
+
 
         /*********************************************
         Now that the UI is set, you can load the new scene
