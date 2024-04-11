@@ -11,6 +11,7 @@ public class LevelManager : MonoBehaviour, ILevelManager
     public static LevelManager Instance { get; private set; }
     public Dictionary<PotionDescription, string> DescriptionsDict { get; set; } = new Dictionary<PotionDescription, string>();
     public int CurrentLevelIndex { get; set; }
+    public Sprite CurrentAvatarSprite { get; set;}
 
     private void Awake()
     {
