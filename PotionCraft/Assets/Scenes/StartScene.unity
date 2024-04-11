@@ -168,6 +168,10 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 68941f59bb7ae4e4dbacabc1d20ae7eb, type: 3}
   - {fileID: 21300000, guid: 39b8b4a09d69a448c8565888f545caaa, type: 3}
   - {fileID: 21300000, guid: a3e47b9fa2f42464e8a26a39c716d988, type: 3}
+  _avatarSmallSprites:
+  - {fileID: 21300000, guid: 2fffd10392d254329b1379b22135afb9, type: 3}
+  - {fileID: 21300000, guid: 302434334858c412dbfd191d594df196, type: 3}
+  - {fileID: 21300000, guid: 8581c7f5aba7d4dbfa27230e0dbd8e83, type: 3}
 --- !u!4 &245665368
 Transform:
   m_ObjectHideFlags: 0
