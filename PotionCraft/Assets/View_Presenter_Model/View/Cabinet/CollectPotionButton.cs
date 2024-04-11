@@ -24,8 +24,15 @@ public class CollectPotionButton : MonoBehaviour
             // Get 1 points
             _pointManager.AddPoints(1);
 
-            // Put the potion in the cabinet or show a popup if the potion has already been collected
-            _potionCabinetManager.CompleteLevel(_levelManager.CurrentLevelIndex, ShowPopup);
+            // Normal level (not minigame) - Put potion in cabinet and show popup
+            if (!_levelManager.Levels[_levelManager.CurrentLevelIndex].IsMiniGame){
+                _potionCabinetManager.CompleteLevel(_levelManager.CurrentLevelIndex, ShowPopup);
+            }
+            // Mini game - Show popup
+            else
+            {
+                ShowPopup();
+            }
         }
     }
 
