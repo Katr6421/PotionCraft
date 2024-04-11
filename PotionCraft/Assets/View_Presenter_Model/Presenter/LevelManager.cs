@@ -57,96 +57,122 @@ public class LevelManager : MonoBehaviour, ILevelManager
         Node node25 = new Node(25, 25, 1, false, null);
         Node node26 = new Node(26, 26, 1, false, null);
 
-        // Make a list of nodes for each level
+        // Make a list of nodes for each level - max 10 ingredients
         List<Node> nodesLevel1 = new List<Node>
         {
-            node5, /*
+            node5,
             node6,
-            node7,*/
+            node7
         };
 
         List<Node> nodesLevel2 = new List<Node>
         {
             node6,
-            node5,/*
+            node5,
             node4,
             node3,
             node2,
-            node1*/
+            node1
         };
 
         List<Node> nodesLevel3 = new List<Node>
         {
             node1,
-            node2,/*
+            node2,
             node3,
             node4,
             node5,
-            node6,*/
+            node6,
+            node7,
         };
 
-        // MINI GAME - TOM LISTE
+        // MINI GAME - empty list
         List<Node> nodesLevel4 = new List<Node>
         {
         };
 
         List<Node> nodesLevel5 = new List<Node>
         {
-            node5,
-            node1, /*
-            node19, 
-            node25, 
-            node17, 
-            node21, 
-            node20, 
-            node9,
-            node15, 
-            node14*/
+            node10,
+            node8,
+            node15,
+            node13,
+            node18,
+            node16,
+            node22,
+            node20,
+            node24
+
         };
 
         List<Node> nodesLevel6 = new List<Node>
         {
-            node25, 
-            node12, /*
-            node16, 
-            node13, 
-            node24, 
-            node8, 
-            node3, 
-            node18, 
+            node5,
             node1,
-            node19*/
+            node19,
+            node25,
+            node17,
+            node21,
+            node20,
+            node9,
+            node15,
+            node14
 
         };
 
-        // MINI GAME
+        // MINI GAME - empty list
         List<Node> nodesLevel7 = new List<Node>
         {
-            node1
         };
 
         List<Node> nodesLevel8 = new List<Node>
         {
-            node2
+            node25,
+            node12,
+            node16,
+            node13,
+            node24,
+            node8,
+            node3,
+            node18,
+            node1,
+            node19
         };
 
         List<Node> nodesLevel9 = new List<Node>
         {
-            node3
+            node14,
+            node10,
+            node6,
+            node18,
+            node22,
+            node4,
+            node2,
+            node8,
+            node20
         };
 
         List<Node> nodesLevel10 = new List<Node>
         {
-            node4
+            node26,
+            node3,
+            node19,
+            node7,
+            node11,
+            node23,
+            node1,
+            node17,
+            node25,
+            node9
         };
 
         // Add levels to the list of levels. Hardcoded for each level
         Levels.Add(new LevelData("Dummy", 1, nodesLevel1, PotionDescription.Dummy));
         Levels.Add(new LevelData("Insertion Infusion", 1, nodesLevel1, PotionDescription.InsertionInfusion));
-        Levels.Add(new LevelData("Rotation Tonic", 2, nodesLevel2, PotionDescription.RotationTonic)); 
+        Levels.Add(new LevelData("Rotation Tonic", 2, nodesLevel2, PotionDescription.RotationTonic));
         Levels.Add(new LevelData("Color Swap Serum", 3, nodesLevel3, PotionDescription.ColorSwapSerum));
         Levels.Add(new LevelData(" ", 4, nodesLevel4, PotionDescription.Dummy, true)); // MINI GAME
-        Levels.Add(new LevelData("Binary Blend", 5, nodesLevel5, PotionDescription.BinaryBlend)); 
+        Levels.Add(new LevelData("Binary Blend", 5, nodesLevel5, PotionDescription.BinaryBlend));
         Levels.Add(new LevelData("Leaf Lixir", 6, nodesLevel6, PotionDescription.LeafLixir));
         Levels.Add(new LevelData("", 7, nodesLevel7, PotionDescription.Dummy, true)); // MINI GAME 
         Levels.Add(new LevelData("Key Kombucha", 8, nodesLevel8, PotionDescription.KeyKombucha));
@@ -167,7 +193,7 @@ public class LevelManager : MonoBehaviour, ILevelManager
         DescriptionsDict.Add(PotionDescription.MasterRedBlackPotion, "The ultimate brew to restore balance and overthrow tyranny");
     }
 
-public string GetPotionName()
+    public string GetPotionName()
     {
         return Levels[CurrentLevelIndex].PotionName;
     }
