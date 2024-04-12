@@ -21,6 +21,7 @@ public class LevelUIController : MonoBehaviour
     [SerializeField] private GameObject _pointsNumber; 
     [SerializeField] private GameObject _arrow;
     [SerializeField] private GameObject _goalOverlay;
+    [SerializeField] private GameObject[] _avatarColors;
     LevelManager _levelManager;
     PointManager _pointManager;
     public GameObject CircleMarker { get; set; }
@@ -37,6 +38,19 @@ public class LevelUIController : MonoBehaviour
         Update crystals
         ***********************************/
         UpdatePoints();
+
+
+        /***********************************
+        Update what color they can choose
+        ***********************************/
+        if (PlayerPrefs.GetInt("UnlockedLevel", 1) > 4)
+        {
+            _avatarColors[0].SetActive(true);
+        }
+        if (PlayerPrefs.GetInt("UnlockedLevel", 1) > 7)
+        {
+            _avatarColors[1].SetActive(true);
+        }
 
         
         /***********************************
