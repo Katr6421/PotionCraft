@@ -10,7 +10,7 @@ public class ClickMe : MonoBehaviour
     
     void Update()
     {
-        if (clickCount == 1) {
+        if (clickCount >= 1) {
             _clickMeBobble.SetActive(false);
         }
     }
