@@ -23,4 +23,8 @@ public class BackButton : MonoBehaviour
         // Load the level map scene
         UnityEngine.SceneManagement.SceneManager.LoadScene("LevelMap");
     }
+
+    public void GoBackToMainMenu() {
+        UnityEngine.SceneManagement.SceneManager.LoadScene("LevelMap");
+    }
 }

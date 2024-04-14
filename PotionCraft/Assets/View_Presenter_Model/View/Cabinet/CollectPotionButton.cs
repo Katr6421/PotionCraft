@@ -1,7 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Drawing;
-using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -39,7 +35,14 @@ public class CollectPotionButton : MonoBehaviour
     private void ShowPopup()
     {
         _hasClicked = false;
-        SceneManager.LoadScene("PopUpScene");
+
+        // if level 10 is completed, go to end scene
+        if (_levelManager.CurrentLevelIndex == 10) {
+            SceneManager.LoadScene("EndScene");
+        } else {
+            SceneManager.LoadScene("PopUpScene");
+        }
+        
     }
 }
 

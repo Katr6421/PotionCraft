@@ -142,7 +142,14 @@ public class LevelUIController : MonoBehaviour
         /*********************************************
         Change text fields
         *********************************************/
-        _selectedLevelNumberText.text = "" + _levelManager.CurrentLevelIndex;
+        if (_levelManager.CurrentLevelIndex > 7) {
+            _selectedLevelNumberText.text = "" + (_levelManager.CurrentLevelIndex-2).ToString();
+        } else if (_levelManager.CurrentLevelIndex > 4) {
+            _selectedLevelNumberText.text = "" + (_levelManager.CurrentLevelIndex-1).ToString();
+        } else {
+            _selectedLevelNumberText.text = "" + _levelManager.CurrentLevelIndex;
+        }
+        
         _selectedLevelPotionName.text = "" + _levelManager.GetPotionName();
         _selectedLevelPotionDescription.text = "" + _levelManager.GetPotionDescription();
         /*********************************************
