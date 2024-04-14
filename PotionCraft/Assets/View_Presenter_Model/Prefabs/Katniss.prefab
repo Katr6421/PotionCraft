@@ -68,7 +68,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -524630135, guid: 63747600e85c341c2b5ad6c212803f5c, type: 3}
+  m_Sprite: {fileID: 1279059587, guid: f0f6050f9f16d48c4ab2c7912199b45b, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -151,8 +151,8 @@ MonoBehaviour:
   _pinkFlowerSprite: []
   _waterFlowerSprite: []
   _katnissSprite:
-  - {fileID: -524630135, guid: 63747600e85c341c2b5ad6c212803f5c, type: 3}
-  - {fileID: 1114330855, guid: 63747600e85c341c2b5ad6c212803f5c, type: 3}
+  - {fileID: 1279059587, guid: f0f6050f9f16d48c4ab2c7912199b45b, type: 3}
+  - {fileID: 2066098583, guid: f0f6050f9f16d48c4ab2c7912199b45b, type: 3}
 --- !u!1 &5175727685793577537
 GameObject:
   m_ObjectHideFlags: 0
