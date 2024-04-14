@@ -1,6 +1,4 @@
-using System.Collections;
 using System.Collections.Generic;
-using log4net.Core;
 using UnityEngine;
 
 public class BackButton : MonoBehaviour
