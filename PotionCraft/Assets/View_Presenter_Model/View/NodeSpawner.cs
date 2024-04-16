@@ -189,6 +189,20 @@ public class NodeSpawner : MonoBehaviour
         }
     }
 
+    // Make ingredients in top panel non-interactable
+    // Needed after closing rules, so that the player can't interact with the ingredients in the top panel
+    public void MakeIngredientsInTopPanelNonInteractable()
+    {
+        // Loop through all the nodes in NodeObjects and make them non-interactable if y > 3.7
+        foreach (GameObject nodeObject in NodeObjects)
+        {
+            if (nodeObject.transform.position.y > 3.7f)
+            {
+                MakeIngredientInteractable(false, nodeObject);
+            }
+        }
+    }
+
 }
 
 

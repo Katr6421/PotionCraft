@@ -91,5 +91,13 @@ public class RulesButton : MonoBehaviour
         {
             button.interactable = true;
         }
+
+        // Disable the ingredients in the top
+        NodeSpawner _nodeSpawner = FindObjectOfType<NodeSpawner>();
+        if (_nodeSpawner != null)
+        {
+            _nodeSpawner.MakeIngredientsInTopPanelNonInteractable();
+        }
+
     }
 }
